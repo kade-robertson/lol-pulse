@@ -1,0 +1,44 @@
+{
+	"name": "lol-pulse",
+	"version": "1.0.1",
+	"description": "LoL Pulse provides a convenient dashboard for League of Legends esports information.",
+	"type": "module",
+	"scripts": {
+		"dev": "wxt",
+		"postinstall": "wxt prepare",
+		"build": "wxt build",
+		"zip": "wxt zip",
+		"lint": "prettier --check .",
+		"lint:write": "prettier --write .",
+		"submit": "env-cmd -f .env.submit -- publish-extension",
+		"submit:dry": "env-cmd -f .env.submit -- publish-extension --dry-run"
+	},
+	"keywords": [
+		"lol",
+		"league of legends"
+	],
+	"author": "Kade Robertson <kade@kaderobertson.dev>",
+	"license": "MIT",
+	"volta": {
+		"node": "20.9.0",
+		"pnpm": "8.10.2"
+	},
+	"dependencies": {
+		"@ant-design/icons": "^5.2.6",
+		"antd": "^5.11.0",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"zod": "^3.22.4"
+	},
+	"devDependencies": {
+		"@types/react": "^18.2.36",
+		"@types/react-dom": "^18.2.14",
+		"@vitejs/plugin-react": "^4.1.1",
+		"env-cmd": "^10.1.0",
+		"prettier": "^3.0.3",
+		"publish-browser-extension": "^1.4.1",
+		"rollup-plugin-typescript2": "^0.36.0",
+		"typescript": "^5.2.2",
+		"wxt": "^0.9.0"
+	}
+}

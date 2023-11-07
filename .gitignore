@@ -1,0 +1,6 @@
+**/.npmrc
+.env.submit
+
+node_modules
+.output
+.wxt
