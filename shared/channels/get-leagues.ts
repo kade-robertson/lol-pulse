@@ -1,28 +1,9 @@
 import { z } from 'zod';
-import { Channel } from '../message';
-
-const Status = z.enum(['force_selected', 'not_selected', 'selected']);
-export type Status = z.infer<typeof Status>;
-
-const DisplayPriority = z.object({
-	position: z.number(),
-	status: Status,
-});
-export type DisplayPriority = z.infer<typeof DisplayPriority>;
-
-const League = z.object({
-	id: z.string(),
-	slug: z.string(),
-	name: z.string(),
-	region: z.string(),
-	image: z.string(),
-	priority: z.number(),
-	displayPriority: DisplayPriority,
-});
-export type League = z.infer<typeof League>;
+import { Channel, SafeChannel } from '../message';
+import { ShapeOf, ZLeague } from './shared-types';
 
 const LeaguesData = z.object({
-	leagues: z.array(League),
+	leagues: z.array(ZLeague),
 });
 export type LeaguesData = z.infer<typeof LeaguesData>;
 
@@ -31,11 +12,8 @@ const LeaguesResponse = z.object({
 });
 export type LeaguesResponse = z.infer<typeof LeaguesResponse>;
 
-const getLeagues = async (): Promise<LeaguesResponse> => {
+const getLeagues = async (): Promise<ReturnType<(typeof LeaguesResponse)['safeParse']>> => {
 	const apiKey = await browser.storage.local.get('apiKey').then((r) => r.apiKey);
-	if (apiKey == null) {
-		return { data: { leagues: [] } };
-	}
 	const res = await fetch('https://esports-api.lolesports.com/persisted/gw/getLeagues?hl=en-US', {
 		method: 'GET',
 		headers: {
@@ -44,7 +22,7 @@ const getLeagues = async (): Promise<LeaguesResponse> => {
 		},
 	});
 	const resJson = await res.json();
-	return LeaguesResponse.parse(resJson);
+	return LeaguesResponse.safeParse(resJson);
 };
 
 const GetLeaguesMessage = z.object({
@@ -52,7 +30,11 @@ const GetLeaguesMessage = z.object({
 });
 export type GetLeaguesMessage = z.infer<typeof GetLeaguesMessage>;
 
-export const GetLeaguesChannel: Channel<GetLeaguesMessage, LeaguesResponse> = {
+export const GetLeaguesChannel: SafeChannel<
+	GetLeaguesMessage,
+	ShapeOf<typeof LeaguesResponse>,
+	typeof LeaguesResponse
+> = {
 	async send() {
 		return await browser.runtime.sendMessage({ kind: 'fetch-leagues' });
 	},

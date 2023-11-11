@@ -1,13 +1,16 @@
-import { GetLeagues, GetSchedule, GetScheduleChannel } from '@/shared/channels';
+import { GetSchedule, GetScheduleChannel } from '@/shared/channels';
+import { League, Strategy } from '@/shared/channels/shared-types';
 import { ColumnType } from 'antd/es/table';
 import Table from 'antd/es/table/Table';
 import Title from 'antd/es/typography/Title';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import AddAlarmButton from './add-alarm-button';
 import HiddenItem from './hidden';
 import TeamWithIcon from './team-with-icon';
+import { useFetch } from './use-fetch';
+import { Alert } from 'antd';
 
-const strategyToText = (strategy: GetSchedule.Strategy) => {
+const strategyToText = (strategy: Strategy) => {
 	switch (strategy.type) {
 		case 'bestOf':
 			return `BO${strategy.count}`;
@@ -59,7 +62,7 @@ const TABLE_COLUMNS: ColumnType<GetSchedule.Event>[] = [
 		title: 'Style',
 		dataIndex: ['match', 'strategy'],
 		key: 'style',
-		render: (strategy: GetSchedule.Strategy) => <span>{strategyToText(strategy)}</span>,
+		render: (strategy: Strategy) => <span>{strategyToText(strategy)}</span>,
 		width: 1,
 		align: 'center',
 	},
@@ -101,19 +104,21 @@ const TABLE_COLUMNS: ColumnType<GetSchedule.Event>[] = [
 	},
 ];
 
-const Schedule = ({ league }: { league: GetLeagues.League }) => {
-	const [loading, setLoading] = useState(false);
-	const [schedule, setSchedule] = useState<GetSchedule.Event[]>([]);
+const Schedule = ({ league }: { league: League }) => {
+	const { loading, data, error, fetch } = useFetch(GetScheduleChannel);
+	const schedule = data?.data.schedule.events ?? [];
 
 	useEffect(() => {
-		setLoading(true);
-		GetScheduleChannel.send({ leagueId: league.id }).then((res) => {
-			setSchedule(res.data.schedule.events);
-			setLoading(false);
-		});
+		fetch({ leagueId: league.id });
 	}, [league.id]);
 
-	return (
+	useEffect(() => {
+		if (error != null) {
+			console.error(error);
+		}
+	}, [error]);
+
+	return error == null ? (
 		<Table
 			dataSource={schedule}
 			columns={TABLE_COLUMNS}
@@ -124,6 +129,13 @@ const Schedule = ({ league }: { league: GetLeagues.League }) => {
 					Schedule
 				</Title>
 			)}
+		/>
+	) : (
+		<Alert
+			message="Error loading league schedule."
+			type="error"
+			showIcon
+			style={{ marginBottom: '1em' }}
 		/>
 	);
 };

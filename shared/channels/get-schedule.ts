@@ -1,5 +1,6 @@
 import { z } from 'zod';
-import { Channel } from '../message';
+import { SafeChannel } from '../message';
+import { ShapeOf, ZRecord, ZResult, ZStrategy, safeZEnum } from './shared-types';
 
 const League = z.object({
 	name: z.string(),
@@ -7,25 +8,13 @@ const League = z.object({
 });
 export type League = z.infer<typeof League>;
 
-const Flag = z.enum(['hasVod', 'isSpoiler']);
+const Flag = safeZEnum(['hasVod', 'isSpoiler', 'unknown'] as const, 'unknown');
 export type Flag = z.infer<typeof Flag>;
 
-const StrategyType = z.enum(['bestOf', 'playAll']);
-export type StrategyType = z.infer<typeof StrategyType>;
-
-const Record = z.object({
-	wins: z.number(),
-	losses: z.number(),
-});
-export type Record = z.infer<typeof Record>;
-
-const Outcome = z.enum(['loss', 'win', 'tie']);
-export type Outcome = z.infer<typeof Outcome>;
-
-const State = z.string();
+const State = safeZEnum(['completed', 'inProgress', 'unstarted', 'unknown'] as const, 'unknown');
 export type State = z.infer<typeof State>;
 
-const EventType = z.enum(['match']);
+const EventType = safeZEnum(['match', 'unknown'] as const, 'unknown');
 export type EventType = z.infer<typeof EventType>;
 
 const Pages = z.object({
@@ -34,37 +23,25 @@ const Pages = z.object({
 });
 export type Pages = z.infer<typeof Pages>;
 
-const Result = z.object({
-	outcome: Outcome.nullable(),
-	gameWins: z.number(),
-});
-export type Result = z.infer<typeof Result>;
-
 const Team = z.object({
 	name: z.string(),
 	code: z.string(),
 	image: z.string(),
-	result: Result.nullable(),
-	record: Record.nullable(),
+	result: ZResult.nullable(),
+	record: ZRecord.nullable(),
 });
 export type Team = z.infer<typeof Team>;
-
-const Strategy = z.object({
-	type: StrategyType,
-	count: z.number(),
-});
-export type Strategy = z.infer<typeof Strategy>;
 
 const Match = z.object({
 	id: z.string(),
 	flags: z.array(Flag),
 	teams: z.array(Team),
-	strategy: Strategy,
+	strategy: ZStrategy,
 });
 export type Match = z.infer<typeof Match>;
 
 const Event = z.object({
-	startTime: z.string().transform((s) => new Date(s)),
+	startTime: z.string().datetime({ offset: true }),
 	state: State,
 	type: EventType,
 	blockName: z.string(),
@@ -89,13 +66,8 @@ const ScheduleResponse = z.object({
 });
 export type ScheduleResponse = z.infer<typeof ScheduleResponse>;
 
-const getSchedule = async (leagueId: string): Promise<ScheduleResponse> => {
+const getSchedule = async (leagueId: string) => {
 	const apiKey = await browser.storage.local.get('apiKey').then((r) => r.apiKey);
-	if (apiKey == null) {
-		return {
-			data: { schedule: { pages: { older: null, newer: null }, events: [] } },
-		};
-	}
 	const res = await fetch(
 		`https://esports-api.lolesports.com/persisted/gw/getSchedule?hl=en-US&leagueId=${leagueId}`,
 		{
@@ -107,7 +79,7 @@ const getSchedule = async (leagueId: string): Promise<ScheduleResponse> => {
 		},
 	);
 	const resJson = await res.json();
-	return ScheduleResponse.parse(resJson);
+	return ScheduleResponse.safeParse(resJson);
 };
 
 const GetScheduleMessage = z.object({
@@ -116,7 +88,11 @@ const GetScheduleMessage = z.object({
 });
 export type GetScheduleMessage = z.infer<typeof GetScheduleMessage>;
 
-export const GetScheduleChannel: Channel<GetScheduleMessage, ScheduleResponse> = {
+export const GetScheduleChannel: SafeChannel<
+	GetScheduleMessage,
+	ShapeOf<typeof ScheduleResponse>,
+	typeof ScheduleResponse
+> = {
 	async send(options?: { leagueId: string }) {
 		return await browser.runtime.sendMessage({
 			kind: 'fetch-schedule',

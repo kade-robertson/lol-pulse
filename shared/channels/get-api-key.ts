@@ -17,14 +17,17 @@ const getApiKey = async (): Promise<ApiKeyResponse> => {
 	});
 
 	return await new Promise<string>((resolve) => {
+		const listener = ((details) => {
+			const apiKeyMatch = details.requestHeaders?.find((h) => h.name === 'x-api-key');
+			if (apiKeyMatch != null && apiKeyMatch.value != null) {
+				browser.tabs.remove(tab.id!);
+				browser.webRequest.onBeforeSendHeaders.removeListener(listener);
+				resolve(apiKeyMatch.value);
+			}
+		}) satisfies Parameters<typeof browser.webRequest.onBeforeSendHeaders.addListener>[0];
+
 		browser.webRequest.onBeforeSendHeaders.addListener(
-			(details) => {
-				const apiKeyMatch = details.requestHeaders?.find((h) => h.name === 'x-api-key');
-				if (apiKeyMatch != null && apiKeyMatch.value != null) {
-					browser.tabs.remove(tab.id!);
-					resolve(apiKeyMatch.value);
-				}
-			},
+			listener,
 			{
 				urls: ['https://esports-api.lolesports.com/*'],
 				tabId: tab.id,

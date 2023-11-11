@@ -4,13 +4,13 @@ const MatchAlarm = z.object({
 	matchId: z.string(),
 	name: z.string(),
 	league: z.string(),
-	time: z.string().transform((time) => new Date(time)),
+	time: z.string().datetime({ offset: true }),
 });
 export type MatchAlarm = z.infer<typeof MatchAlarm>;
 
 const matchAlarmToName = (alarm: MatchAlarm) => `${alarm.matchId}|${alarm.league}|${alarm.name}`;
 
-const nameToMatchAlarm = (name: string): Omit<MatchAlarm, 'time'> => {
+export const nameToMatchAlarm = (name: string): Omit<MatchAlarm, 'time'> => {
 	const [matchId, league, matchName] = name.split('|');
 	return { matchId, league, name: matchName };
 };
