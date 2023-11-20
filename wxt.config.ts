@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
 	manifest: {
 		host_permissions: ['https://*.lolesports.com/*'],
-		permissions: ['webRequest', 'storage', 'alarms', 'tabs', 'https://*.lolesports.com/*'],
+		permissions: ['webRequest', 'storage', 'alarms', 'https://*.lolesports.com/*'],
 	},
 	vite: () => ({
 		plugins: [react()],
