@@ -39,6 +39,6 @@
 		"publish-browser-extension": "^1.4.1",
 		"rollup-plugin-typescript2": "^0.36.0",
 		"typescript": "^5.2.2",
-		"wxt": "^0.9.2"
+		"wxt": "^0.18.2"
 	}
 }
