@@ -11,13 +11,13 @@ const TABLE_COLUMNS: ColumnType<MatchAlarm>[] = [
 		title: 'Time',
 		dataIndex: 'time',
 		key: 'time',
-		render: (time: string) =>
-			new Date(time).toLocaleString(undefined, {
+		render: (time: Date) =>
+			time.toLocaleString(undefined, {
 				dateStyle: 'long',
 				timeStyle: 'short',
 			}),
 		sorter: (a, b) => {
-			return new Date(a.time).getTime() - new Date(b.time).getTime();
+			return a.time.getTime() - b.time.getTime();
 		},
 		defaultSortOrder: 'ascend',
 	},
