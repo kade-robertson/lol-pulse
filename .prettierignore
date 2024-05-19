@@ -1,4 +1,5 @@
 .output
 .wxt
 .github
+renovate.json
 pnpm-lock.yaml
