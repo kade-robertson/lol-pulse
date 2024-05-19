@@ -1,6 +1,5 @@
 import { z } from 'zod';
 import { SafeChannel } from '../message';
-import fixture from './__fixtures__/get-live-01';
 import { ShapeOf, ZMaybeLiveEvent } from './shared-types';
 
 const Schedule = z.object({

@@ -1,6 +1,5 @@
 import { z } from 'zod';
 import { ShapeOf, ZParticipant, safeZEnum } from './shared-types';
-import fixture from './__fixtures__/get-team-feed-01';
 import { SafeChannel } from '../message';
 
 const Ability = safeZEnum(['E', 'Q', 'R', 'W', 'unknown'] as const, 'unknown');
