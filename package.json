@@ -9,6 +9,7 @@
 		"build": "wxt build",
 		"zip": "wxt zip",
 		"lint": "prettier --check .",
+		"typecheck": "tsc",
 		"lint:write": "prettier --write .",
 		"submit": "env-cmd -f .env.submit -- publish-extension",
 		"submit:dry": "env-cmd -f .env.submit -- publish-extension --dry-run"

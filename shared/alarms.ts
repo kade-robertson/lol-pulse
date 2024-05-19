@@ -4,7 +4,7 @@ const MatchAlarm = z.object({
 	matchId: z.string(),
 	name: z.string(),
 	league: z.string(),
-	time: z.string().datetime({ offset: true }),
+	time: z.date(),
 });
 export type MatchAlarm = z.infer<typeof MatchAlarm>;
 
@@ -15,7 +15,7 @@ export const nameToMatchAlarm = (name: string): Omit<MatchAlarm, 'time'> => {
 	return { matchId, league, name: matchName };
 };
 
-export const getAlarms = async () => {
+export const getAlarms = async (): Promise<MatchAlarm[]> => {
 	const alarms = await browser.alarms.getAll();
 	return alarms.map((alarm) => ({
 		...nameToMatchAlarm(alarm.name),
