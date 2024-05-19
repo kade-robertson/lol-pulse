@@ -8,7 +8,6 @@ import {
 	ZResult,
 	ZStrategy,
 } from './shared-types';
-import fixture from './__fixtures__/get-event-details-01';
 import { SafeChannel } from '../message';
 
 const MaybeLiveEvent = ZMaybeLiveEvent.extend({
