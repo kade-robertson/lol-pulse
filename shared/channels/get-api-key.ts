@@ -13,7 +13,7 @@ const getApiKey = async (): Promise<ApiKeyResponse> => {
 	// Open a tab to the LoL Esports website and intercept network requests
 	// to the esports API.
 	const tab = await browser.tabs.create({
-		url: 'https://lolesports.com/schedule',
+		url: 'https://lolesports.com/',
 	});
 
 	return await new Promise<string>((resolve) => {
