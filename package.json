@@ -11,8 +11,8 @@
 		"lint": "prettier --check .",
 		"typecheck": "tsc",
 		"lint:write": "prettier --write .",
-		"submit": "env-cmd -f .env.submit -- publish-extension",
-		"submit:dry": "env-cmd -f .env.submit -- publish-extension --dry-run"
+		"submit": "wxt submit",
+		"submit:dry": "wxt submit --dry-run"
 	},
 	"keywords": [
 		"lol",
@@ -37,7 +37,6 @@
 		"@vitejs/plugin-react": "^4.1.1",
 		"env-cmd": "^10.1.0",
 		"prettier": "^3.0.3",
-		"publish-browser-extension": "^2.0.0",
 		"rollup-plugin-typescript2": "^0.36.0",
 		"typescript": "^5.2.2",
 		"wxt": "^0.18.2"
