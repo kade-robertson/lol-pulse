@@ -1,0 +1,7 @@
+{
+    "bootstrap-sha": "455fbf8fa6db269605f0cf86c7df1cca2ccde76c",
+    "last-release-sha": "455fbf8fa6db269605f0cf86c7df1cca2ccde76c",
+	"packages": {
+		".": {}
+	}
+}
