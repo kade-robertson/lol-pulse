@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.1.4](https://github.com/kade-robertson/lol-pulse/compare/lol-pulse-v1.1.3...lol-pulse-v1.1.4) (2024-06-25)
+
+
+### Bug Fixes
+
+* **deps:** update dependency antd to v5.17.4 ([#25](https://github.com/kade-robertson/lol-pulse/issues/25)) ([51b6d18](https://github.com/kade-robertson/lol-pulse/commit/51b6d18f02b531be8717bb94c277e350f1117635))
+* **deps:** update dependency antd to v5.18.0 ([#31](https://github.com/kade-robertson/lol-pulse/issues/31)) ([11f45bd](https://github.com/kade-robertson/lol-pulse/commit/11f45bdba069b5a35b50aa7297878cd3c196d971))
+* **deps:** update dependency antd to v5.18.1 ([#38](https://github.com/kade-robertson/lol-pulse/issues/38)) ([a6aca2e](https://github.com/kade-robertson/lol-pulse/commit/a6aca2e421cbebc846de1d08525cae069f23c288))
+* **deps:** update dependency antd to v5.18.2 ([#40](https://github.com/kade-robertson/lol-pulse/issues/40)) ([96b58a4](https://github.com/kade-robertson/lol-pulse/commit/96b58a4b721e56cfb2376c2ef8f7f038d856aa74))
+* **deps:** update dependency antd to v5.18.3 ([#43](https://github.com/kade-robertson/lol-pulse/issues/43)) ([4648cca](https://github.com/kade-robertson/lol-pulse/commit/4648ccafac9289e831ab698a0dbdfecf5ce0cfbf))
+
 ## [1.1.3](https://github.com/kade-robertson/lol-pulse/compare/lol-pulse-v1.1.2...lol-pulse-v1.1.3) (2024-05-19)
 
 
