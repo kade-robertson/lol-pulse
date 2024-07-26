@@ -39,6 +39,6 @@
 		"prettier": "^3.0.3",
 		"rollup-plugin-typescript2": "^0.36.0",
 		"typescript": "^5.2.2",
-		"wxt": "^0.18.2"
+		"wxt": "^0.19.0"
 	}
 }
