@@ -20,7 +20,7 @@ const AddAlarmButton = ({ record }: { record: GetSchedule.Event }) => {
 					addAlarm({
 						matchId: record.match.id,
 						league: record.league.name,
-						name: `${record.match.teams[0].code} vs. ${record.match.teams[1].code}`,
+						name: `${record.match.matchTeams[0].code} vs. ${record.match.matchTeams[1].code}`,
 						time: new Date(record.startTime),
 					})
 				}

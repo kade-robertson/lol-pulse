@@ -38,7 +38,7 @@ const TABLE_COLUMNS: ColumnType<GetSchedule.Event>[] = [
 	},
 	{
 		title: 'Team 1',
-		dataIndex: ['match', 'teams', 0],
+		dataIndex: ['match', 'matchTeams', 0],
 		key: 'team1',
 		render: (team: GetSchedule.Team) => <TeamWithIcon team={team} />,
 		width: 1,
@@ -53,7 +53,7 @@ const TABLE_COLUMNS: ColumnType<GetSchedule.Event>[] = [
 	},
 	{
 		title: 'Team 2',
-		dataIndex: ['match', 'teams', 1],
+		dataIndex: ['match', 'matchTeams', 1],
 		key: 'team2',
 		render: (team: GetSchedule.Team) => <TeamWithIcon team={team} />,
 		width: 1,
@@ -77,7 +77,7 @@ const TABLE_COLUMNS: ColumnType<GetSchedule.Event>[] = [
 		title: 'Winner',
 		key: 'winner',
 		render: (_, record) => {
-			const winner = record.match.teams.find((t) => t.result?.outcome === 'win');
+			const winner = record.match.matchTeams.find((t) => t.result?.outcome === 'win');
 			if (winner != null) {
 				return (
 					<HiddenItem key={`outcome-${record.match.id}`}>
@@ -85,7 +85,7 @@ const TABLE_COLUMNS: ColumnType<GetSchedule.Event>[] = [
 					</HiddenItem>
 				);
 			}
-			const tie = record.match.teams.every((t) => t.result?.outcome === 'tie');
+			const tie = record.match.matchTeams.every((t) => t.result?.outcome === 'tie');
 			if (tie) {
 				return (
 					<HiddenItem key={`outcome-${record.match.id}`}>
@@ -106,7 +106,7 @@ const TABLE_COLUMNS: ColumnType<GetSchedule.Event>[] = [
 
 const Schedule = ({ league }: { league: League }) => {
 	const { loading, data, error, fetch } = useFetch(GetScheduleChannel);
-	const schedule = data?.data.schedule.events ?? [];
+	const schedule = data?.data.esports.events ?? [];
 
 	useEffect(() => {
 		fetch({ leagueId: league.id });

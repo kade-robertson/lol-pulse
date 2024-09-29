@@ -32,7 +32,7 @@ export default defineBackground(() => {
 		const { matchId } = nameToMatchAlarm(alarm.name);
 		const liveGames = await getLive();
 		if (liveGames.success) {
-			const liveGame = liveGames.data.data.schedule.events.find((e) => e.match.id === matchId);
+			const liveGame = liveGames.data.data.esports.events.find((e) => e.match.id === matchId);
 			if (liveGame != null) {
 				// Prefer the Twitch stream for better autoplay.
 				const idealStream =

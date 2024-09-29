@@ -1,6 +1,8 @@
 import { z } from 'zod';
 import { Channel, SafeChannel } from '../message';
 import { ShapeOf, ZLeague } from './shared-types';
+import { fastQuery, getClient } from './gql-client';
+import { gql } from '@apollo/client';
 
 const LeaguesData = z.object({
 	leagues: z.array(ZLeague),
@@ -13,16 +15,17 @@ const LeaguesResponse = z.object({
 export type LeaguesResponse = z.infer<typeof LeaguesResponse>;
 
 const getLeagues = async (): Promise<ReturnType<(typeof LeaguesResponse)['safeParse']>> => {
-	const apiKey = await browser.storage.local.get('apiKey').then((r) => r.apiKey);
-	const res = await fetch('https://esports-api.lolesports.com/persisted/gw/getLeagues?hl=en-US', {
-		method: 'GET',
-		headers: {
-			'Content-Type': 'application/json',
-			'x-api-key': apiKey,
-		},
+	const client = await getClient();
+	if (client == null) {
+		throw new Error('Could not initialize gql client');
+	}
+
+	const res = await fastQuery<LeaguesResponse>(client, 'homeLeagues', {
+		hl: 'en-US',
+		sport: ['lol'],
+		flags: ['excludeHidden', 'excludeWithoutTournaments'],
 	});
-	const resJson = await res.json();
-	return LeaguesResponse.safeParse(resJson);
+	return LeaguesResponse.safeParse(res);
 };
 
 const GetLeaguesMessage = z.object({

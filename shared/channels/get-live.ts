@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { SafeChannel } from '../message';
 import { ShapeOf, ZMaybeLiveEvent } from './shared-types';
+import { fastQuery, getClient } from './gql-client';
 
 const Schedule = z.object({
 	events: z.array(ZMaybeLiveEvent),
@@ -8,7 +9,7 @@ const Schedule = z.object({
 export type Schedule = z.infer<typeof Schedule>;
 
 const Data = z.object({
-	schedule: Schedule,
+	esports: Schedule,
 });
 export type Data = z.infer<typeof Data>;
 
@@ -23,16 +24,16 @@ const GetLiveMessage = z.object({
 export type GetLiveMessage = z.infer<typeof GetLiveMessage>;
 
 export const getLive = async (): Promise<ReturnType<(typeof LiveResponse)['safeParse']>> => {
-	const apiKey = await browser.storage.local.get('apiKey').then((r) => r.apiKey);
-	const res = await fetch('https://esports-api.lolesports.com/persisted/gw/getLive?hl=en-US', {
-		method: 'GET',
-		headers: {
-			'Content-Type': 'application/json',
-			'x-api-key': apiKey,
-		},
+	const client = await getClient();
+	if (client == null) {
+		throw new Error('Could not initialize gql client');
+	}
+
+	const res = await fastQuery<LiveResponse>(client, 'watchLiveQuery', {
+		hl: 'en-US',
+		sport: 'lol',
 	});
-	const resJson = await res.json();
-	return LiveResponse.safeParse(resJson);
+	return LiveResponse.safeParse(res);
 };
 
 export const GetLiveChannel: SafeChannel<
