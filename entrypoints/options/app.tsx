@@ -1,14 +1,14 @@
 import { GetLeaguesChannel } from '@/shared/channels';
 import { League } from '@/shared/channels/shared-types';
-import { Alert, Button, Flex, Image, Layout, List, Skeleton, Typography } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
+import { Alert, Button, Flex, Image, Layout, List, Typography } from 'antd';
 import { Content } from 'antd/es/layout/layout';
 import { useEffect, useMemo, useState } from 'react';
 import AlarmsTable from './alarms';
-import Schedule from './schedule';
-import { useApiKey } from './use-api-key';
-import { useFetch } from './use-fetch';
 import LiveGames from './live-games';
-import { LoadingOutlined } from '@ant-design/icons';
+import Schedule from './schedule';
+import { useApolloConfig } from './use-apollo-client';
+import { useFetch } from './use-fetch';
 
 enum State {
 	NoAPIKey,
@@ -18,13 +18,13 @@ enum State {
 }
 
 const App = () => {
-	const { apiKey, fetchApiKey } = useApiKey();
+	const { config, fetchApolloConfig } = useApolloConfig();
 	const { loading, data, error, fetch } = useFetch(GetLeaguesChannel);
 	const [selectedLeague, setSelectedLeague] = useState<League | null>(null);
 
 	useEffect(() => {
 		fetch();
-	}, [apiKey]);
+	}, [config]);
 
 	const leagues = data?.data.leagues ?? [];
 
@@ -41,7 +41,7 @@ const App = () => {
 	}, [error]);
 
 	const state: State = useMemo(() => {
-		if (apiKey == null || apiKey === '') {
+		if (config == null) {
 			return State.NoAPIKey;
 		} else if (loading) {
 			return State.APIKeyLoading;
@@ -50,7 +50,7 @@ const App = () => {
 		} else {
 			return State.APIKeyLoaded;
 		}
-	}, [apiKey, loading, error]);
+	}, [config, loading, error]);
 
 	return (
 		<Layout>
@@ -61,9 +61,18 @@ const App = () => {
 						<Typography.Title style={{ margin: 0, padding: 0 }}>LoL Pulse</Typography.Title>
 					</Flex>
 					{state === State.NoAPIKey && (
-						<Flex gap="middle" justify="center" align="center" style={{ marginBottom: '1em' }}>
-							<Typography.Text italic>LoL Pulse requires an API key to load.</Typography.Text>
-							<Button onClick={fetchApiKey}>Load API Key</Button>
+						<Flex
+							vertical
+							gap="middle"
+							justify="center"
+							align="center"
+							style={{ marginBottom: '1em', maxWidth: '50%' }}
+						>
+							<Typography.Text italic style={{ textAlign: 'center' }}>
+								LoL Pulse requires additional information to load. This may take some time. You will
+								automatically be returned to this tab when possible.
+							</Typography.Text>
+							<Button onClick={fetchApolloConfig}>Load Additional Information</Button>
 						</Flex>
 					)}
 				</Flex>

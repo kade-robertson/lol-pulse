@@ -80,7 +80,7 @@ const MessageText = ({ children }: { children: React.ReactNode }) => (
 const LiveGames = () => {
 	const { loading, data, error, fetch } = useFetch(GetLiveChannel);
 	const [refetchInterval, setRefetchInterval] = useState<NodeJS.Timeout | null>(null);
-	const games = data?.data.schedule.events ?? [];
+	const games = data?.data.esports.events ?? [];
 
 	useEffect(() => {
 		fetch();
@@ -105,61 +105,63 @@ const LiveGames = () => {
 	return (
 		<Flex vertical gap="middle" style={{ marginBottom: '1em' }}>
 			{error == null ? (
-				games.map((g) => {
-					const teamA = g.match.teams[0];
-					const teamB = g.match.teams[1];
+				games
+					.filter((g) => g.streams.length > 0)
+					.map((g) => {
+						const teamA = g.match.matchTeams[0];
+						const teamB = g.match.matchTeams[1];
 
-					const twitchLivestream = getLocaleAwareStream(g.streams, 'twitch');
-					const youtubeLivestream = getLocaleAwareStream(g.streams, 'youtube');
+						const twitchLivestream = getLocaleAwareStream(g.streams, 'twitch');
+						const youtubeLivestream = getLocaleAwareStream(g.streams, 'youtube');
 
-					return (
-						<Alert
-							message={
-								<Flex justify="space-between">
-									<Flex align="center" gap="0.5em">
-										<LiveIcon />
-										<MessageText>
-											Live: {g.league.name} {g.blockName} -
-										</MessageText>
+						return (
+							<Alert
+								message={
+									<Flex justify="space-between">
 										<Flex align="center" gap="0.5em">
-											<Image src={teamA.image} width={24} height={24} preview={false} />
-											<MessageText>{teamA.code}</MessageText>
+											<LiveIcon />
+											<MessageText>
+												Live: {g.league.name} {g.blockName} -
+											</MessageText>
+											<Flex align="center" gap="0.5em">
+												<Image src={teamA.image} width={24} height={24} preview={false} />
+												<MessageText>{teamA.code}</MessageText>
+											</Flex>
+											<MessageText>vs.</MessageText>
+											<Flex align="center" gap="0.5em">
+												<Image src={teamB.image} width={24} height={24} preview={false} />
+												<MessageText>{teamB.code}</MessageText>
+											</Flex>
 										</Flex>
-										<MessageText>vs.</MessageText>
 										<Flex align="center" gap="0.5em">
-											<Image src={teamB.image} width={24} height={24} preview={false} />
-											<MessageText>{teamB.code}</MessageText>
+											<LoLEsportsLogo slug={g.league.slug} />
+											{youtubeLivestream != null && (
+												<Popconfirm
+													title={'Watch on YouTube?'}
+													onConfirm={() =>
+														browser.tabs.create({
+															url: `https://youtube.com/watch?v=${youtubeLivestream.parameter}`,
+														})
+													}
+												>
+													<YoutubeFilled
+														width={24}
+														height={24}
+														style={{ color: 'red', fontSize: '24px' }}
+													/>
+												</Popconfirm>
+											)}
+											{twitchLivestream != null && (
+												<TwitchLogo channel={twitchLivestream.parameter} />
+											)}
 										</Flex>
 									</Flex>
-									<Flex align="center" gap="0.5em">
-										<LoLEsportsLogo slug={g.league.slug} />
-										{youtubeLivestream != null && (
-											<Popconfirm
-												title={'Watch on YouTube?'}
-												onConfirm={() =>
-													browser.tabs.create({
-														url: `https://youtube.com/watch?v=${youtubeLivestream.parameter}`,
-													})
-												}
-											>
-												<YoutubeFilled
-													width={24}
-													height={24}
-													style={{ color: 'red', fontSize: '24px' }}
-												/>
-											</Popconfirm>
-										)}
-										{twitchLivestream != null && (
-											<TwitchLogo channel={twitchLivestream.parameter} />
-										)}
-									</Flex>
-								</Flex>
-							}
-							key={g.id}
-							type="info"
-						/>
-					);
-				})
+								}
+								key={g.id}
+								type="info"
+							/>
+						);
+					})
 			) : (
 				<Alert message="Failed to load live games." type="error" />
 			)}

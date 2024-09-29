@@ -1,6 +1,8 @@
 import { z } from 'zod';
 import { SafeChannel } from '../message';
 import { ShapeOf, ZRecord, ZResult, ZStrategy, safeZEnum } from './shared-types';
+import { fastQuery, getClient } from './gql-client';
+import { gql } from '@apollo/client';
 
 const League = z.object({
 	name: z.string(),
@@ -28,14 +30,13 @@ const Team = z.object({
 	code: z.string(),
 	image: z.string(),
 	result: ZResult.nullable(),
-	record: ZRecord.nullable(),
 });
 export type Team = z.infer<typeof Team>;
 
 const Match = z.object({
 	id: z.string(),
 	flags: z.array(Flag),
-	teams: z.array(Team),
+	matchTeams: z.array(Team),
 	strategy: ZStrategy,
 });
 export type Match = z.infer<typeof Match>;
@@ -57,7 +58,7 @@ const Schedule = z.object({
 export type Schedule = z.infer<typeof Schedule>;
 
 const Data = z.object({
-	schedule: Schedule,
+	esports: Schedule,
 });
 export type Data = z.infer<typeof Data>;
 
@@ -67,19 +68,21 @@ const ScheduleResponse = z.object({
 export type ScheduleResponse = z.infer<typeof ScheduleResponse>;
 
 const getSchedule = async (leagueId: string) => {
-	const apiKey = await browser.storage.local.get('apiKey').then((r) => r.apiKey);
-	const res = await fetch(
-		`https://esports-api.lolesports.com/persisted/gw/getSchedule?hl=en-US&leagueId=${leagueId}`,
-		{
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-				'x-api-key': apiKey,
-			},
-		},
-	);
-	const resJson = await res.json();
-	return ScheduleResponse.safeParse(resJson);
+	const client = await getClient();
+	if (client == null) {
+		throw new Error('Could not initialize gql client');
+	}
+
+	const res = await fastQuery<ScheduleResponse>(client, 'homeEvents', {
+		hl: 'en-US',
+		sport: 'lol',
+		eventState: ['unstarted', 'inProgress', 'completed'],
+		eventType: 'all',
+		vodType: ['recap'],
+		pageSize: 100,
+		leagues: [leagueId],
+	});
+	return ScheduleResponse.safeParse(res);
 };
 
 const GetScheduleMessage = z.object({

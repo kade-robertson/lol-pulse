@@ -61,7 +61,7 @@ export const ZLeague = z.object({
 	name: z.string(),
 	region: z.string().optional(),
 	image: z.string(),
-	priority: z.number(),
+	priority: z.number().optional(),
 	displayPriority: ZDisplayPriority,
 });
 export type League = z.infer<typeof ZLeague>;
@@ -142,7 +142,7 @@ export type Game = z.infer<typeof ZGame>;
 
 export const ZMatch = z.object({
 	id: z.string(),
-	teams: z.array(ZMatchTeam),
+	matchTeams: z.array(ZMatchTeam),
 	strategy: ZStrategy,
 	games: z.array(ZGame),
 });
