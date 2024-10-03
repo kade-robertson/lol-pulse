@@ -1,6 +1,6 @@
 {
 	"name": "lol-pulse",
-	"version": "1.2.0",
+	"version": "1.2.1",
 	"description": "LoL Pulse provides a convenient dashboard for League of Legends esports information.",
 	"type": "module",
 	"scripts": {
