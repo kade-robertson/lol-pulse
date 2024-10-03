@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.2.1](https://github.com/kade-robertson/lol-pulse/compare/lol-pulse-v1.2.0...lol-pulse-v1.2.1) (2024-10-03)
+
+
+### Bug Fixes
+
+* **deps:** update dependency antd to v5.21.1 ([#100](https://github.com/kade-robertson/lol-pulse/issues/100)) ([25b3dda](https://github.com/kade-robertson/lol-pulse/commit/25b3dda1d4365d68fac38079c9f74ce855da59df))
+* **deps:** update dependency antd to v5.21.2 ([#105](https://github.com/kade-robertson/lol-pulse/issues/105)) ([04bd431](https://github.com/kade-robertson/lol-pulse/commit/04bd431b0268bd23397556198467395103d265c3))
+* properly filter to matches in schedule ([#109](https://github.com/kade-robertson/lol-pulse/issues/109)) ([96000cc](https://github.com/kade-robertson/lol-pulse/commit/96000cc03cd59d629abd2a3815b4191ef7964837))
+
 ## [1.2.0](https://github.com/kade-robertson/lol-pulse/compare/lol-pulse-v1.1.3...lol-pulse-v1.2.0) (2024-09-29)
 
 
