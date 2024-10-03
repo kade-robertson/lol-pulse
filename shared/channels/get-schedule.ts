@@ -77,8 +77,7 @@ const getSchedule = async (leagueId: string) => {
 		hl: 'en-US',
 		sport: 'lol',
 		eventState: ['unstarted', 'inProgress', 'completed'],
-		eventType: 'all',
-		vodType: ['recap'],
+		eventType: 'match',
 		pageSize: 100,
 		leagues: [leagueId],
 	});
