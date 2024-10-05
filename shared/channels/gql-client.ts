@@ -1,16 +1,26 @@
-import { ApolloClient, gql, HttpLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
+import {
+	ApolloClient,
+	DocumentNode,
+	gql,
+	HttpLink,
+	InMemoryCache,
+	NormalizedCacheObject,
+} from '@apollo/client';
 import { createPersistedQueryLink } from '@apollo/client/link/persisted-queries';
 import { ApolloConfigResponse } from './get-apollo-config';
 import { generatePersistedQueryIdsFromManifest } from '@apollo/persisted-query-lists';
+import { InvalidationPolicyCache } from '@nerdwallet/apollo-cache-policies';
 
-let client: ApolloClient<NormalizedCacheObject> | null = null;
 interface Operation {
 	id: string;
 	name: string;
 	body: string;
 }
+type OperationMap = Record<string, Omit<Operation, 'body'> & { body: DocumentNode }>;
 
-let operations: Record<string, Operation> = {};
+let client: ApolloClient<NormalizedCacheObject> | null = null;
+let operations: OperationMap = {};
+
 export const getClient = async (): Promise<typeof client> => {
 	if (client == null) {
 		const config = (await browser.storage.local.get('apolloConfig')) as
@@ -21,11 +31,15 @@ export const getClient = async (): Promise<typeof client> => {
 		}
 
 		operations = config.apolloConfig.pqlManifest.operations.reduce(
-			(acc: Record<string, Operation>, op: Operation) => {
-				acc[op.name] = op;
+			(acc: OperationMap, op: Operation) => {
+				acc[op.name] = {
+					id: op.id,
+					name: op.name,
+					body: gql(op.body.replaceAll('\\n', '\n')),
+				};
 				return acc;
 			},
-			{} as Record<string, Operation>,
+			{} as OperationMap,
 		);
 
 		const pql = createPersistedQueryLink(
@@ -33,8 +47,6 @@ export const getClient = async (): Promise<typeof client> => {
 				loadManifest: async () => config.apolloConfig.pqlManifest,
 			}),
 		);
-
-		console.log(operations);
 
 		const httpLink = new HttpLink({
 			uri: 'https://lolesports.com/api/gql',
@@ -45,9 +57,15 @@ export const getClient = async (): Promise<typeof client> => {
 			},
 		});
 
+		const cache = new InvalidationPolicyCache({
+			invalidationPolicies: {
+				timeToLive: 30_000,
+			},
+		});
+
 		client = new ApolloClient({
 			link: pql.concat(httpLink),
-			cache: new InMemoryCache(),
+			cache,
 			name: config.apolloConfig.clientName,
 			version: config.apolloConfig.clientVersion,
 			queryDeduplication: false,
@@ -68,16 +86,9 @@ export const fastQuery = async <T>(
 	}
 
 	return apolloClient.query<T>({
-		query: gql(gqlOperation.body.replaceAll('\\n', '\n')),
+		query: gqlOperation.body,
 		variables,
 		fetchPolicy: 'cache-first',
 		notifyOnNetworkStatusChange: false,
-		context: {
-			fetchOptions: {
-				next: {
-					revalidate: 60,
-				},
-			},
-		},
 	});
 };

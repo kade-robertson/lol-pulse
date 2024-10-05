@@ -24,8 +24,8 @@ export const getRoundedISODate = (date: Date) => {
 export const getLocaleAwareStream = (streams: Stream[], provider: Provider) => {
 	const preferredLocales = navigator.languages;
 	const orderedStreams = streams.sort((a, b) => {
-		const aIndex = preferredLocales.indexOf(a.locale);
-		const bIndex = preferredLocales.indexOf(b.locale);
+		const aIndex = preferredLocales.indexOf(a.mediaLocale.locale);
+		const bIndex = preferredLocales.indexOf(b.mediaLocale.locale);
 		if (aIndex === -1) {
 			return 1;
 		}
