@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.2](https://github.com/kade-robertson/lol-pulse/compare/lol-pulse-v1.2.1...lol-pulse-v1.2.2) (2024-10-05)
+
+
+### Bug Fixes
+
+* make live display work again ([#111](https://github.com/kade-robertson/lol-pulse/issues/111)) ([3276779](https://github.com/kade-robertson/lol-pulse/commit/3276779a4dcbf63dd1b501d27406523d26f69ee9))
+
 ## [1.2.1](https://github.com/kade-robertson/lol-pulse/compare/lol-pulse-v1.2.0...lol-pulse-v1.2.1) (2024-10-03)
 
 
