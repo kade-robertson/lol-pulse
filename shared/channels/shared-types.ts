@@ -99,22 +99,20 @@ export type GameTeam = z.infer<typeof ZGameTeam>;
 export const ZMatchTeam = z.object({
 	id: z.string(),
 	name: z.string(),
-	slug: z.string(),
+	slug: z.string().optional(),
 	code: z.string(),
 	image: z.string(),
 	result: ZResult,
-	record: ZRecord,
+	record: ZRecord.optional(),
 });
 export type MatchTeam = z.infer<typeof ZMatchTeam>;
 
 export const ZStream = z.object({
 	parameter: z.string(),
-	locale: z.string(),
 	mediaLocale: ZMediaLocale,
 	provider: ZProvider,
 	countries: z.array(z.string()),
 	offset: z.number(),
-	statsStatus: ZStatsStatus,
 });
 export type Stream = z.infer<typeof ZStream>;
 
@@ -135,7 +133,7 @@ export const ZGame = z.object({
 	number: z.number(),
 	id: z.string(),
 	state: z.string(),
-	teams: z.array(ZGameTeam),
+	teams: z.array(ZGameTeam).optional(),
 	vods: z.array(ZVOD),
 });
 export type Game = z.infer<typeof ZGame>;
@@ -153,10 +151,9 @@ export const ZMaybeLiveEvent = z.object({
 	startTime: z.string().datetime({ offset: true }),
 	state: z.string(),
 	type: z.string(),
-	blockName: z.string(),
 	league: ZLeague,
 	tournament: ZTournament,
-	match: ZMatch,
+	match: ZMatch.optional(),
 	streams: z.array(ZStream),
 });
 export type MaybeLiveEvent = z.infer<typeof ZMaybeLiveEvent>;

@@ -29,9 +29,12 @@ export const getLive = async (): Promise<ReturnType<(typeof LiveResponse)['safeP
 		throw new Error('Could not initialize gql client');
 	}
 
-	const res = await fastQuery<LiveResponse>(client, 'watchLiveQuery', {
+	const res = await fastQuery<LiveResponse>(client, 'homeEvents', {
 		hl: 'en-US',
 		sport: 'lol',
+		eventState: ['inProgress'],
+		eventType: 'all',
+		pageSize: 100,
 	});
 	return LiveResponse.safeParse(res);
 };

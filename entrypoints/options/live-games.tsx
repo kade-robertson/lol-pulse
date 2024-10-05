@@ -49,10 +49,19 @@ const TwitchLogo = ({ channel }: { channel: string }) => (
 	</Popconfirm>
 );
 
-const LoLEsportsLogo = ({ slug }: { slug: string }) => (
+interface LoLEsportsOptions {
+	slug: string;
+	preferredStream?: string;
+}
+
+const LoLEsportsLogo = ({ slug, preferredStream }: LoLEsportsOptions) => (
 	<Popconfirm
 		title={'Watch on LoL Esports?'}
-		onConfirm={() => browser.tabs.create({ url: `https://lolesports.com/live/${slug}` })}
+		onConfirm={() =>
+			browser.tabs.create({
+				url: `https://lolesports.com/live/${slug}${preferredStream ? `/${preferredStream}` : ''}`,
+			})
+		}
 	>
 		<span role="img" className="anticon" tabIndex={-1} aria-label="LoL Esports">
 			<svg
@@ -72,7 +81,7 @@ const LoLEsportsLogo = ({ slug }: { slug: string }) => (
 );
 
 const MessageText = ({ children }: { children: React.ReactNode }) => (
-	<Typography.Title level={3} style={{ marginBottom: 0 }}>
+	<Typography.Title level={3} style={{ marginBottom: 0, marginTop: 0 }}>
 		{children}
 	</Typography.Title>
 );
@@ -108,8 +117,8 @@ const LiveGames = () => {
 				games
 					.filter((g) => g.streams.length > 0)
 					.map((g) => {
-						const teamA = g.match.matchTeams[0];
-						const teamB = g.match.matchTeams[1];
+						const teamA = g.match?.matchTeams[0];
+						const teamB = g.match?.matchTeams[1];
 
 						const twitchLivestream = getLocaleAwareStream(g.streams, 'twitch');
 						const youtubeLivestream = getLocaleAwareStream(g.streams, 'youtube');
@@ -120,21 +129,29 @@ const LiveGames = () => {
 									<Flex justify="space-between">
 										<Flex align="center" gap="0.5em">
 											<LiveIcon />
-											<MessageText>
-												Live: {g.league.name} {g.blockName} -
-											</MessageText>
-											<Flex align="center" gap="0.5em">
-												<Image src={teamA.image} width={24} height={24} preview={false} />
-												<MessageText>{teamA.code}</MessageText>
-											</Flex>
-											<MessageText>vs.</MessageText>
-											<Flex align="center" gap="0.5em">
-												<Image src={teamB.image} width={24} height={24} preview={false} />
-												<MessageText>{teamB.code}</MessageText>
-											</Flex>
+											<MessageText>Live: {g.league.name}</MessageText>
+											{teamA != null && teamB != null && (
+												<>
+													<MessageText> - </MessageText>
+													<Flex align="center" gap="0.5em">
+														<Image src={teamA.image} width={24} height={24} preview={false} />
+														<MessageText>{teamA.code}</MessageText>
+													</Flex>
+													<MessageText>vs.</MessageText>
+													<Flex align="center" gap="0.5em">
+														<Image src={teamB.image} width={24} height={24} preview={false} />
+														<MessageText>{teamB.code}</MessageText>
+													</Flex>
+												</>
+											)}
 										</Flex>
 										<Flex align="center" gap="0.5em">
-											<LoLEsportsLogo slug={g.league.slug} />
+											<LoLEsportsLogo
+												slug={g.league.slug}
+												preferredStream={
+													twitchLivestream?.parameter ?? youtubeLivestream?.parameter
+												}
+											/>
 											{youtubeLivestream != null && (
 												<Popconfirm
 													title={'Watch on YouTube?'}

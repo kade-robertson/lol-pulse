@@ -11,28 +11,12 @@ import {
 import { SafeChannel } from '../message';
 
 const MaybeLiveEvent = ZMaybeLiveEvent.extend({
-	match: ZMatch.extend({
-		id: ZMatch.shape.id.optional(),
-		strategy: ZStrategy.extend({
-			type: ZStrategy.shape.type.optional(),
-		}),
-		teams: z.array(
-			ZMatchTeam.extend({
-				slug: ZMatchTeam.shape.slug.optional(),
-				result: ZResult.extend({
-					outcome: ZResult.shape.outcome.optional(),
-				}),
-				record: ZMatchTeam.shape.record.optional(),
-			}),
-		),
-	}),
 	league: ZLeague.extend({
 		priority: ZLeague.shape.priority.optional(),
 		displayPriority: ZLeague.shape.displayPriority.optional(),
 	}),
 	startTime: ZMaybeLiveEvent.shape.startTime.optional(),
 	state: ZMaybeLiveEvent.shape.state.optional(),
-	blockName: ZMaybeLiveEvent.shape.blockName.optional(),
 });
 export type MaybeLiveEvent = z.infer<typeof MaybeLiveEvent>;
 
