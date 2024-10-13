@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.3](https://github.com/kade-robertson/lol-pulse/compare/lol-pulse-v1.2.2...lol-pulse-v1.2.3) (2024-10-13)
+
+
+### Bug Fixes
+
+* **deps:** update dependency antd to v5.21.3 ([#115](https://github.com/kade-robertson/lol-pulse/issues/115)) ([303a1d2](https://github.com/kade-robertson/lol-pulse/commit/303a1d2ae4ec9599cf8598e8628e25cd95618d67))
+* mark more optional fields correctly ([#118](https://github.com/kade-robertson/lol-pulse/issues/118)) ([bc157a7](https://github.com/kade-robertson/lol-pulse/commit/bc157a72fd94a02b959d94d50ba524d825694e50))
+
 ## [1.2.2](https://github.com/kade-robertson/lol-pulse/compare/lol-pulse-v1.2.1...lol-pulse-v1.2.2) (2024-10-05)
 
 
