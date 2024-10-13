@@ -119,11 +119,11 @@ export type Stream = z.infer<typeof ZStream>;
 export const ZVOD = z.object({
 	id: z.string(),
 	parameter: z.string(),
-	locale: z.string(),
-	mediaLocale: ZMediaLocale,
-	provider: ZProvider,
-	offset: z.number(),
-	firstFrameTime: z.string().datetime({ offset: true }),
+	locale: z.string().optional(),
+	mediaLocale: ZMediaLocale.optional(),
+	provider: ZProvider.optional(),
+	offset: z.number().optional(),
+	firstFrameTime: z.string().datetime({ offset: true }).optional(),
 	startMillis: z.number().nullable(),
 	endMillis: z.number().nullable(),
 });
