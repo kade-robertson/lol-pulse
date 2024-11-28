@@ -22,7 +22,7 @@
 	"license": "MIT",
 	"volta": {
 		"node": "20.18.1",
-		"pnpm": "9.14.2"
+		"pnpm": "9.14.3"
 	},
 	"dependencies": {
 		"@ant-design/icons": "^5.2.6",
