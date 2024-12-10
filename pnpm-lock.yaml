@@ -31,7 +31,7 @@ importers:
         version: 18.3.1(react@18.3.1)
       zod:
         specifier: ^3.22.4
-        version: 3.23.8
+        version: 3.24.0
     devDependencies:
       '@types/react':
         specifier: ^18.2.37
@@ -2767,8 +2767,8 @@ packages:
   zip-dir@2.0.0:
     resolution: {integrity: sha512-uhlsJZWz26FLYXOD6WVuq+fIcZ3aBPGo/cFdiLlv3KNwpa52IF3ISV8fLhQLiqVu5No3VhlqlgthN6gehil1Dg==}
 
-  zod@3.23.8:
-    resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
+  zod@3.24.0:
+    resolution: {integrity: sha512-Hz+wiY8yD0VLA2k/+nsg2Abez674dDGTai33SwNvMPuf9uIrBC9eFgIMQxBBbHFxVXi8W+5nX9DcAh9YNSQm/w==}
 
 snapshots:
 
@@ -4698,7 +4698,7 @@ snapshots:
       open: 9.1.0
       ora: 6.3.1
       prompts: 2.4.2
-      zod: 3.23.8
+      zod: 3.24.0
     transitivePeerDependencies:
       - supports-color
 
@@ -5685,4 +5685,4 @@ snapshots:
       async: 3.2.6
       jszip: 3.10.1
 
-  zod@3.23.8: {}
+  zod@3.24.0: {}
