@@ -30,13 +30,13 @@
 		"@apollo/persisted-query-lists": "^1.0.0",
 		"@nerdwallet/apollo-cache-policies": "^3.3.3",
 		"antd": "^5.11.1",
-		"react": "^18.2.0",
-		"react-dom": "^18.2.0",
+		"react": "^19.0.0",
+		"react-dom": "^19.0.0",
 		"zod": "^3.22.4"
 	},
 	"devDependencies": {
-		"@types/react": "^18.2.37",
-		"@types/react-dom": "^18.2.15",
+		"@types/react": "^19.0.0",
+		"@types/react-dom": "^19.0.0",
 		"@vitejs/plugin-react": "^4.1.1",
 		"env-cmd": "^10.1.0",
 		"prettier": "^3.0.3",
