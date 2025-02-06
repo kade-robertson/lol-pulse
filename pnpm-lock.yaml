@@ -13,13 +13,13 @@ importers:
         version: 5.6.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@apollo/client':
         specifier: ^3.11.8
-        version: 3.12.9(@types/react@19.0.8)(graphql@16.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        version: 3.12.10(@types/react@19.0.8)(graphql@16.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@apollo/persisted-query-lists':
         specifier: ^1.0.0
-        version: 1.0.0(@apollo/client@3.12.9(@types/react@19.0.8)(graphql@16.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(graphql@16.9.0)
+        version: 1.0.0(@apollo/client@3.12.10(@types/react@19.0.8)(graphql@16.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(graphql@16.9.0)
       '@nerdwallet/apollo-cache-policies':
         specifier: ^3.3.3
-        version: 3.3.3(@apollo/client@3.12.9(@types/react@19.0.8)(graphql@16.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
+        version: 3.3.3(@apollo/client@3.12.10(@types/react@19.0.8)(graphql@16.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
       antd:
         specifier: ^5.11.1
         version: 5.22.5(moment@2.30.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -111,11 +111,11 @@ packages:
     peerDependencies:
       react: '>=16.9.0'
 
-  '@apollo/client@3.12.9':
-    resolution: {integrity: sha512-rH2Vzfbp+IR0l/xAjUIbDH4/sqBzPATMbzXv/L36E33yhp40yM5LFJnC6cc4YDPUH2gom7Dk4BrYZVLbFpYTsA==}
+  '@apollo/client@3.12.10':
+    resolution: {integrity: sha512-XVNOBLkU3mC/tmDSJhZ2lv0sgq8ahHTLtjMeCclcsRinXfUfV8neZQ+OAkE0Mkd0uYsaRjijN51xu0ok39mqbA==}
     peerDependencies:
       graphql: ^15.0.0 || ^16.0.0
-      graphql-ws: ^5.5.5
+      graphql-ws: ^5.5.5 || ^6.0.3
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || >=19.0.0-rc
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || >=19.0.0-rc
       subscriptions-transport-ws: ^0.9.0 || ^0.11.0
@@ -2835,7 +2835,7 @@ snapshots:
       resize-observer-polyfill: 1.5.1
       throttle-debounce: 5.0.2
 
-  '@apollo/client@3.12.9(@types/react@19.0.8)(graphql@16.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
+  '@apollo/client@3.12.10(@types/react@19.0.8)(graphql@16.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
     dependencies:
       '@graphql-typed-document-node/core': 3.2.0(graphql@16.9.0)
       '@wry/caches': 1.0.1
@@ -2857,9 +2857,9 @@ snapshots:
     transitivePeerDependencies:
       - '@types/react'
 
-  '@apollo/persisted-query-lists@1.0.0(@apollo/client@3.12.9(@types/react@19.0.8)(graphql@16.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(graphql@16.9.0)':
+  '@apollo/persisted-query-lists@1.0.0(@apollo/client@3.12.10(@types/react@19.0.8)(graphql@16.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(graphql@16.9.0)':
     dependencies:
-      '@apollo/client': 3.12.9(@types/react@19.0.8)(graphql@16.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@apollo/client': 3.12.10(@types/react@19.0.8)(graphql@16.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       graphql: 16.9.0
 
   '@babel/code-frame@7.26.2':
@@ -3101,9 +3101,9 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@nerdwallet/apollo-cache-policies@3.3.3(@apollo/client@3.12.9(@types/react@19.0.8)(graphql@16.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)':
+  '@nerdwallet/apollo-cache-policies@3.3.3(@apollo/client@3.12.10(@types/react@19.0.8)(graphql@16.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)':
     dependencies:
-      '@apollo/client': 3.12.9(@types/react@19.0.8)(graphql@16.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@apollo/client': 3.12.10(@types/react@19.0.8)(graphql@16.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       graphql: 16.9.0
       lodash: 4.17.21
       react: 19.0.0
