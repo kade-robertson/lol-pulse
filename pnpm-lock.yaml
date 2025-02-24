@@ -22,7 +22,7 @@ importers:
         version: 3.3.3(@apollo/client@3.13.1(@types/react@19.0.10)(graphql@16.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
       antd:
         specifier: ^5.11.1
-        version: 5.24.1(moment@2.30.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        version: 5.24.2(moment@2.30.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react:
         specifier: ^19.0.0
         version: 19.0.0
@@ -712,8 +712,8 @@ packages:
     resolution: {integrity: sha512-bN798gFfQX+viw3R7yrGWRqnrN2oRkEkUjjl4JNn4E8GxxbjtG3FbrEIIY3l8/hrwUwIeCZvi4QuOTP4MErVug==}
     engines: {node: '>=12'}
 
-  antd@5.24.1:
-    resolution: {integrity: sha512-RGwpXpSr2RtoUnrpJl3V6ZaTExwSXkFVxV24VUowwC04n6oA1sGyJrofQOKNqD623sVxL5UJBmf0a+BFBImP3Q==}
+  antd@5.24.2:
+    resolution: {integrity: sha512-7Z9HsE3ZIK3sE/WuUqii3w7Gl1IJuRL21sDUTtkN95JS5KhRYP8ISv7m/HxsJ3Mn/yxgojBCgLPJ212+Dn+aPw==}
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
@@ -3382,7 +3382,7 @@ snapshots:
 
   ansi-styles@6.2.1: {}
 
-  antd@5.24.1(moment@2.30.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
+  antd@5.24.2(moment@2.30.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
     dependencies:
       '@ant-design/colors': 7.2.0
       '@ant-design/cssinjs': 1.23.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
