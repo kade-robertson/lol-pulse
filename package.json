@@ -14,10 +14,7 @@
 		"submit": "wxt submit",
 		"submit:dry": "wxt submit --dry-run"
 	},
-	"keywords": [
-		"lol",
-		"league of legends"
-	],
+	"keywords": ["lol", "league of legends"],
 	"author": "Kade Robertson <kade@kaderobertson.dev>",
 	"license": "MIT",
 	"volta": {
@@ -45,9 +42,6 @@
 		"wxt": "^0.19.29"
 	},
 	"pnpm": {
-		"onlyBuiltDependencies": [
-			"@swc/core",
-			"esbuild"
-		]
+		"onlyBuiltDependencies": ["@swc/core", "esbuild"]
 	}
 }
