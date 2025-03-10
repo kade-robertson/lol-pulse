@@ -1,5 +1,5 @@
-import { MatchAlarm, clearAlarm, getAlarms, setAlarm } from '@/shared/alarms';
-import { ReactNode, createContext, useEffect, useState } from 'react';
+import { type MatchAlarm, clearAlarm, getAlarms, setAlarm } from '@/shared/alarms';
+import { type ReactNode, createContext, useEffect, useState } from 'react';
 
 interface AlarmContext {
 	alarms: MatchAlarm[];

@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { ShapeOf, ZParticipant, safeZEnum } from './shared-types';
-import { SafeChannel } from '../message';
+import type { SafeChannel } from '../message';
+import { type ShapeOf, ZParticipant, safeZEnum } from './shared-types';
 
 const Ability = safeZEnum(['E', 'Q', 'R', 'W', 'unknown'] as const, 'unknown');
 export type Ability = z.infer<typeof Ability>;

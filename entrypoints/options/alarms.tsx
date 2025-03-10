@@ -1,10 +1,12 @@
-import { MatchAlarm, clearAlarm, getAlarms } from '@/shared/alarms';
-import { Button, Flex, Table } from 'antd';
-import { ColumnType } from 'antd/es/table';
-import { useContext, useEffect, useState } from 'react';
-import { AlarmContext } from './contexts/alarm-ctx';
-import ClearAlarmButton from './clear-alarm-button';
+import type { MatchAlarm } from '@/shared/alarms';
+import Button from 'antd/es/button';
+import Flex from 'antd/es/flex';
+import Table from 'antd/es/table';
+import type { ColumnType } from 'antd/es/table';
 import Title from 'antd/es/typography/Title';
+import { useContext } from 'react';
+import ClearAlarmButton from './clear-alarm-button';
+import { AlarmContext } from './contexts/alarm-ctx';
 
 const TABLE_COLUMNS: ColumnType<MatchAlarm>[] = [
 	{

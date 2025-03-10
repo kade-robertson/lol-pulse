@@ -1,14 +1,6 @@
 import { z } from 'zod';
-import {
-	ShapeOf,
-	ZLeague,
-	ZMatch,
-	ZMatchTeam,
-	ZMaybeLiveEvent,
-	ZResult,
-	ZStrategy,
-} from './shared-types';
-import { SafeChannel } from '../message';
+import type { SafeChannel } from '../message';
+import { type ShapeOf, ZLeague, ZMaybeLiveEvent } from './shared-types';
 
 const MaybeLiveEvent = ZMaybeLiveEvent.extend({
 	league: ZLeague.extend({
@@ -39,7 +31,7 @@ export type GetDetailsMessage = z.infer<typeof GetDetailsMessage>;
 const getDetails = async (
 	eventId: string,
 ): Promise<ReturnType<(typeof DetailsResponse)['safeParse']>> => {
-	const apiKey = await browser.storage.local.get('apiKey').then((r) => r.apiKey);
+	const apiKey = await browser.storage.local.get('apiKey').then((r) => r.apiKey as string);
 	const res = await fetch(
 		`https://esports-api.lolesports.com/persisted/gw/getEventDetails?hl=en-US&id=${eventId}`,
 		{

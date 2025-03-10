@@ -4,10 +4,11 @@ import { getLive } from '@/shared/channels/get-live';
 import { getLocaleAwareStream } from '@/shared/utils';
 
 export default defineBackground(() => {
-	browser.runtime.onMessage.addListener(async (message) => {
+	browser.runtime.onMessage.addListener(async (message: unknown) => {
 		for (const receiver of receivers) {
-			const response = await receiver(message);
-			if (response != undefined) {
+			// biome-ignore lint/suspicious/noExplicitAny: ts weirdness to be figured out
+			const response = await receiver(message as any);
+			if (response != null) {
 				return response;
 			}
 		}

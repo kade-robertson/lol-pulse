@@ -1,6 +1,6 @@
+import type { WebRequest } from 'wxt/browser';
 import { z } from 'zod';
-import { Channel } from '../message';
-import { WebRequest } from 'wxt/browser';
+import type { Channel } from '../message';
 
 const ApolloConfigResponse = z.object({
 	clientName: z.string(),
@@ -45,17 +45,19 @@ const handleClientInfo = (tabId: number): Promise<ApolloConfigResponse> => {
 	});
 };
 
+const CHUNK_PATTERN = /_next\/static\/chunks\/([^\s]+)\.js/;
+const JSON_PARSE_PATTERN = /JSON.parse\('([^']+)'\)/;
 const handlePqlManifest = async (tabId: number): Promise<ApolloConfigResponse['pqlManifest']> => {
 	return new Promise<ApolloConfigResponse['pqlManifest']>((resolve) => {
 		const listener = async (details: WebRequest.OnBeforeSendHeadersDetailsType) => {
-			const chunkMatch = /_next\/static\/chunks\/([^\s]+)\.js/.exec(details.url);
+			const chunkMatch = CHUNK_PATTERN.exec(details.url);
 			if (chunkMatch != null) {
 				const chunkResponse = await fetch(
 					`https://lolesports.com/_next/static/chunks/${chunkMatch[1]}.js`,
 				);
 				const text = await chunkResponse.text();
 				if (text.includes('apollo-persisted-query-manifest')) {
-					const pqlMatch = /JSON.parse\('([^']+)'\)/.exec(text);
+					const pqlMatch = JSON_PARSE_PATTERN.exec(text);
 					if (pqlMatch != null) {
 						resolve(JSON.parse(pqlMatch[1]));
 					}

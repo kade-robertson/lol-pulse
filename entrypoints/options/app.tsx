@@ -1,8 +1,14 @@
-import { GetLeaguesChannel } from '@/shared/channels';
-import { League } from '@/shared/channels/shared-types';
+import { GetLeaguesChannel } from '@/shared/channels/get-leagues';
+import type { League } from '@/shared/channels/shared-types';
 import { LoadingOutlined } from '@ant-design/icons';
-import { Alert, Button, Flex, Image, Layout, List, Typography } from 'antd';
+import Alert from 'antd/es/alert';
+import Button from 'antd/es/button';
+import Flex from 'antd/es/flex';
+import Image from 'antd/es/image';
+import Layout from 'antd/es/layout';
 import { Content } from 'antd/es/layout/layout';
+import List from 'antd/es/list';
+import Typography from 'antd/es/typography';
 import { useEffect, useMemo, useState } from 'react';
 import AlarmsTable from './alarms';
 import LiveGames from './live-games';
@@ -11,10 +17,10 @@ import { useApolloConfig } from './use-apollo-client';
 import { useFetch } from './use-fetch';
 
 enum State {
-	NoAPIKey,
-	APIKeyLoading,
-	APIKeyLoaded,
-	APIKeyError,
+	NoAPIKey = 0,
+	APIKeyLoading = 1,
+	APIKeyLoaded = 2,
+	APIKeyError = 3,
 }
 
 const App = () => {
@@ -22,6 +28,7 @@ const App = () => {
 	const { loading, data, error, fetch } = useFetch(GetLeaguesChannel);
 	const [selectedLeague, setSelectedLeague] = useState<League | null>(null);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: intentional
 	useEffect(() => {
 		fetch();
 	}, [config]);
@@ -43,13 +50,14 @@ const App = () => {
 	const state: State = useMemo(() => {
 		if (config == null) {
 			return State.NoAPIKey;
-		} else if (loading) {
-			return State.APIKeyLoading;
-		} else if (error != null) {
-			return State.APIKeyError;
-		} else {
-			return State.APIKeyLoaded;
 		}
+		if (loading) {
+			return State.APIKeyLoading;
+		}
+		if (error != null) {
+			return State.APIKeyError;
+		}
+		return State.APIKeyLoaded;
 	}, [config, loading, error]);
 
 	return (

@@ -1,7 +1,7 @@
-import { Button } from 'antd';
+import type { MatchAlarm } from '@/shared/alarms';
+import Button from 'antd/es/button';
 import { useContext } from 'react';
 import { AlarmContext } from './contexts/alarm-ctx';
-import { MatchAlarm } from '@/shared/alarms';
 
 const ClearAlarmButton = ({ match }: { match: MatchAlarm }) => {
 	const { removeAlarm } = useContext(AlarmContext);

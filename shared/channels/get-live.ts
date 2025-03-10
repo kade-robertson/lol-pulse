@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { SafeChannel } from '../message';
-import { ShapeOf, ZMaybeLiveEvent } from './shared-types';
+import type { SafeChannel } from '../message';
 import { fastQuery, getClient } from './gql-client';
+import { type ShapeOf, ZMaybeLiveEvent } from './shared-types';
 
 const Schedule = z.object({
 	events: z.array(ZMaybeLiveEvent),
