@@ -1,4 +1,4 @@
-import { Provider, Stream } from './channels/shared-types';
+import type { Provider, Stream } from './channels/shared-types';
 
 /**
  * The live feed routes (at least, the detail route) only accepts a timestamp that:

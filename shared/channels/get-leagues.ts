@@ -1,8 +1,7 @@
 import { z } from 'zod';
-import { Channel, SafeChannel } from '../message';
-import { ShapeOf, ZLeague } from './shared-types';
+import type { SafeChannel } from '../message';
 import { fastQuery, getClient } from './gql-client';
-import { gql } from '@apollo/client';
+import { type ShapeOf, ZLeague } from './shared-types';
 
 const LeaguesData = z.object({
 	leagues: z.array(ZLeague),
