@@ -1,6 +1,6 @@
-import { Button } from 'antd';
 import { EyeInvisibleOutlined } from '@ant-design/icons';
-import { ReactNode, useState } from 'react';
+import Button from 'antd/es/button';
+import { type ReactNode, useState } from 'react';
 
 const HiddenItem = ({ children }: { children: ReactNode }) => {
 	const [hidden, setHidden] = useState(true);

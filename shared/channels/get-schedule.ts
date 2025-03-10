@@ -1,8 +1,7 @@
 import { z } from 'zod';
-import { SafeChannel } from '../message';
-import { ShapeOf, ZRecord, ZResult, ZStrategy, safeZEnum } from './shared-types';
+import type { SafeChannel } from '../message';
 import { fastQuery, getClient } from './gql-client';
-import { gql } from '@apollo/client';
+import { type ShapeOf, ZResult, ZStrategy, safeZEnum } from './shared-types';
 
 const League = z.object({
 	name: z.string(),

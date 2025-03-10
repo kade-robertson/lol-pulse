@@ -1,9 +1,9 @@
-import { GetSchedule } from '@/shared/channels';
-import { Button } from 'antd';
+import type { Event as GetScheduleEvent } from '@/shared/channels/get-schedule';
+import Button from 'antd/es/button';
 import { useContext } from 'react';
 import { AlarmContext } from './contexts/alarm-ctx';
 
-const AddAlarmButton = ({ record }: { record: GetSchedule.Event }) => {
+const AddAlarmButton = ({ record }: { record: GetScheduleEvent }) => {
 	const { alarms, addAlarm } = useContext(AlarmContext);
 
 	if (alarms.some((a) => a.matchId === record.match.id)) {

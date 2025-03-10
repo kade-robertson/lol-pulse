@@ -8,16 +8,13 @@
 		"postinstall": "wxt prepare",
 		"build": "wxt build",
 		"zip": "wxt zip",
-		"lint": "prettier --check .",
+		"lint": "biome check --diagnostic-level error",
 		"typecheck": "tsc",
-		"lint:write": "prettier --write .",
+		"lint:write": "pnpm lint --write --unsafe",
 		"submit": "wxt submit",
 		"submit:dry": "wxt submit --dry-run"
 	},
-	"keywords": [
-		"lol",
-		"league of legends"
-	],
+	"keywords": ["lol", "league of legends"],
 	"author": "Kade Robertson <kade@kaderobertson.dev>",
 	"license": "MIT",
 	"volta": {
@@ -25,23 +22,26 @@
 		"pnpm": "10.6.2"
 	},
 	"dependencies": {
-		"@ant-design/icons": "^5.2.6",
-		"@apollo/client": "^3.11.8",
+		"@ant-design/icons": "^5.6.1",
+		"@apollo/client": "^3.13.4",
 		"@apollo/persisted-query-lists": "^1.0.0",
 		"@nerdwallet/apollo-cache-policies": "^3.3.3",
-		"antd": "^5.11.1",
+		"antd": "^5.24.3",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0",
-		"zod": "^3.22.4"
+		"zod": "^3.24.2"
 	},
 	"devDependencies": {
-		"@types/react": "^19.0.0",
-		"@types/react-dom": "^19.0.0",
-		"@vitejs/plugin-react": "^4.1.1",
+		"@biomejs/biome": "^1.9.4",
+		"@types/react": "^19.0.10",
+		"@types/react-dom": "^19.0.4",
+		"@vitejs/plugin-react": "^4.3.4",
 		"env-cmd": "^10.1.0",
-		"prettier": "^3.0.3",
 		"rollup-plugin-typescript2": "^0.36.0",
-		"typescript": "^5.2.2",
-		"wxt": "^0.19.0"
+		"typescript": "^5.8.2",
+		"wxt": "^0.19.29"
+	},
+	"pnpm": {
+		"onlyBuiltDependencies": ["@swc/core", "esbuild"]
 	}
 }

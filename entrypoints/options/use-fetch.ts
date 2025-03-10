@@ -1,6 +1,6 @@
-import { SafeChannel, SendBase } from '@/shared/message';
+import type { SafeChannel, SendBase } from '@/shared/message';
 import { useCallback, useState } from 'react';
-import { ZodObject, ZodRawShape, z } from 'zod';
+import type { ZodObject, ZodRawShape, z } from 'zod';
 
 export const useFetch = <S extends SendBase, T extends ZodRawShape, R extends ZodObject<T>>(
 	channel: SafeChannel<S, T, R>,

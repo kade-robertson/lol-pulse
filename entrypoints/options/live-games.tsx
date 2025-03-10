@@ -1,7 +1,11 @@
-import { GetLiveChannel } from '@/shared/channels';
+import { GetLiveChannel } from '@/shared/channels/get-live';
 import { getLocaleAwareStream } from '@/shared/utils';
 import { YoutubeFilled } from '@ant-design/icons';
-import { Alert, Flex, Image, Popconfirm, Typography } from 'antd';
+import Alert from 'antd/es/alert';
+import Flex from 'antd/es/flex';
+import Image from 'antd/es/image';
+import Popconfirm from 'antd/es/popconfirm';
+import Typography from 'antd/es/typography';
 import { useEffect, useState } from 'react';
 import { useFetch } from './use-fetch';
 
@@ -42,7 +46,7 @@ const TwitchLogo = ({ channel }: { channel: string }) => (
 					<path
 						d="M17.4579119,0 L0,46.5559188 L0,232.757287 L63.9826001,232.757287 L63.9826001,267.690956 L98.9144853,267.690956 L133.811571,232.757287 L186.171922,232.757287 L256,162.954193 L256,0 L17.4579119,0 Z M40.7166868,23.2632364 L232.73141,23.2632364 L232.73141,151.29179 L191.992415,192.033461 L128,192.033461 L93.11273,226.918947 L93.11273,192.033461 L40.7166868,192.033461 L40.7166868,23.2632364 Z M104.724985,139.668381 L127.999822,139.668381 L127.999822,69.843872 L104.724985,69.843872 L104.724985,139.668381 Z M168.721862,139.668381 L191.992237,139.668381 L191.992237,69.843872 L168.721862,69.843872 L168.721862,139.668381 Z"
 						fill="#5A3E85"
-					></path>
+					/>
 				</g>
 			</svg>
 		</span>
@@ -74,7 +78,7 @@ const LoLEsportsLogo = ({ slug, preferredStream }: LoLEsportsOptions) => (
 				<path
 					fill="#FAFAFA"
 					d="M94.73,94.85h94.12V47.37h-73c-37.83,0-68.49,30.74-68.49,68.66v73.17h47.37V94.85z M179.04,212.94     l-84.31,84.51v-60.77H47.37v141.83h141.49v-47.48h-60.63l84.31-84.52L179.04,212.94z M330.34,331.03h-94.12v47.48h73     c37.83,0,68.49-30.74,68.49-68.66v-73.17h-47.37V331.03z M236.22,47.37v47.48h60.63l-84.31,84.52l33.49,33.57l84.31-84.52v60.77     h47.37V47.37H236.22z"
-				></path>
+				/>
 			</svg>
 		</span>
 	</Popconfirm>
@@ -91,6 +95,7 @@ const LiveGames = () => {
 	const [refetchInterval, setRefetchInterval] = useState<NodeJS.Timeout | null>(null);
 	const games = data?.data.esports.events ?? [];
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: these should only update on load
 	useEffect(() => {
 		fetch();
 		setRefetchInterval(

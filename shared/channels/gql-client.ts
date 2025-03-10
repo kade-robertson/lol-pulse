@@ -1,15 +1,14 @@
 import {
 	ApolloClient,
-	DocumentNode,
-	gql,
+	type DocumentNode,
 	HttpLink,
-	InMemoryCache,
-	NormalizedCacheObject,
+	type NormalizedCacheObject,
+	gql,
 } from '@apollo/client';
 import { createPersistedQueryLink } from '@apollo/client/link/persisted-queries';
-import { ApolloConfigResponse } from './get-apollo-config';
 import { generatePersistedQueryIdsFromManifest } from '@apollo/persisted-query-lists';
 import { InvalidationPolicyCache } from '@nerdwallet/apollo-cache-policies';
+import type { ApolloConfigResponse } from './get-apollo-config';
 
 interface Operation {
 	id: string;

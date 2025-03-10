@@ -1,6 +1,11 @@
-import { GetSchedule, GetScheduleChannel } from '@/shared/channels';
-import { League, Strategy } from '@/shared/channels/shared-types';
-import { ColumnType } from 'antd/es/table';
+import {
+	GetScheduleChannel,
+	type Event as GetScheduleEvent,
+	type Team as GetScheduleTeam,
+} from '@/shared/channels/get-schedule';
+import type { League, Strategy } from '@/shared/channels/shared-types';
+import Alert from 'antd/es/alert';
+import type { ColumnType } from 'antd/es/table';
 import Table from 'antd/es/table/Table';
 import Title from 'antd/es/typography/Title';
 import { useEffect } from 'react';
@@ -8,7 +13,6 @@ import AddAlarmButton from './add-alarm-button';
 import HiddenItem from './hidden';
 import TeamWithIcon from './team-with-icon';
 import { useFetch } from './use-fetch';
-import { Alert } from 'antd';
 
 const strategyToText = (strategy: Strategy) => {
 	switch (strategy.type) {
@@ -21,7 +25,7 @@ const strategyToText = (strategy: Strategy) => {
 	}
 };
 
-const TABLE_COLUMNS: ColumnType<GetSchedule.Event>[] = [
+const TABLE_COLUMNS: ColumnType<GetScheduleEvent>[] = [
 	{
 		title: 'Start Time',
 		dataIndex: 'startTime',
@@ -40,7 +44,7 @@ const TABLE_COLUMNS: ColumnType<GetSchedule.Event>[] = [
 		title: 'Team 1',
 		dataIndex: ['match', 'matchTeams', 0],
 		key: 'team1',
-		render: (team: GetSchedule.Team) => <TeamWithIcon team={team} />,
+		render: (team: GetScheduleTeam) => <TeamWithIcon team={team} />,
 		width: 1,
 	},
 	{
@@ -55,7 +59,7 @@ const TABLE_COLUMNS: ColumnType<GetSchedule.Event>[] = [
 		title: 'Team 2',
 		dataIndex: ['match', 'matchTeams', 1],
 		key: 'team2',
-		render: (team: GetSchedule.Team) => <TeamWithIcon team={team} />,
+		render: (team: GetScheduleTeam) => <TeamWithIcon team={team} />,
 		width: 1,
 	},
 	{
@@ -108,6 +112,7 @@ const Schedule = ({ league }: { league: League }) => {
 	const { loading, data, error, fetch } = useFetch(GetScheduleChannel);
 	const schedule = data?.data.esports.events ?? [];
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: intentional
 	useEffect(() => {
 		fetch({ leagueId: league.id });
 	}, [league.id]);
