@@ -1,78 +1,77 @@
-import { z } from 'zod';
-import type { SafeChannel } from '../message';
-import { type ShapeOf, ZParticipant, safeZEnum } from './shared-types';
+import * as v from "valibot";
+import type { SafeChannel } from "../message";
+import { type ShapeOf, VParticipant, safeVEnum } from "./shared-types";
 
-const Ability = safeZEnum(['E', 'Q', 'R', 'W', 'unknown'] as const, 'unknown');
-export type Ability = z.infer<typeof Ability>;
+const Ability = safeVEnum(["E", "Q", "R", "W", "unknown"] as const, "unknown");
+export type Ability = v.InferOutput<typeof Ability>;
 
-const PerkMetadata = z.object({
-	styleId: z.number(),
-	subStyleId: z.number(),
-	perks: z.array(z.number()),
+const PerkMetadata = v.object({
+	styleId: v.number(),
+	subStyleId: v.number(),
+	perks: v.array(v.number()),
 });
-export type PerkMetadata = z.infer<typeof PerkMetadata>;
+export type PerkMetadata = v.InferOutput<typeof PerkMetadata>;
 
-const Participant = ZParticipant.omit({
-	totalGold: true,
-	currentHealth: true,
-	maxHealth: true,
-}).extend({
-	totalGoldEarned: z.number(),
-	killParticipation: z.number(),
-	championDamageShare: z.number(),
-	wardsPlaced: z.number(),
-	wardsDestroyed: z.number(),
-	attackDamage: z.number(),
-	abilityPower: z.number(),
-	criticalChance: z.number(),
-	attackSpeed: z.number(),
-	lifeSteal: z.number(),
-	armor: z.number(),
-	magicResistance: z.number(),
-	tenacity: z.number(),
-	items: z.array(z.number()),
+const Participant = v.object({
+	totalGoldEarned: v.number(),
+	killParticipation: v.number(),
+	championDamageShare: v.number(),
+	wardsPlaced: v.number(),
+	wardsDestroyed: v.number(),
+	attackDamage: v.number(),
+	abilityPower: v.number(),
+	criticalChance: v.number(),
+	attackSpeed: v.number(),
+	lifeSteal: v.number(),
+	armor: v.number(),
+	magicResistance: v.number(),
+	tenacity: v.number(),
+	items: v.array(v.number()),
 	perkMetadata: PerkMetadata,
-	abilities: z.array(Ability),
+	abilities: v.array(Ability),
+	...v.omit(VParticipant, ["totalGold", "currentHealth", "maxHealth"]).entries,
 });
-export type Participant = z.infer<typeof Participant>;
+export type Participant = v.InferOutput<typeof Participant>;
 
-const Frame = z.object({
-	rfc460Timestamp: z.string().datetime({ offset: true }),
-	participants: z.array(Participant),
+const Frame = v.object({
+	rfc460Timestamp: v.pipe(v.string(), v.isoTimestamp()),
+	participants: v.array(Participant),
 });
-export type Frame = z.infer<typeof Frame>;
+export type Frame = v.InferOutput<typeof Frame>;
 
-const TeamFeedResponse = z.object({
-	frames: z.array(Frame),
+const TeamFeedResponse = v.object({
+	frames: v.array(Frame),
 });
-export type TeamFeedResponse = z.infer<typeof TeamFeedResponse>;
+export type TeamFeedResponse = v.InferOutput<typeof TeamFeedResponse>;
 
-const GetTeamFeedMessage = z.object({
-	kind: z.enum(['fetch-team-feed']),
-	eventId: z.string(),
-	startingTime: z.string().datetime({ offset: true }),
-	participantIds: z.array(z.number().int().gte(1).lte(10)),
+const GetTeamFeedMessage = v.object({
+	kind: v.literal("fetch-team-feed"),
+	eventId: v.string(),
+	startingTime: v.pipe(v.string(), v.isoTimestamp()),
+	participantIds: v.array(
+		v.pipe(v.number(), v.integer(), v.minValue(1), v.maxValue(10))
+	),
 });
-export type GetTeamFeedMessage = z.infer<typeof GetTeamFeedMessage>;
+export type GetTeamFeedMessage = v.InferOutput<typeof GetTeamFeedMessage>;
 
 const getTeamFeed = async (
 	eventId: string,
 	startingTime: Date,
-	participantIds: number[],
-): Promise<ReturnType<(typeof TeamFeedResponse)['safeParse']>> => {
+	participantIds: number[]
+): Promise<ReturnType<typeof v.safeParse<typeof TeamFeedResponse>>> => {
 	const res = await fetch(
 		`https://feed.lolesports.com/livestats/v1/details/${eventId}?startingTime=${startingTime.toISOString()}&participantIds=${participantIds.join(
-			'_',
+			"_"
 		)}`,
 		{
-			method: 'GET',
+			method: "GET",
 			headers: {
-				'Content-Type': 'application/json',
+				"Content-Type": "application/json",
 			},
-		},
+		}
 	);
 	const json = await res.json();
-	return TeamFeedResponse.safeParse(json);
+	return v.safeParse(TeamFeedResponse, json);
 };
 
 export const GetTeamFeedChannel: SafeChannel<
@@ -80,23 +79,20 @@ export const GetTeamFeedChannel: SafeChannel<
 	ShapeOf<typeof TeamFeedResponse>,
 	typeof TeamFeedResponse
 > = {
-	async send(options?: Omit<GetTeamFeedMessage, 'kind'>) {
+	async send(options?: Omit<GetTeamFeedMessage, "kind">) {
 		return await browser.runtime.sendMessage({
-			kind: 'fetch-team-feed',
+			kind: "fetch-team-feed",
 			...options,
 		});
 	},
 
 	async receive(message: GetTeamFeedMessage) {
-		if (GetTeamFeedMessage.safeParse(message).success) {
+		if (v.safeParse(GetTeamFeedMessage, message).success) {
 			return await getTeamFeed(
 				message.eventId,
 				new Date(message.startingTime),
-				message.participantIds,
+				message.participantIds
 			);
 		}
 	},
 };
-
-const url =
-	'https://feed.lolesports.com/livestats/v1/details/110853020184706758?startingTime=2023-11-11T12:09:40.000Z&participantIds=1_6';

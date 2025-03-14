@@ -1,87 +1,101 @@
-import { z } from 'zod';
-import type { SafeChannel } from '../message';
-import { type ShapeOf, ZMaybeLiveEvent, ZParticipant, safeZEnum } from './shared-types';
+import * as v from "valibot";
+import type { SafeChannel } from "../message";
+import {
+	type ShapeOf,
+	VMaybeLiveEvent,
+	VParticipant,
+	safeVEnum,
+} from "./shared-types";
 
-const ParticipantMetadata = z.object({
-	participantId: z.number(),
-	esportsPlayerId: z.string(),
-	summonerName: z.string(),
-	championId: z.string(),
-	role: z.string(),
+const ParticipantMetadata = v.object({
+	participantId: v.number(),
+	esportsPlayerId: v.string(),
+	summonerName: v.string(),
+	championId: v.string(),
+	role: v.string(),
 });
-export type ParticipantMetadata = z.infer<typeof ParticipantMetadata>;
+export type ParticipantMetadata = v.InferOutput<typeof ParticipantMetadata>;
 
-const TeamMetadata = z.object({
-	esportsTeamId: z.string(),
-	participantMetadata: z.array(ParticipantMetadata),
+const TeamMetadata = v.object({
+	esportsTeamId: v.string(),
+	participantMetadata: v.array(ParticipantMetadata),
 });
-export type TeamMetadata = z.infer<typeof TeamMetadata>;
+export type TeamMetadata = v.InferOutput<typeof TeamMetadata>;
 
-const GameMetadata = z.object({
-	patchVersion: z.string(),
+const GameMetadata = v.object({
+	patchVersion: v.string(),
 	blueTeamMetadata: TeamMetadata,
 	redTeamMetadata: TeamMetadata,
 });
-export type GameMetadata = z.infer<typeof GameMetadata>;
+export type GameMetadata = v.InferOutput<typeof GameMetadata>;
 
-const Dragon = safeZEnum(
-	['cloud', 'infernal', 'mountain', 'ocean', 'elder', 'hextech', 'chemtech', 'unknown'] as const,
-	'unknown',
+const Dragon = safeVEnum(
+	[
+		"cloud",
+		"infernal",
+		"mountain",
+		"ocean",
+		"elder",
+		"hextech",
+		"chemtech",
+		"unknown",
+	] as const,
+	"unknown"
 );
-export type Dragon = z.infer<typeof Dragon>;
+export type Dragon = v.InferOutput<typeof Dragon>;
 
-const GameState = safeZEnum(['in_game', 'unknown'] as const, 'unknown');
-export type GameState = z.infer<typeof GameState>;
+const GameState = safeVEnum(["in_game", "unknown"] as const, "unknown");
+export type GameState = v.InferOutput<typeof GameState>;
 
-const Team = z.object({
-	totalGold: z.number(),
-	inhibitors: z.number(),
-	towers: z.number(),
-	barons: z.number(),
-	totalKills: z.number(),
-	dragons: z.array(Dragon),
-	participants: z.array(ZParticipant),
+const Team = v.object({
+	totalGold: v.number(),
+	inhibitors: v.number(),
+	towers: v.number(),
+	barons: v.number(),
+	totalKills: v.number(),
+	dragons: v.array(Dragon),
+	participants: v.array(VParticipant),
 });
-export type Team = z.infer<typeof Team>;
+export type Team = v.InferOutput<typeof Team>;
 
-const Frame = z.object({
-	rfc460Timestamp: z.string().datetime({ offset: true }),
+const Frame = v.object({
+	rfc460Timestamp: v.pipe(v.string(), v.isoTimestamp()),
 	gameState: GameState,
 	blueTeam: Team,
 	redTeam: Team,
 });
-export type Frame = z.infer<typeof Frame>;
+export type Frame = v.InferOutput<typeof Frame>;
 
-const FeedResponse = z.object({
-	esportsGameId: z.string(),
-	esportsMatchId: z.string(),
+const FeedResponse = v.object({
+	esportsGameId: v.string(),
+	esportsMatchId: v.string(),
 	gameMetadata: GameMetadata,
-	frames: z.array(Frame),
+	frames: v.array(Frame),
 });
-export type StatsResponse = z.infer<typeof FeedResponse>;
+export type StatsResponse = v.InferOutput<typeof FeedResponse>;
 
-export const FeedMessage = z.object({
-	kind: z.enum(['fetch-feed']),
-	eventId: ZMaybeLiveEvent.shape.id,
-	startingTime: z.string().datetime({ offset: true }),
+export const FeedMessage = v.object({
+	kind: v.literal("fetch-feed"),
+	eventId: VMaybeLiveEvent.entries.id,
+	startingTime: v.pipe(v.string(), v.isoTimestamp()),
 });
-export type FeedMessage = z.infer<typeof FeedMessage>;
+export type FeedMessage = v.InferOutput<typeof FeedMessage>;
 
 const getFeed = async (
 	eventId: string,
-	startingTime: Date,
-): Promise<ReturnType<(typeof FeedResponse)['safeParse']>> => {
+	startingTime: Date
+): Promise<ReturnType<typeof v.safeParse<typeof FeedResponse>>> => {
 	const res = await fetch(
 		`https://feed.lolesports.com/livestats/v1/window/${eventId}?startingTime=${startingTime.toISOString()}`,
 		{
-			method: 'GET',
+			method: "GET",
 			headers: {
-				'Content-Type': 'application/json',
+				"Content-Type": "application/json",
 			},
-		},
+		}
 	);
 	const resJson = await res.json();
-	return FeedResponse.safeParse(resJson);
+	return v.safeParse(FeedResponse, resJson);
 };
 
 export const GetFeedChannel: SafeChannel<
@@ -89,15 +103,15 @@ export const GetFeedChannel: SafeChannel<
 	ShapeOf<typeof FeedResponse>,
 	typeof FeedResponse
 > = {
-	async send(options?: Omit<FeedMessage, 'kind'>) {
+	async send(options?: Omit<FeedMessage, "kind">) {
 		return await browser.runtime.sendMessage({
-			kind: 'fetch-feed',
+			kind: "fetch-feed",
 			...options,
 		});
 	},
 
 	async receive(message: FeedMessage) {
-		if (FeedMessage.safeParse(message).success) {
+		if (v.safeParse(FeedMessage, message).success) {
 			return await getFeed(message.eventId, new Date(message.startingTime));
 		}
 	},

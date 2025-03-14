@@ -1,172 +1,178 @@
-import { z } from 'zod';
+import * as v from "valibot";
 
-export type ShapeOf<T> = T extends z.ZodObject<infer S> ? S : never;
+export type ShapeOf<T> = T extends v.ObjectSchema<infer S, infer _> ? S : never;
 
-type DefaultIsMember<
-	Values extends [string, ...string[]],
-	Default extends string,
-> = Default extends Values[number] ? Default : never;
-
-export const safeZEnum = <
+export const safeVEnum = <
 	Values extends readonly [string, ...string[]],
-	Default extends Values[number],
+	Default extends Values[number]
 >(
 	values: Values,
-	def: Default,
+	def: Default
 ) =>
-	z.enum(values).catch((e) => {
-		console.warn(e);
-		return def;
-	});
+	v.fallback(
+		v.union<v.LiteralSchema<Values[number], undefined>[]>(
+			values.map((val) => v.literal(val))
+		),
+		def
+	);
 
-export const ZRecord = z.object({
-	wins: z.number(),
-	losses: z.number(),
+export const VRecord = v.object({
+	wins: v.number(),
+	losses: v.number(),
 });
-export type Record = z.infer<typeof ZRecord>;
+export type Record = v.InferOutput<typeof VRecord>;
 
-export const ZOutcome = safeZEnum(['loss', 'win', 'tie', 'unknown'] as const, 'unknown');
-export type Outcome = z.infer<typeof ZOutcome>;
-
-export const ZResult = z.object({
-	outcome: ZOutcome.nullable(),
-	gameWins: z.number(),
-});
-export type Result = z.infer<typeof ZResult>;
-
-export const ZStrategyType = safeZEnum(['bestOf', 'playAll', 'unknown'] as const, 'unknown');
-export type StrategyType = z.infer<typeof ZStrategyType>;
-
-export const ZStrategy = z.object({
-	type: ZStrategyType,
-	count: z.number(),
-});
-export type Strategy = z.infer<typeof ZStrategy>;
-
-export const ZStatus = safeZEnum(
-	['force_selected', 'not_selected', 'selected', 'unknown'] as const,
-	'unknown',
+export const VOutcome = safeVEnum(
+	["loss", "win", "tie", "unknown"] as const,
+	"unknown"
 );
-export type Status = z.infer<typeof ZStatus>;
+export type Outcome = v.InferOutput<typeof VOutcome>;
 
-export const ZDisplayPriority = z.object({
-	position: z.number(),
-	status: ZStatus,
+export const VResult = v.object({
+	outcome: v.nullable(VOutcome),
+	gameWins: v.number(),
 });
-export type DisplayPriority = z.infer<typeof ZDisplayPriority>;
+export type Result = v.InferOutput<typeof VResult>;
 
-export const ZLeague = z.object({
-	id: z.string(),
-	slug: z.string(),
-	name: z.string(),
-	region: z.string().optional(),
-	image: z.string(),
-	priority: z.number().optional(),
-	displayPriority: ZDisplayPriority,
-});
-export type League = z.infer<typeof ZLeague>;
-
-export const ZTournament = z.object({
-	id: z.string(),
-});
-export type Tournament = z.infer<typeof ZTournament>;
-
-export const ZStatsStatus = safeZEnum(['disabled', 'enabled', 'unknown'] as const, 'unknown');
-export type StatsStatus = z.infer<typeof ZStatsStatus>;
-
-export const ZMediaLocale = z.object({
-	locale: z.string(),
-	englishName: z.string(),
-	translatedName: z.string(),
-});
-export type MediaLocale = z.infer<typeof ZMediaLocale>;
-
-export const ZProvider = safeZEnum(
-	['afreecatv', 'twitch', 'youtube', 'unknown'] as const,
-	'unknown',
+export const VStrategyType = safeVEnum(
+	["bestOf", "playAll", "unknown"] as const,
+	"unknown"
 );
-export type Provider = z.infer<typeof ZProvider>;
+export type StrategyType = v.InferOutput<typeof VStrategyType>;
 
-const ZSide = safeZEnum(['blue', 'red', 'unknown'] as const, 'unknown');
-export type Side = z.infer<typeof ZSide>;
-
-export const ZGameTeam = z.object({
-	id: z.string(),
-	side: ZSide,
+export const VStrategy = v.object({
+	type: VStrategyType,
+	count: v.number(),
 });
-export type GameTeam = z.infer<typeof ZGameTeam>;
+export type Strategy = v.InferOutput<typeof VStrategy>;
 
-export const ZMatchTeam = z.object({
-	id: z.string(),
-	name: z.string(),
-	slug: z.string().optional(),
-	code: z.string(),
-	image: z.string(),
-	result: ZResult,
-	record: ZRecord.optional(),
-});
-export type MatchTeam = z.infer<typeof ZMatchTeam>;
+export const VStatus = safeVEnum(
+	["force_selected", "not_selected", "selected", "unknown"] as const,
+	"unknown"
+);
+export type Status = v.InferOutput<typeof VStatus>;
 
-export const ZStream = z.object({
-	parameter: z.string(),
-	mediaLocale: ZMediaLocale,
-	provider: ZProvider,
-	countries: z.array(z.string()),
-	offset: z.number(),
+export const VDisplayPriority = v.object({
+	position: v.number(),
+	status: VStatus,
 });
-export type Stream = z.infer<typeof ZStream>;
+export type DisplayPriority = v.InferOutput<typeof VDisplayPriority>;
 
-export const ZVOD = z.object({
-	id: z.string(),
-	parameter: z.string(),
-	locale: z.string().optional(),
-	mediaLocale: ZMediaLocale.optional(),
-	provider: ZProvider.optional(),
-	offset: z.number().optional(),
-	firstFrameTime: z.string().datetime({ offset: true }).optional(),
-	startMillis: z.number().nullable(),
-	endMillis: z.number().nullable(),
+export const VLeague = v.object({
+	id: v.string(),
+	slug: v.string(),
+	name: v.string(),
+	region: v.optional(v.string()),
+	image: v.string(),
+	priority: v.optional(v.number()),
+	displayPriority: VDisplayPriority,
 });
-export type VOD = z.infer<typeof ZVOD>;
+export type League = v.InferOutput<typeof VLeague>;
 
-export const ZGame = z.object({
-	number: z.number(),
-	id: z.string(),
-	state: z.string(),
-	teams: z.array(ZGameTeam).optional(),
-	vods: z.array(ZVOD),
+export const VTournament = v.object({
+	id: v.string(),
 });
-export type Game = z.infer<typeof ZGame>;
+export type Tournament = v.InferOutput<typeof VTournament>;
 
-export const ZMatch = z.object({
-	id: z.string(),
-	matchTeams: z.array(ZMatchTeam),
-	strategy: ZStrategy,
-	games: z.array(ZGame),
-});
-export type Match = z.infer<typeof ZMatch>;
+export const VStatsStatus = safeVEnum(
+	["disabled", "enabled", "unknown"] as const,
+	"unknown"
+);
+export type StatsStatus = v.InferOutput<typeof VStatsStatus>;
 
-export const ZMaybeLiveEvent = z.object({
-	id: z.string(),
-	startTime: z.string().datetime({ offset: true }),
-	state: z.string(),
-	type: z.string(),
-	league: ZLeague,
-	tournament: ZTournament,
-	match: ZMatch.optional(),
-	streams: z.array(ZStream),
+export const VMediaLocale = v.object({
+	locale: v.string(),
+	englishName: v.string(),
+	translatedName: v.string(),
 });
-export type MaybeLiveEvent = z.infer<typeof ZMaybeLiveEvent>;
+export type MediaLocale = v.InferOutput<typeof VMediaLocale>;
 
-export const ZParticipant = z.object({
-	participantId: z.number(),
-	totalGold: z.number(),
-	level: z.number(),
-	kills: z.number(),
-	deaths: z.number(),
-	assists: z.number(),
-	creepScore: z.number(),
-	currentHealth: z.number(),
-	maxHealth: z.number(),
+export const VProvider = safeVEnum(
+	["afreecatv", "twitch", "youtube", "unknown"] as const,
+	"unknown"
+);
+export type Provider = v.InferOutput<typeof VProvider>;
+
+const VSide = safeVEnum(["blue", "red", "unknown"] as const, "unknown");
+export type Side = v.InferOutput<typeof VSide>;
+
+export const VGameTeam = v.object({
+	id: v.string(),
+	side: VSide,
 });
-export type Participant = z.infer<typeof ZParticipant>;
+export type GameTeam = v.InferOutput<typeof VGameTeam>;
+
+export const VMatchTeam = v.object({
+	id: v.string(),
+	name: v.string(),
+	slug: v.optional(v.string()),
+	code: v.string(),
+	image: v.string(),
+	result: VResult,
+	record: v.optional(VRecord),
+});
+export type MatchTeam = v.InferOutput<typeof VMatchTeam>;
+
+export const VStream = v.object({
+	parameter: v.string(),
+	mediaLocale: VMediaLocale,
+	provider: VProvider,
+	countries: v.array(v.string()),
+	offset: v.number(),
+});
+export type Stream = v.InferOutput<typeof VStream>;
+
+export const VVOD = v.object({
+	id: v.string(),
+	parameter: v.string(),
+	locale: v.optional(v.string()),
+	mediaLocale: v.optional(VMediaLocale),
+	provider: v.optional(VProvider),
+	offset: v.optional(v.number()),
+	firstFrameTime: v.optional(v.pipe(v.string(), v.isoTimestamp())),
+	startMillis: v.nullable(v.number()),
+	endMillis: v.nullable(v.number()),
+});
+export type VOD = v.InferOutput<typeof VVOD>;
+
+export const VGame = v.object({
+	number: v.number(),
+	id: v.string(),
+	state: v.string(),
+	teams: v.optional(v.array(VGameTeam)),
+	vods: v.array(VVOD),
+});
+export type Game = v.InferOutput<typeof VGame>;
+
+export const VMatch = v.object({
+	id: v.string(),
+	matchTeams: v.array(VMatchTeam),
+	strategy: VStrategy,
+	games: v.array(VGame),
+});
+export type Match = v.InferOutput<typeof VMatch>;
+
+export const VMaybeLiveEvent = v.object({
+	id: v.string(),
+	startTime: v.pipe(v.string(), v.isoTimestamp()),
+	state: v.string(),
+	type: v.string(),
+	league: VLeague,
+	tournament: VTournament,
+	match: v.optional(VMatch),
+	streams: v.array(VStream),
+});
+export type MaybeLiveEvent = v.InferOutput<typeof VMaybeLiveEvent>;
+
+export const VParticipant = v.object({
+	participantId: v.number(),
+	totalGold: v.number(),
+	level: v.number(),
+	kills: v.number(),
+	deaths: v.number(),
+	assists: v.number(),
+	creepScore: v.number(),
+	currentHealth: v.number(),
+	maxHealth: v.number(),
+});
+export type Participant = v.InferOutput<typeof VParticipant>;

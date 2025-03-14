@@ -1,27 +1,31 @@
-import type { WebRequest } from 'wxt/browser';
-import { z } from 'zod';
-import type { Channel } from '../message';
+import type { WebRequest } from "wxt/browser";
+import * as v from "valibot";
+import type { Channel } from "../message";
 
-const ApolloConfigResponse = z.object({
-	clientName: z.string(),
-	clientVersion: z.string(),
-	pqlManifest: z.any(),
+const ApolloConfigResponse = v.object({
+	clientName: v.string(),
+	clientVersion: v.string(),
+	pqlManifest: v.any(),
 });
-export type ApolloConfigResponse = z.infer<typeof ApolloConfigResponse>;
+export type ApolloConfigResponse = v.InferOutput<typeof ApolloConfigResponse>;
 
-const GetApolloConfigMessage = z.object({
-	kind: z.enum(['get-apollo-config']),
+const GetApolloConfigMessage = v.object({
+	kind: v.literal("get-apollo-config"),
 });
-export type GetApolloConfigMessage = z.infer<typeof GetApolloConfigMessage>;
+export type GetApolloConfigMessage = v.InferOutput<
+	typeof GetApolloConfigMessage
+>;
 
-const handleClientInfo = (tabId: number): Promise<ApolloConfigResponse> => {
-	return new Promise<ApolloConfigResponse>((resolve) => {
+const handleClientInfo = (
+	tabId: number
+): Promise<Omit<ApolloConfigResponse, "pqlManifest">> => {
+	return new Promise<Omit<ApolloConfigResponse, "pqlManifest">>((resolve) => {
 		const listener = (details: WebRequest.OnBeforeSendHeadersDetailsType) => {
 			const clientNameMatch = details.requestHeaders?.find(
-				(h) => h.name === 'apollographql-client-name',
+				(h) => h.name === "apollographql-client-name"
 			);
 			const clientVersionMatch = details.requestHeaders?.find(
-				(h) => h.name === 'apollographql-client-version',
+				(h) => h.name === "apollographql-client-version"
 			);
 			if (
 				clientNameMatch != null &&
@@ -30,33 +34,40 @@ const handleClientInfo = (tabId: number): Promise<ApolloConfigResponse> => {
 				clientVersionMatch.value != null
 			) {
 				browser.webRequest.onBeforeSendHeaders.removeListener(listener);
-				resolve({ clientName: clientNameMatch.value, clientVersion: clientVersionMatch.value });
+				resolve({
+					clientName: clientNameMatch.value,
+					clientVersion: clientVersionMatch.value,
+				});
 			}
 		};
 
 		browser.webRequest.onBeforeSendHeaders.addListener(
 			listener,
 			{
-				urls: ['https://lolesports.com/api/*'],
+				urls: ["https://lolesports.com/api/*"],
 				tabId,
 			},
-			['requestHeaders'],
+			["requestHeaders"]
 		);
 	});
 };
 
 const CHUNK_PATTERN = /_next\/static\/chunks\/([^\s]+)\.js/;
 const JSON_PARSE_PATTERN = /JSON.parse\('([^']+)'\)/;
-const handlePqlManifest = async (tabId: number): Promise<ApolloConfigResponse['pqlManifest']> => {
-	return new Promise<ApolloConfigResponse['pqlManifest']>((resolve) => {
-		const listener = async (details: WebRequest.OnBeforeSendHeadersDetailsType) => {
+const handlePqlManifest = async (
+	tabId: number
+): Promise<ApolloConfigResponse["pqlManifest"]> => {
+	return new Promise<ApolloConfigResponse["pqlManifest"]>((resolve) => {
+		const listener = async (
+			details: WebRequest.OnBeforeSendHeadersDetailsType
+		) => {
 			const chunkMatch = CHUNK_PATTERN.exec(details.url);
 			if (chunkMatch != null) {
 				const chunkResponse = await fetch(
-					`https://lolesports.com/_next/static/chunks/${chunkMatch[1]}.js`,
+					`https://lolesports.com/_next/static/chunks/${chunkMatch[1]}.js`
 				);
 				const text = await chunkResponse.text();
-				if (text.includes('apollo-persisted-query-manifest')) {
+				if (text.includes("apollo-persisted-query-manifest")) {
 					const pqlMatch = JSON_PARSE_PATTERN.exec(text);
 					if (pqlMatch != null) {
 						resolve(JSON.parse(pqlMatch[1]));
@@ -68,8 +79,8 @@ const handlePqlManifest = async (tabId: number): Promise<ApolloConfigResponse['p
 
 		browser.webRequest.onBeforeSendHeaders.addListener(
 			listener,
-			{ urls: ['https://lolesports.com/_next/static/chunks/*'], tabId },
-			['requestHeaders'],
+			{ urls: ["https://lolesports.com/_next/static/chunks/*"], tabId },
+			["requestHeaders"]
 		);
 	});
 };
@@ -79,18 +90,22 @@ const getApolloConfig = async (): Promise<ApolloConfigResponse> => {
 	// to the esports API.
 
 	const tab = await browser.tabs.create({
-		url: 'https://lolesports.com/',
+		url: "https://lolesports.com/",
 	});
+
+	if (tab.id == null) {
+		throw new Error("Failed to open lolesports.com");
+	}
 
 	// We need to both:
 	// - Listen for API requests to determine the client name and version
 	// - Listen for chunk requests to then scan and extract the PQL manifest
 
 	const [clientInfo, pqlManifest] = await Promise.all([
-		handleClientInfo(tab.id!),
-		handlePqlManifest(tab.id!),
+		handleClientInfo(tab.id),
+		handlePqlManifest(tab.id),
 	]);
-	await browser.tabs.remove(tab.id!);
+	await browser.tabs.remove(tab.id);
 
 	return {
 		clientName: clientInfo.clientName,
@@ -99,15 +114,18 @@ const getApolloConfig = async (): Promise<ApolloConfigResponse> => {
 	};
 };
 
-export const GetApolloConfigChannel: Channel<GetApolloConfigMessage, ApolloConfigResponse> = {
+export const GetApolloConfigChannel: Channel<
+	GetApolloConfigMessage,
+	ApolloConfigResponse
+> = {
 	async send() {
 		return await browser.runtime.sendMessage({
-			kind: 'get-apollo-config',
+			kind: "get-apollo-config",
 		});
 	},
 
 	async receive(message: GetApolloConfigMessage) {
-		if (GetApolloConfigMessage.safeParse(message).success) {
+		if (v.safeParse(GetApolloConfigMessage, message).success) {
 			return await getApolloConfig();
 		}
 	},

@@ -1,36 +1,38 @@
-import { z } from 'zod';
-import type { SafeChannel } from '../message';
-import { fastQuery, getClient } from './gql-client';
-import { type ShapeOf, ZLeague } from './shared-types';
+import * as v from "valibot";
+import type { SafeChannel } from "../message";
+import { fastQuery, getClient } from "./gql-client";
+import { type ShapeOf, VLeague } from "./shared-types";
 
-const LeaguesData = z.object({
-	leagues: z.array(ZLeague),
+const LeaguesData = v.object({
+	leagues: v.array(VLeague),
 });
-export type LeaguesData = z.infer<typeof LeaguesData>;
+export type LeaguesData = v.InferOutput<typeof LeaguesData>;
 
-const LeaguesResponse = z.object({
+const LeaguesResponse = v.object({
 	data: LeaguesData,
 });
-export type LeaguesResponse = z.infer<typeof LeaguesResponse>;
+export type LeaguesResponse = v.InferOutput<typeof LeaguesResponse>;
 
-const getLeagues = async (): Promise<ReturnType<(typeof LeaguesResponse)['safeParse']>> => {
+const getLeagues = async (): Promise<
+	ReturnType<typeof v.safeParse<typeof LeaguesResponse>>
+> => {
 	const client = await getClient();
 	if (client == null) {
-		throw new Error('Could not initialize gql client');
+		throw new Error("Could not initialize gql client");
 	}
 
-	const res = await fastQuery<LeaguesResponse>(client, 'homeLeagues', {
-		hl: 'en-US',
-		sport: ['lol'],
-		flags: ['excludeHidden', 'excludeWithoutTournaments'],
+	const res = await fastQuery<LeaguesResponse>(client, "homeLeagues", {
+		hl: "en-US",
+		sport: ["lol"],
+		flags: ["excludeHidden", "excludeWithoutTournaments"],
 	});
-	return LeaguesResponse.safeParse(res);
+	return v.safeParse(LeaguesResponse, res);
 };
 
-const GetLeaguesMessage = z.object({
-	kind: z.enum(['fetch-leagues']),
+const GetLeaguesMessage = v.object({
+	kind: v.literal("fetch-leagues"),
 });
-export type GetLeaguesMessage = z.infer<typeof GetLeaguesMessage>;
+export type GetLeaguesMessage = v.InferOutput<typeof GetLeaguesMessage>;
 
 export const GetLeaguesChannel: SafeChannel<
 	GetLeaguesMessage,
@@ -38,11 +40,11 @@ export const GetLeaguesChannel: SafeChannel<
 	typeof LeaguesResponse
 > = {
 	async send() {
-		return await browser.runtime.sendMessage({ kind: 'fetch-leagues' });
+		return await browser.runtime.sendMessage({ kind: "fetch-leagues" });
 	},
 
 	async receive(message: GetLeaguesMessage) {
-		if (GetLeaguesMessage.safeParse(message).success) {
+		if (v.safeParse(GetLeaguesMessage, message).success) {
 			return await getLeagues();
 		}
 	},

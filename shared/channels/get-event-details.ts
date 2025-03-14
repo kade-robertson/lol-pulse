@@ -1,49 +1,53 @@
-import { z } from 'zod';
-import type { SafeChannel } from '../message';
-import { type ShapeOf, ZLeague, ZMaybeLiveEvent } from './shared-types';
+import * as v from "valibot";
+import type { SafeChannel } from "../message";
+import { type ShapeOf, VLeague, VMaybeLiveEvent } from "./shared-types";
 
-const MaybeLiveEvent = ZMaybeLiveEvent.extend({
-	league: ZLeague.extend({
-		priority: ZLeague.shape.priority.optional(),
-		displayPriority: ZLeague.shape.displayPriority.optional(),
+const MaybeLiveEvent = v.object({
+	...VMaybeLiveEvent.entries,
+	league: v.object({
+		...VLeague.entries,
+		priority: v.optional(VLeague.entries.priority),
+		displayPriority: v.optional(VLeague.entries.displayPriority),
 	}),
-	startTime: ZMaybeLiveEvent.shape.startTime.optional(),
-	state: ZMaybeLiveEvent.shape.state.optional(),
+	startTime: v.optional(VMaybeLiveEvent.entries.startTime),
+	state: v.optional(VMaybeLiveEvent.entries.state),
 });
-export type MaybeLiveEvent = z.infer<typeof MaybeLiveEvent>;
+export type MaybeLiveEvent = v.InferOutput<typeof MaybeLiveEvent>;
 
-const Data = z.object({
+const Data = v.object({
 	event: MaybeLiveEvent,
 });
-export type Data = z.infer<typeof Data>;
+export type Data = v.InferOutput<typeof Data>;
 
-const DetailsResponse = z.object({
+const DetailsResponse = v.object({
 	data: Data,
 });
-export type LiveResponse = z.infer<typeof DetailsResponse>;
+export type LiveResponse = v.InferOutput<typeof DetailsResponse>;
 
-export const GetDetailsMessage = z.object({
-	kind: z.enum(['fetch-details']),
-	eventId: ZMaybeLiveEvent.shape.id,
+export const GetDetailsMessage = v.object({
+	kind: v.literal("fetch-details"),
+	eventId: VMaybeLiveEvent.entries.id,
 });
-export type GetDetailsMessage = z.infer<typeof GetDetailsMessage>;
+export type GetDetailsMessage = v.InferOutput<typeof GetDetailsMessage>;
 
 const getDetails = async (
-	eventId: string,
-): Promise<ReturnType<(typeof DetailsResponse)['safeParse']>> => {
-	const apiKey = await browser.storage.local.get('apiKey').then((r) => r.apiKey as string);
+	eventId: string
+): Promise<ReturnType<typeof v.safeParse<typeof DetailsResponse>>> => {
+	const apiKey = await browser.storage.local
+		.get("apiKey")
+		.then((r) => r.apiKey as string);
 	const res = await fetch(
 		`https://esports-api.lolesports.com/persisted/gw/getEventDetails?hl=en-US&id=${eventId}`,
 		{
-			method: 'GET',
+			method: "GET",
 			headers: {
-				'Content-Type': 'application/json',
-				'x-api-key': apiKey,
+				"Content-Type": "application/json",
+				"x-api-key": apiKey,
 			},
-		},
+		}
 	);
 	const resJson = await res.json();
-	return DetailsResponse.safeParse(resJson);
+	return v.safeParse(DetailsResponse, resJson);
 };
 
 export const GetDetailsChannel: SafeChannel<
@@ -53,13 +57,13 @@ export const GetDetailsChannel: SafeChannel<
 > = {
 	async send(options?: { eventId: string }) {
 		return await browser.runtime.sendMessage({
-			kind: 'fetch-details',
+			kind: "fetch-details",
 			...options,
 		});
 	},
 
 	async receive(message: GetDetailsMessage) {
-		if (GetDetailsMessage.safeParse(message).success) {
+		if (v.safeParse(GetDetailsMessage, message).success) {
 			return await getDetails(message.eventId);
 		}
 	},
