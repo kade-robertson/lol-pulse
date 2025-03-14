@@ -1,11 +1,6 @@
-import * as v from "valibot";
-import type { SafeChannel } from "../message";
-import {
-	type ShapeOf,
-	VMaybeLiveEvent,
-	VParticipant,
-	safeVEnum,
-} from "./shared-types";
+import * as v from 'valibot';
+import type { SafeChannel } from '../message';
+import { type ShapeOf, VMaybeLiveEvent, VParticipant, safeVEnum } from './shared-types';
 
 const ParticipantMetadata = v.object({
 	participantId: v.number(),
@@ -30,21 +25,12 @@ const GameMetadata = v.object({
 export type GameMetadata = v.InferOutput<typeof GameMetadata>;
 
 const Dragon = safeVEnum(
-	[
-		"cloud",
-		"infernal",
-		"mountain",
-		"ocean",
-		"elder",
-		"hextech",
-		"chemtech",
-		"unknown",
-	] as const,
-	"unknown"
+	['cloud', 'infernal', 'mountain', 'ocean', 'elder', 'hextech', 'chemtech', 'unknown'] as const,
+	'unknown',
 );
 export type Dragon = v.InferOutput<typeof Dragon>;
 
-const GameState = safeVEnum(["in_game", "unknown"] as const, "unknown");
+const GameState = safeVEnum(['in_game', 'unknown'] as const, 'unknown');
 export type GameState = v.InferOutput<typeof GameState>;
 
 const Team = v.object({
@@ -75,7 +61,7 @@ const FeedResponse = v.object({
 export type StatsResponse = v.InferOutput<typeof FeedResponse>;
 
 export const FeedMessage = v.object({
-	kind: v.literal("fetch-feed"),
+	kind: v.literal('fetch-feed'),
 	eventId: VMaybeLiveEvent.entries.id,
 	startingTime: v.pipe(v.string(), v.isoTimestamp()),
 });
@@ -83,16 +69,16 @@ export type FeedMessage = v.InferOutput<typeof FeedMessage>;
 
 const getFeed = async (
 	eventId: string,
-	startingTime: Date
+	startingTime: Date,
 ): Promise<ReturnType<typeof v.safeParse<typeof FeedResponse>>> => {
 	const res = await fetch(
 		`https://feed.lolesports.com/livestats/v1/window/${eventId}?startingTime=${startingTime.toISOString()}`,
 		{
-			method: "GET",
+			method: 'GET',
 			headers: {
-				"Content-Type": "application/json",
+				'Content-Type': 'application/json',
 			},
-		}
+		},
 	);
 	const resJson = await res.json();
 	return v.safeParse(FeedResponse, resJson);
@@ -103,9 +89,9 @@ export const GetFeedChannel: SafeChannel<
 	ShapeOf<typeof FeedResponse>,
 	typeof FeedResponse
 > = {
-	async send(options?: Omit<FeedMessage, "kind">) {
+	async send(options?: Omit<FeedMessage, 'kind'>) {
 		return await browser.runtime.sendMessage({
-			kind: "fetch-feed",
+			kind: 'fetch-feed',
 			...options,
 		});
 	},

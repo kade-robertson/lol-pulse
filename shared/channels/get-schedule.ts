@@ -1,7 +1,7 @@
-import * as v from "valibot";
-import type { SafeChannel } from "../message";
-import { fastQuery, getClient } from "./gql-client";
-import { type ShapeOf, VResult, VStrategy, safeVEnum } from "./shared-types";
+import * as v from 'valibot';
+import type { SafeChannel } from '../message';
+import { fastQuery, getClient } from './gql-client';
+import { type ShapeOf, VResult, VStrategy, safeVEnum } from './shared-types';
 
 const League = v.object({
 	name: v.string(),
@@ -9,16 +9,13 @@ const League = v.object({
 });
 export type League = v.InferOutput<typeof League>;
 
-const Flag = safeVEnum(["hasVod", "isSpoiler", "unknown"] as const, "unknown");
+const Flag = safeVEnum(['hasVod', 'isSpoiler', 'unknown'] as const, 'unknown');
 export type Flag = v.InferOutput<typeof Flag>;
 
-const State = safeVEnum(
-	["completed", "inProgress", "unstarted", "unknown"] as const,
-	"unknown"
-);
+const State = safeVEnum(['completed', 'inProgress', 'unstarted', 'unknown'] as const, 'unknown');
 export type State = v.InferOutput<typeof State>;
 
-const EventType = safeVEnum(["match", "unknown"] as const, "unknown");
+const EventType = safeVEnum(['match', 'unknown'] as const, 'unknown');
 export type EventType = v.InferOutput<typeof EventType>;
 
 const Pages = v.object({
@@ -72,14 +69,14 @@ export type ScheduleResponse = v.InferOutput<typeof ScheduleResponse>;
 const getSchedule = async (leagueId: string) => {
 	const client = await getClient();
 	if (client == null) {
-		throw new Error("Could not initialize gql client");
+		throw new Error('Could not initialize gql client');
 	}
 
-	const res = await fastQuery<ScheduleResponse>(client, "homeEvents", {
-		hl: "en-US",
-		sport: "lol",
-		eventState: ["unstarted", "inProgress", "completed"],
-		eventType: "match",
+	const res = await fastQuery<ScheduleResponse>(client, 'homeEvents', {
+		hl: 'en-US',
+		sport: 'lol',
+		eventState: ['unstarted', 'inProgress', 'completed'],
+		eventType: 'match',
 		pageSize: 100,
 		leagues: [leagueId],
 	});
@@ -87,7 +84,7 @@ const getSchedule = async (leagueId: string) => {
 };
 
 const GetScheduleMessage = v.object({
-	kind: v.literal("fetch-schedule"),
+	kind: v.literal('fetch-schedule'),
 	leagueId: v.string(),
 });
 export type GetScheduleMessage = v.InferOutput<typeof GetScheduleMessage>;
@@ -99,7 +96,7 @@ export const GetScheduleChannel: SafeChannel<
 > = {
 	async send(options?: { leagueId: string }) {
 		return await browser.runtime.sendMessage({
-			kind: "fetch-schedule",
+			kind: 'fetch-schedule',
 			...options,
 		});
 	},

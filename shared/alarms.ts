@@ -1,4 +1,4 @@
-import * as v from "valibot";
+import * as v from 'valibot';
 
 const MatchAlarm = v.object({
 	matchId: v.string(),
@@ -8,11 +8,10 @@ const MatchAlarm = v.object({
 });
 export type MatchAlarm = v.InferOutput<typeof MatchAlarm>;
 
-const matchAlarmToName = (alarm: MatchAlarm) =>
-	`${alarm.matchId}|${alarm.league}|${alarm.name}`;
+const matchAlarmToName = (alarm: MatchAlarm) => `${alarm.matchId}|${alarm.league}|${alarm.name}`;
 
-export const nameToMatchAlarm = (name: string): Omit<MatchAlarm, "time"> => {
-	const [matchId, league, matchName] = name.split("|");
+export const nameToMatchAlarm = (name: string): Omit<MatchAlarm, 'time'> => {
+	const [matchId, league, matchName] = name.split('|');
 	return { matchId, league, name: matchName };
 };
 

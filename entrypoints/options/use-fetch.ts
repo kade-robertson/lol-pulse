@@ -1,20 +1,20 @@
-import type { SafeChannel, SendBase } from "@/shared/message";
-import { useCallback, useState } from "react";
-import type * as v from "valibot";
+import type { SafeChannel, SendBase } from '@/shared/message';
+import { useCallback, useState } from 'react';
+import type * as v from 'valibot';
 
 export const useFetch = <
 	S extends SendBase,
 	T extends v.ObjectEntries,
-	R extends v.ObjectSchema<T, undefined>
+	R extends v.ObjectSchema<T, undefined>,
 >(
-	channel: SafeChannel<S, T, R>
+	channel: SafeChannel<S, T, R>,
 ) => {
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<unknown>(null);
 	const [data, setData] = useState<v.InferOutput<R> | null>(null);
 
 	const fetch = useCallback(
-		async (options?: Omit<S, "kind">) => {
+		async (options?: Omit<S, 'kind'>) => {
 			setLoading(true);
 			try {
 				const res = await channel.send(options);
@@ -32,7 +32,7 @@ export const useFetch = <
 				setLoading(false);
 			}
 		},
-		[channel]
+		[channel],
 	);
 
 	return { loading, error, data, fetch };

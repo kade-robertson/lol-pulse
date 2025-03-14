@@ -1,19 +1,17 @@
-import * as v from "valibot";
+import * as v from 'valibot';
 
 export type ShapeOf<T> = T extends v.ObjectSchema<infer S, infer _> ? S : never;
 
 export const safeVEnum = <
 	Values extends readonly [string, ...string[]],
-	Default extends Values[number]
+	Default extends Values[number],
 >(
 	values: Values,
-	def: Default
+	def: Default,
 ) =>
 	v.fallback(
-		v.union<v.LiteralSchema<Values[number], undefined>[]>(
-			values.map((val) => v.literal(val))
-		),
-		def
+		v.union<v.LiteralSchema<Values[number], undefined>[]>(values.map((val) => v.literal(val))),
+		def,
 	);
 
 export const VRecord = v.object({
@@ -22,10 +20,7 @@ export const VRecord = v.object({
 });
 export type Record = v.InferOutput<typeof VRecord>;
 
-export const VOutcome = safeVEnum(
-	["loss", "win", "tie", "unknown"] as const,
-	"unknown"
-);
+export const VOutcome = safeVEnum(['loss', 'win', 'tie', 'unknown'] as const, 'unknown');
 export type Outcome = v.InferOutput<typeof VOutcome>;
 
 export const VResult = v.object({
@@ -34,10 +29,7 @@ export const VResult = v.object({
 });
 export type Result = v.InferOutput<typeof VResult>;
 
-export const VStrategyType = safeVEnum(
-	["bestOf", "playAll", "unknown"] as const,
-	"unknown"
-);
+export const VStrategyType = safeVEnum(['bestOf', 'playAll', 'unknown'] as const, 'unknown');
 export type StrategyType = v.InferOutput<typeof VStrategyType>;
 
 export const VStrategy = v.object({
@@ -47,8 +39,8 @@ export const VStrategy = v.object({
 export type Strategy = v.InferOutput<typeof VStrategy>;
 
 export const VStatus = safeVEnum(
-	["force_selected", "not_selected", "selected", "unknown"] as const,
-	"unknown"
+	['force_selected', 'not_selected', 'selected', 'unknown'] as const,
+	'unknown',
 );
 export type Status = v.InferOutput<typeof VStatus>;
 
@@ -74,10 +66,7 @@ export const VTournament = v.object({
 });
 export type Tournament = v.InferOutput<typeof VTournament>;
 
-export const VStatsStatus = safeVEnum(
-	["disabled", "enabled", "unknown"] as const,
-	"unknown"
-);
+export const VStatsStatus = safeVEnum(['disabled', 'enabled', 'unknown'] as const, 'unknown');
 export type StatsStatus = v.InferOutput<typeof VStatsStatus>;
 
 export const VMediaLocale = v.object({
@@ -88,12 +77,12 @@ export const VMediaLocale = v.object({
 export type MediaLocale = v.InferOutput<typeof VMediaLocale>;
 
 export const VProvider = safeVEnum(
-	["afreecatv", "twitch", "youtube", "unknown"] as const,
-	"unknown"
+	['afreecatv', 'twitch', 'youtube', 'unknown'] as const,
+	'unknown',
 );
 export type Provider = v.InferOutput<typeof VProvider>;
 
-const VSide = safeVEnum(["blue", "red", "unknown"] as const, "unknown");
+const VSide = safeVEnum(['blue', 'red', 'unknown'] as const, 'unknown');
 export type Side = v.InferOutput<typeof VSide>;
 
 export const VGameTeam = v.object({

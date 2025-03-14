@@ -1,7 +1,7 @@
-import * as v from "valibot";
-import type { SafeChannel } from "../message";
-import { fastQuery, getClient } from "./gql-client";
-import { type ShapeOf, VLeague } from "./shared-types";
+import * as v from 'valibot';
+import type { SafeChannel } from '../message';
+import { fastQuery, getClient } from './gql-client';
+import { type ShapeOf, VLeague } from './shared-types';
 
 const LeaguesData = v.object({
 	leagues: v.array(VLeague),
@@ -13,24 +13,22 @@ const LeaguesResponse = v.object({
 });
 export type LeaguesResponse = v.InferOutput<typeof LeaguesResponse>;
 
-const getLeagues = async (): Promise<
-	ReturnType<typeof v.safeParse<typeof LeaguesResponse>>
-> => {
+const getLeagues = async (): Promise<ReturnType<typeof v.safeParse<typeof LeaguesResponse>>> => {
 	const client = await getClient();
 	if (client == null) {
-		throw new Error("Could not initialize gql client");
+		throw new Error('Could not initialize gql client');
 	}
 
-	const res = await fastQuery<LeaguesResponse>(client, "homeLeagues", {
-		hl: "en-US",
-		sport: ["lol"],
-		flags: ["excludeHidden", "excludeWithoutTournaments"],
+	const res = await fastQuery<LeaguesResponse>(client, 'homeLeagues', {
+		hl: 'en-US',
+		sport: ['lol'],
+		flags: ['excludeHidden', 'excludeWithoutTournaments'],
 	});
 	return v.safeParse(LeaguesResponse, res);
 };
 
 const GetLeaguesMessage = v.object({
-	kind: v.literal("fetch-leagues"),
+	kind: v.literal('fetch-leagues'),
 });
 export type GetLeaguesMessage = v.InferOutput<typeof GetLeaguesMessage>;
 
@@ -40,7 +38,7 @@ export const GetLeaguesChannel: SafeChannel<
 	typeof LeaguesResponse
 > = {
 	async send() {
-		return await browser.runtime.sendMessage({ kind: "fetch-leagues" });
+		return await browser.runtime.sendMessage({ kind: 'fetch-leagues' });
 	},
 
 	async receive(message: GetLeaguesMessage) {

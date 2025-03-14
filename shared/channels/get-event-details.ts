@@ -1,6 +1,6 @@
-import * as v from "valibot";
-import type { SafeChannel } from "../message";
-import { type ShapeOf, VLeague, VMaybeLiveEvent } from "./shared-types";
+import * as v from 'valibot';
+import type { SafeChannel } from '../message';
+import { type ShapeOf, VLeague, VMaybeLiveEvent } from './shared-types';
 
 const MaybeLiveEvent = v.object({
 	...VMaybeLiveEvent.entries,
@@ -25,26 +25,24 @@ const DetailsResponse = v.object({
 export type LiveResponse = v.InferOutput<typeof DetailsResponse>;
 
 export const GetDetailsMessage = v.object({
-	kind: v.literal("fetch-details"),
+	kind: v.literal('fetch-details'),
 	eventId: VMaybeLiveEvent.entries.id,
 });
 export type GetDetailsMessage = v.InferOutput<typeof GetDetailsMessage>;
 
 const getDetails = async (
-	eventId: string
+	eventId: string,
 ): Promise<ReturnType<typeof v.safeParse<typeof DetailsResponse>>> => {
-	const apiKey = await browser.storage.local
-		.get("apiKey")
-		.then((r) => r.apiKey as string);
+	const apiKey = await browser.storage.local.get('apiKey').then((r) => r.apiKey as string);
 	const res = await fetch(
 		`https://esports-api.lolesports.com/persisted/gw/getEventDetails?hl=en-US&id=${eventId}`,
 		{
-			method: "GET",
+			method: 'GET',
 			headers: {
-				"Content-Type": "application/json",
-				"x-api-key": apiKey,
+				'Content-Type': 'application/json',
+				'x-api-key': apiKey,
 			},
-		}
+		},
 	);
 	const resJson = await res.json();
 	return v.safeParse(DetailsResponse, resJson);
@@ -57,7 +55,7 @@ export const GetDetailsChannel: SafeChannel<
 > = {
 	async send(options?: { eventId: string }) {
 		return await browser.runtime.sendMessage({
-			kind: "fetch-details",
+			kind: 'fetch-details',
 			...options,
 		});
 	},
