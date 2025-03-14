@@ -1,13 +1,17 @@
 import type { SafeChannel, SendBase } from '@/shared/message';
 import { useCallback, useState } from 'react';
-import type { ZodObject, ZodRawShape, z } from 'zod';
+import type * as v from 'valibot';
 
-export const useFetch = <S extends SendBase, T extends ZodRawShape, R extends ZodObject<T>>(
+export const useFetch = <
+	S extends SendBase,
+	T extends v.ObjectEntries,
+	R extends v.ObjectSchema<T, undefined>,
+>(
 	channel: SafeChannel<S, T, R>,
 ) => {
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<unknown>(null);
-	const [data, setData] = useState<z.infer<R> | null>(null);
+	const [data, setData] = useState<v.InferOutput<R> | null>(null);
 
 	const fetch = useCallback(
 		async (options?: Omit<S, 'kind'>) => {
@@ -15,10 +19,10 @@ export const useFetch = <S extends SendBase, T extends ZodRawShape, R extends Zo
 			try {
 				const res = await channel.send(options);
 				if (res.success) {
-					setData(res.data);
+					setData(res.output);
 					setError(null);
 				} else {
-					setError(res.error);
+					setError(res.issues);
 					setData(null);
 				}
 			} catch (e) {

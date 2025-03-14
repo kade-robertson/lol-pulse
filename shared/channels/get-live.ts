@@ -1,29 +1,29 @@
-import { z } from 'zod';
+import * as v from 'valibot';
 import type { SafeChannel } from '../message';
 import { fastQuery, getClient } from './gql-client';
-import { type ShapeOf, ZMaybeLiveEvent } from './shared-types';
+import { type ShapeOf, VMaybeLiveEvent } from './shared-types';
 
-const Schedule = z.object({
-	events: z.array(ZMaybeLiveEvent),
+const Schedule = v.object({
+	events: v.array(VMaybeLiveEvent),
 });
-export type Schedule = z.infer<typeof Schedule>;
+export type Schedule = v.InferOutput<typeof Schedule>;
 
-const Data = z.object({
+const Data = v.object({
 	esports: Schedule,
 });
-export type Data = z.infer<typeof Data>;
+export type Data = v.InferOutput<typeof Data>;
 
-const LiveResponse = z.object({
+const LiveResponse = v.object({
 	data: Data,
 });
-export type LiveResponse = z.infer<typeof LiveResponse>;
+export type LiveResponse = v.InferOutput<typeof LiveResponse>;
 
-const GetLiveMessage = z.object({
-	kind: z.enum(['fetch-live']),
+const GetLiveMessage = v.object({
+	kind: v.literal('fetch-live'),
 });
-export type GetLiveMessage = z.infer<typeof GetLiveMessage>;
+export type GetLiveMessage = v.InferOutput<typeof GetLiveMessage>;
 
-export const getLive = async (): Promise<ReturnType<(typeof LiveResponse)['safeParse']>> => {
+export const getLive = async (): Promise<ReturnType<typeof v.safeParse<typeof LiveResponse>>> => {
 	const client = await getClient();
 	if (client == null) {
 		throw new Error('Could not initialize gql client');
@@ -36,7 +36,7 @@ export const getLive = async (): Promise<ReturnType<(typeof LiveResponse)['safeP
 		eventType: 'all',
 		pageSize: 100,
 	});
-	return LiveResponse.safeParse(res);
+	return v.safeParse(LiveResponse, res);
 };
 
 export const GetLiveChannel: SafeChannel<
@@ -49,7 +49,7 @@ export const GetLiveChannel: SafeChannel<
 	},
 
 	async receive(message: GetLiveMessage) {
-		if (GetLiveMessage.safeParse(message).success) {
+		if (v.safeParse(GetLiveMessage, message).success) {
 			return await getLive();
 		}
 	},

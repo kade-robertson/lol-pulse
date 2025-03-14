@@ -1,21 +1,21 @@
+import * as v from 'valibot';
 import type { WebRequest } from 'wxt/browser';
-import { z } from 'zod';
 import type { Channel } from '../message';
 
-const ApolloConfigResponse = z.object({
-	clientName: z.string(),
-	clientVersion: z.string(),
-	pqlManifest: z.any(),
+const ApolloConfigResponse = v.object({
+	clientName: v.string(),
+	clientVersion: v.string(),
+	pqlManifest: v.any(),
 });
-export type ApolloConfigResponse = z.infer<typeof ApolloConfigResponse>;
+export type ApolloConfigResponse = v.InferOutput<typeof ApolloConfigResponse>;
 
-const GetApolloConfigMessage = z.object({
-	kind: z.enum(['get-apollo-config']),
+const GetApolloConfigMessage = v.object({
+	kind: v.literal('get-apollo-config'),
 });
-export type GetApolloConfigMessage = z.infer<typeof GetApolloConfigMessage>;
+export type GetApolloConfigMessage = v.InferOutput<typeof GetApolloConfigMessage>;
 
-const handleClientInfo = (tabId: number): Promise<ApolloConfigResponse> => {
-	return new Promise<ApolloConfigResponse>((resolve) => {
+const handleClientInfo = (tabId: number): Promise<Omit<ApolloConfigResponse, 'pqlManifest'>> => {
+	return new Promise<Omit<ApolloConfigResponse, 'pqlManifest'>>((resolve) => {
 		const listener = (details: WebRequest.OnBeforeSendHeadersDetailsType) => {
 			const clientNameMatch = details.requestHeaders?.find(
 				(h) => h.name === 'apollographql-client-name',
@@ -30,7 +30,10 @@ const handleClientInfo = (tabId: number): Promise<ApolloConfigResponse> => {
 				clientVersionMatch.value != null
 			) {
 				browser.webRequest.onBeforeSendHeaders.removeListener(listener);
-				resolve({ clientName: clientNameMatch.value, clientVersion: clientVersionMatch.value });
+				resolve({
+					clientName: clientNameMatch.value,
+					clientVersion: clientVersionMatch.value,
+				});
 			}
 		};
 
@@ -82,15 +85,19 @@ const getApolloConfig = async (): Promise<ApolloConfigResponse> => {
 		url: 'https://lolesports.com/',
 	});
 
+	if (tab.id == null) {
+		throw new Error('Failed to open lolesports.com');
+	}
+
 	// We need to both:
 	// - Listen for API requests to determine the client name and version
 	// - Listen for chunk requests to then scan and extract the PQL manifest
 
 	const [clientInfo, pqlManifest] = await Promise.all([
-		handleClientInfo(tab.id!),
-		handlePqlManifest(tab.id!),
+		handleClientInfo(tab.id),
+		handlePqlManifest(tab.id),
 	]);
-	await browser.tabs.remove(tab.id!);
+	await browser.tabs.remove(tab.id);
 
 	return {
 		clientName: clientInfo.clientName,
@@ -107,7 +114,7 @@ export const GetApolloConfigChannel: Channel<GetApolloConfigMessage, ApolloConfi
 	},
 
 	async receive(message: GetApolloConfigMessage) {
-		if (GetApolloConfigMessage.safeParse(message).success) {
+		if (v.safeParse(GetApolloConfigMessage, message).success) {
 			return await getApolloConfig();
 		}
 	},

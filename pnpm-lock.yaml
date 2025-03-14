@@ -29,9 +29,9 @@ importers:
       react-dom:
         specifier: ^19.0.0
         version: 19.0.0(react@19.0.0)
-      zod:
-        specifier: ^3.24.2
-        version: 3.24.2
+      valibot:
+        specifier: 1.0.0-rc.4
+        version: 1.0.0-rc.4(typescript@5.8.2)
     devDependencies:
       '@biomejs/biome':
         specifier: ^1.9.4
@@ -2700,6 +2700,14 @@ packages:
   uuid@8.3.2:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
     hasBin: true
+
+  valibot@1.0.0-rc.4:
+    resolution: {integrity: sha512-VRaChgFv7Ab0P54AMLu7+GqoexdTPQ54Plj59X9qV0AFozI3j9CGH43skg+TqgMpXnrW8jxlJ2TTHAtAD3t4qA==}
+    peerDependencies:
+      typescript: '>=5'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
 
   vite-node@3.0.8:
     resolution: {integrity: sha512-6PhR4H9VGlcwXZ+KWCdMqbtG649xCPZqfI9j2PsK1FcXgEzro5bGHcVKFCTqPLaNKZES8Evqv4LwvZARsq5qlg==}
@@ -5617,6 +5625,10 @@ snapshots:
   uuid@7.0.3: {}
 
   uuid@8.3.2: {}
+
+  valibot@1.0.0-rc.4(typescript@5.8.2):
+    optionalDependencies:
+      typescript: 5.8.2
 
   vite-node@3.0.8(@types/node@22.13.10)(jiti@2.4.2):
     dependencies:

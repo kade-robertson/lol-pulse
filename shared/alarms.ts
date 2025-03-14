@@ -1,12 +1,12 @@
-import { z } from 'zod';
+import * as v from 'valibot';
 
-const MatchAlarm = z.object({
-	matchId: z.string(),
-	name: z.string(),
-	league: z.string(),
-	time: z.date(),
+const MatchAlarm = v.object({
+	matchId: v.string(),
+	name: v.string(),
+	league: v.string(),
+	time: v.date(),
 });
-export type MatchAlarm = z.infer<typeof MatchAlarm>;
+export type MatchAlarm = v.InferOutput<typeof MatchAlarm>;
 
 const matchAlarmToName = (alarm: MatchAlarm) => `${alarm.matchId}|${alarm.league}|${alarm.name}`;
 

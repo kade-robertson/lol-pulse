@@ -1,70 +1,70 @@
-import { z } from 'zod';
+import * as v from 'valibot';
 import type { SafeChannel } from '../message';
 import { fastQuery, getClient } from './gql-client';
-import { type ShapeOf, ZResult, ZStrategy, safeZEnum } from './shared-types';
+import { type ShapeOf, VResult, VStrategy, safeVEnum } from './shared-types';
 
-const League = z.object({
-	name: z.string(),
-	slug: z.string(),
+const League = v.object({
+	name: v.string(),
+	slug: v.string(),
 });
-export type League = z.infer<typeof League>;
+export type League = v.InferOutput<typeof League>;
 
-const Flag = safeZEnum(['hasVod', 'isSpoiler', 'unknown'] as const, 'unknown');
-export type Flag = z.infer<typeof Flag>;
+const Flag = safeVEnum(['hasVod', 'isSpoiler', 'unknown'] as const, 'unknown');
+export type Flag = v.InferOutput<typeof Flag>;
 
-const State = safeZEnum(['completed', 'inProgress', 'unstarted', 'unknown'] as const, 'unknown');
-export type State = z.infer<typeof State>;
+const State = safeVEnum(['completed', 'inProgress', 'unstarted', 'unknown'] as const, 'unknown');
+export type State = v.InferOutput<typeof State>;
 
-const EventType = safeZEnum(['match', 'unknown'] as const, 'unknown');
-export type EventType = z.infer<typeof EventType>;
+const EventType = safeVEnum(['match', 'unknown'] as const, 'unknown');
+export type EventType = v.InferOutput<typeof EventType>;
 
-const Pages = z.object({
-	older: z.string().nullable(),
-	newer: z.string().nullable(),
+const Pages = v.object({
+	older: v.nullable(v.string()),
+	newer: v.nullable(v.string()),
 });
-export type Pages = z.infer<typeof Pages>;
+export type Pages = v.InferOutput<typeof Pages>;
 
-const Team = z.object({
-	name: z.string(),
-	code: z.string(),
-	image: z.string(),
-	result: ZResult.nullable(),
+const Team = v.object({
+	name: v.string(),
+	code: v.string(),
+	image: v.string(),
+	result: v.nullable(VResult),
 });
-export type Team = z.infer<typeof Team>;
+export type Team = v.InferOutput<typeof Team>;
 
-const Match = z.object({
-	id: z.string(),
-	flags: z.array(Flag),
-	matchTeams: z.array(Team),
-	strategy: ZStrategy,
+const Match = v.object({
+	id: v.string(),
+	flags: v.array(Flag),
+	matchTeams: v.array(Team),
+	strategy: VStrategy,
 });
-export type Match = z.infer<typeof Match>;
+export type Match = v.InferOutput<typeof Match>;
 
-const Event = z.object({
-	startTime: z.string().datetime({ offset: true }),
+const Event = v.object({
+	startTime: v.pipe(v.string(), v.isoTimestamp()),
 	state: State,
 	type: EventType,
-	blockName: z.string(),
+	blockName: v.string(),
 	league: League,
 	match: Match,
 });
-export type Event = z.infer<typeof Event>;
+export type Event = v.InferOutput<typeof Event>;
 
-const Schedule = z.object({
+const Schedule = v.object({
 	pages: Pages,
-	events: z.array(Event),
+	events: v.array(Event),
 });
-export type Schedule = z.infer<typeof Schedule>;
+export type Schedule = v.InferOutput<typeof Schedule>;
 
-const Data = z.object({
+const Data = v.object({
 	esports: Schedule,
 });
-export type Data = z.infer<typeof Data>;
+export type Data = v.InferOutput<typeof Data>;
 
-const ScheduleResponse = z.object({
+const ScheduleResponse = v.object({
 	data: Data,
 });
-export type ScheduleResponse = z.infer<typeof ScheduleResponse>;
+export type ScheduleResponse = v.InferOutput<typeof ScheduleResponse>;
 
 const getSchedule = async (leagueId: string) => {
 	const client = await getClient();
@@ -80,14 +80,14 @@ const getSchedule = async (leagueId: string) => {
 		pageSize: 100,
 		leagues: [leagueId],
 	});
-	return ScheduleResponse.safeParse(res);
+	return v.safeParse(ScheduleResponse, res);
 };
 
-const GetScheduleMessage = z.object({
-	kind: z.enum(['fetch-schedule']),
-	leagueId: z.string(),
+const GetScheduleMessage = v.object({
+	kind: v.literal('fetch-schedule'),
+	leagueId: v.string(),
 });
-export type GetScheduleMessage = z.infer<typeof GetScheduleMessage>;
+export type GetScheduleMessage = v.InferOutput<typeof GetScheduleMessage>;
 
 export const GetScheduleChannel: SafeChannel<
 	GetScheduleMessage,
@@ -102,7 +102,7 @@ export const GetScheduleChannel: SafeChannel<
 	},
 
 	async receive(message: GetScheduleMessage) {
-		if (GetScheduleMessage.safeParse(message).success) {
+		if (v.safeParse(GetScheduleMessage, message).success) {
 			return await getSchedule(message.leagueId);
 		}
 	},
