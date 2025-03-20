@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.2.5](https://github.com/kade-robertson/lol-pulse/compare/lol-pulse-v1.2.4...lol-pulse-v1.2.5) (2025-03-20)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @apollo/client to ^3.13.5 ([#226](https://github.com/kade-robertson/lol-pulse/issues/226)) ([5616fcf](https://github.com/kade-robertson/lol-pulse/commit/5616fcf9104ca0dd85db394cbee3e320e882379b))
+* **deps:** update dependency antd to ^5.24.4 ([#219](https://github.com/kade-robertson/lol-pulse/issues/219)) ([f79196b](https://github.com/kade-robertson/lol-pulse/commit/f79196b7ba7f711b688bb354d030cf1fe2ccc99e))
+* **deps:** update dependency valibot to v1.0.0 ([#223](https://github.com/kade-robertson/lol-pulse/issues/223)) ([0951824](https://github.com/kade-robertson/lol-pulse/commit/0951824981204ccf2f13a5ab23c47aca7afea891))
+
 ## [1.2.4](https://github.com/kade-robertson/lol-pulse/compare/lol-pulse-v1.2.3...lol-pulse-v1.2.4) (2025-03-10)
 
 
