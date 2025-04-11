@@ -33,7 +33,7 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.4",
-		"@types/react": "^19.1.0",
+		"@types/react": "^19.1.1",
 		"@types/react-dom": "^19.1.2",
 		"@vitejs/plugin-react": "^4.3.4",
 		"env-cmd": "^10.1.0",
