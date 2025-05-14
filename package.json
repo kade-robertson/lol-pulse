@@ -18,7 +18,7 @@
 	"author": "Kade Robertson <kade@kaderobertson.dev>",
 	"license": "MIT",
 	"volta": {
-		"node": "22.15.0",
+		"node": "22.15.1",
 		"pnpm": "10.11.0"
 	},
 	"dependencies": {
