@@ -1,4 +1,5 @@
 import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'wxt';
 
 // See https://wxt.dev/api/config.html
@@ -9,8 +10,9 @@ export default defineConfig({
 		host_permissions: ['https://*.lolesports.com/*'],
 		permissions: ['webRequest', 'storage', 'alarms', 'https://*.lolesports.com/*'],
 	},
+	// @ts-ignore
 	vite: (env) => ({
-		plugins: [react()],
+		plugins: [react(), tailwindcss()],
 		define: {
 			'globalThis.__DEV__': JSON.stringify(env.mode !== 'production'),
 		},

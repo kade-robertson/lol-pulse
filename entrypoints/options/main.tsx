@@ -6,13 +6,16 @@ import App from './app.tsx';
 import 'antd/dist/reset.css';
 import './style.css';
 import { AlarmContextProvider } from './contexts/alarm-ctx.tsx';
+import { ThemeProvider } from '@/ui/theme-provider.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
 	<React.StrictMode>
 		<ConfigProvider theme={{ algorithm: theme.darkAlgorithm }}>
-			<AlarmContextProvider>
-				<App />
-			</AlarmContextProvider>
+			<ThemeProvider defaultTheme="dark" storageKey="pulse-theme">
+				<AlarmContextProvider>
+					<App />
+				</AlarmContextProvider>
+			</ThemeProvider>
 		</ConfigProvider>
 	</React.StrictMode>,
 );

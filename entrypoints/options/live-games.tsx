@@ -1,18 +1,23 @@
 import { GetLiveChannel } from '@/shared/channels/get-live';
 import { getLocaleAwareStream } from '@/shared/utils';
-import { YoutubeFilled } from '@ant-design/icons';
-import Alert from 'antd/es/alert';
-import Flex from 'antd/es/flex';
-import Image from 'antd/es/image';
-import Popconfirm from 'antd/es/popconfirm';
-import Typography from 'antd/es/typography';
 import { useEffect, useState } from 'react';
 import { useFetch } from './use-fetch';
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogFooter,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from '@/ui/components/ui/alert-dialog';
+import { Alert, AlertTitle } from '@/ui/components/ui/alert';
+import { AlertCircleIcon } from 'lucide-react';
 
 const TWO_MINUTES_MS = 1000 * 60 * 2;
 
 const LiveIcon = () => (
-	<svg width={24} height={24} viewBox="0 0 24 24">
+	<svg width={20} height={20} viewBox="0 0 24 24">
 		<circle fill="#ff0000" stroke="none" cx="12" cy="12" r="12">
 			<animate
 				attributeName="opacity"
@@ -26,31 +31,26 @@ const LiveIcon = () => (
 );
 
 const TwitchLogo = ({ channel }: { channel: string }) => (
-	<Popconfirm
-		title={'Watch on Twitch?'}
-		onConfirm={() =>
-			browser.tabs.create({
-				url: `https://twitch.tv/${channel}`,
-			})
-		}
-	>
-		<span role="img" className="anticon" tabIndex={-1} aria-label="twitch">
-			<svg
-				height="24"
-				viewBox="0 0 256 268"
-				version="1.1"
-				preserveAspectRatio="xMidYMid"
-				focusable={false}
-			>
-				<g>
-					<path
-						d="M17.4579119,0 L0,46.5559188 L0,232.757287 L63.9826001,232.757287 L63.9826001,267.690956 L98.9144853,267.690956 L133.811571,232.757287 L186.171922,232.757287 L256,162.954193 L256,0 L17.4579119,0 Z M40.7166868,23.2632364 L232.73141,23.2632364 L232.73141,151.29179 L191.992415,192.033461 L128,192.033461 L93.11273,226.918947 L93.11273,192.033461 L40.7166868,192.033461 L40.7166868,23.2632364 Z M104.724985,139.668381 L127.999822,139.668381 L127.999822,69.843872 L104.724985,69.843872 L104.724985,139.668381 Z M168.721862,139.668381 L191.992237,139.668381 L191.992237,69.843872 L168.721862,69.843872 L168.721862,139.668381 Z"
-						fill="#5A3E85"
-					/>
-				</g>
-			</svg>
-		</span>
-	</Popconfirm>
+	<AlertDialog>
+		<AlertDialogTrigger>
+			<img alt="twitch" width={24} height={24} src="https://cdn.simpleicons.org/twitch/white" />
+		</AlertDialogTrigger>
+		<AlertDialogContent>
+			<AlertDialogTitle>Watch on Twitch?</AlertDialogTitle>
+			<AlertDialogFooter>
+				<AlertDialogCancel>No</AlertDialogCancel>
+				<AlertDialogAction
+					onClick={() =>
+						browser.tabs.create({
+							url: `https://twitch.tv/${channel}`,
+						})
+					}
+				>
+					Yes
+				</AlertDialogAction>
+			</AlertDialogFooter>
+		</AlertDialogContent>
+	</AlertDialog>
 );
 
 interface LoLEsportsOptions {
@@ -59,15 +59,8 @@ interface LoLEsportsOptions {
 }
 
 const LoLEsportsLogo = ({ slug, preferredStream }: LoLEsportsOptions) => (
-	<Popconfirm
-		title={'Watch on LoL Esports?'}
-		onConfirm={() =>
-			browser.tabs.create({
-				url: `https://lolesports.com/live/${slug}${preferredStream ? `/${preferredStream}` : ''}`,
-			})
-		}
-	>
-		<span role="img" className="anticon" tabIndex={-1} aria-label="LoL Esports">
+	<AlertDialog>
+		<AlertDialogTrigger>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				width="24"
@@ -80,14 +73,51 @@ const LoLEsportsLogo = ({ slug, preferredStream }: LoLEsportsOptions) => (
 					d="M94.73,94.85h94.12V47.37h-73c-37.83,0-68.49,30.74-68.49,68.66v73.17h47.37V94.85z M179.04,212.94     l-84.31,84.51v-60.77H47.37v141.83h141.49v-47.48h-60.63l84.31-84.52L179.04,212.94z M330.34,331.03h-94.12v47.48h73     c37.83,0,68.49-30.74,68.49-68.66v-73.17h-47.37V331.03z M236.22,47.37v47.48h60.63l-84.31,84.52l33.49,33.57l84.31-84.52v60.77     h47.37V47.37H236.22z"
 				/>
 			</svg>
-		</span>
-	</Popconfirm>
+		</AlertDialogTrigger>
+		<AlertDialogContent>
+			<AlertDialogTitle>Watch on LoL Esports?</AlertDialogTitle>
+			<AlertDialogFooter>
+				<AlertDialogCancel>No</AlertDialogCancel>
+				<AlertDialogAction
+					onClick={() =>
+						browser.tabs.create({
+							url: `https://lolesports.com/live/${slug}${preferredStream ? `/${preferredStream}` : ''}`,
+						})
+					}
+				>
+					Yes
+				</AlertDialogAction>
+			</AlertDialogFooter>
+		</AlertDialogContent>
+	</AlertDialog>
+);
+
+const YoutubeLogo = ({ videoId }: { videoId: string }) => (
+	<AlertDialog>
+		<AlertDialogTrigger>
+			<img alt="youtube" width={24} height={24} src="https://cdn.simpleicons.org/youtube/white" />
+		</AlertDialogTrigger>
+		<AlertDialogContent>
+			<AlertDialogTitle>Watch on YouTube?</AlertDialogTitle>
+
+			<AlertDialogFooter>
+				<AlertDialogCancel>No</AlertDialogCancel>
+				<AlertDialogAction
+					onClick={() =>
+						browser.tabs.create({
+							url: `https://youtube.com/watch?v=${videoId}`,
+						})
+					}
+				>
+					Yes
+				</AlertDialogAction>
+			</AlertDialogFooter>
+		</AlertDialogContent>
+	</AlertDialog>
 );
 
 const MessageText = ({ children }: { children: React.ReactNode }) => (
-	<Typography.Title level={3} style={{ marginBottom: 0, marginTop: 0 }}>
-		{children}
-	</Typography.Title>
+	<div className="text-lg font-semibold">{children}</div>
 );
 
 const LiveGames = () => {
@@ -117,7 +147,7 @@ const LiveGames = () => {
 	}, [error]);
 
 	return (
-		<Flex vertical gap="middle" style={{ marginBottom: '1em' }}>
+		<div className="flex flex-col gap-2 mb-2">
 			{error == null ? (
 				games
 					.filter((g) => g.streams.length > 0)
@@ -128,66 +158,52 @@ const LiveGames = () => {
 						const twitchLivestream = getLocaleAwareStream(g.streams, 'twitch');
 						const youtubeLivestream = getLocaleAwareStream(g.streams, 'youtube');
 
+						console.log(twitchLivestream, youtubeLivestream);
+
 						return (
-							<Alert
-								message={
-									<Flex justify="space-between">
-										<Flex align="center" gap="0.5em">
-											<LiveIcon />
-											<MessageText>Live: {g.league.name}</MessageText>
-											{teamA != null && teamB != null && (
-												<>
-													<MessageText> - </MessageText>
-													<Flex align="center" gap="0.5em">
-														<Image src={teamA.image} width={24} height={24} preview={false} />
-														<MessageText>{teamA.code}</MessageText>
-													</Flex>
-													<MessageText>vs.</MessageText>
-													<Flex align="center" gap="0.5em">
-														<Image src={teamB.image} width={24} height={24} preview={false} />
-														<MessageText>{teamB.code}</MessageText>
-													</Flex>
-												</>
-											)}
-										</Flex>
-										<Flex align="center" gap="0.5em">
-											<LoLEsportsLogo
-												slug={g.league.slug}
-												preferredStream={
-													twitchLivestream?.parameter ?? youtubeLivestream?.parameter
-												}
-											/>
-											{youtubeLivestream != null && (
-												<Popconfirm
-													title={'Watch on YouTube?'}
-													onConfirm={() =>
-														browser.tabs.create({
-															url: `https://youtube.com/watch?v=${youtubeLivestream.parameter}`,
-														})
-													}
-												>
-													<YoutubeFilled
-														width={24}
-														height={24}
-														style={{ color: 'red', fontSize: '24px' }}
-													/>
-												</Popconfirm>
-											)}
-											{twitchLivestream != null && (
-												<TwitchLogo channel={twitchLivestream.parameter} />
-											)}
-										</Flex>
-									</Flex>
-								}
-								key={g.id}
-								type="info"
-							/>
+							<div className="border rounded-md p-2" key={g.id}>
+								<div className="flex justify-between">
+									<div className="flex items-center gap-2">
+										<LiveIcon />
+										<MessageText>Live: {g.league.name}</MessageText>
+										{teamA != null && teamB != null && (
+											<>
+												<MessageText> - </MessageText>
+												<div className="flex items-center gap-2">
+													<img alt="teamb" src={teamA.image} width={24} height={24} />
+													<MessageText>{teamA.code}</MessageText>
+												</div>
+												<MessageText>vs.</MessageText>
+												<div className="flex items-center gap-2">
+													<img alt="teamb" src={teamB.image} width={24} height={24} />
+													<MessageText>{teamB.code}</MessageText>
+												</div>
+											</>
+										)}
+									</div>
+									<div className="flex items-center gap-2">
+										<LoLEsportsLogo
+											slug={g.league.slug}
+											preferredStream={twitchLivestream?.parameter ?? youtubeLivestream?.parameter}
+										/>
+										{youtubeLivestream != null && (
+											<YoutubeLogo videoId={youtubeLivestream.parameter} />
+										)}
+										{twitchLivestream != null && (
+											<TwitchLogo channel={twitchLivestream.parameter} />
+										)}
+									</div>
+								</div>
+							</div>
 						);
 					})
 			) : (
-				<Alert message="Failed to load live games." type="error" />
+				<Alert variant="destructive">
+					<AlertCircleIcon />
+					<AlertTitle>Failed to load live games.</AlertTitle>
+				</Alert>
 			)}
-		</Flex>
+		</div>
 	);
 };
 
