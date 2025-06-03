@@ -14,7 +14,10 @@
 		"submit": "wxt submit",
 		"submit:dry": "wxt submit --dry-run"
 	},
-	"keywords": ["lol", "league of legends"],
+	"keywords": [
+		"lol",
+		"league of legends"
+	],
 	"author": "Kade Robertson <kade@kaderobertson.dev>",
 	"license": "MIT",
 	"volta": {
@@ -36,12 +39,16 @@
 		"@types/react": "^19.1.6",
 		"@types/react-dom": "^19.1.5",
 		"@vitejs/plugin-react": "^4.5.0",
+		"@wxt-dev/webextension-polyfill": "^1.0.0",
 		"env-cmd": "^10.1.0",
 		"rollup-plugin-typescript2": "^0.36.0",
 		"typescript": "^5.8.3",
-		"wxt": "^0.19.29"
+		"wxt": "^0.20.7"
 	},
 	"pnpm": {
-		"onlyBuiltDependencies": ["@swc/core", "esbuild"]
+		"onlyBuiltDependencies": [
+			"@swc/core",
+			"esbuild"
+		]
 	}
 }

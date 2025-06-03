@@ -22,9 +22,7 @@ let operations: OperationMap = {};
 
 export const getClient = async (): Promise<typeof client> => {
 	if (client == null) {
-		const config = (await browser.storage.local.get('apolloConfig')) as
-			| { apolloConfig: ApolloConfigResponse }
-			| undefined;
+		const config = await browser.storage.local.get<{ apolloConfig: ApolloConfigResponse }>('apolloConfig');
 		if (config == null) {
 			return null;
 		}
