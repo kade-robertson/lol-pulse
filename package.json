@@ -35,7 +35,7 @@
 		"@biomejs/biome": "^1.9.4",
 		"@types/react": "^19.1.6",
 		"@types/react-dom": "^19.1.5",
-		"@vitejs/plugin-react": "^4.5.0",
+		"@vitejs/plugin-react": "^4.5.1",
 		"env-cmd": "^10.1.0",
 		"rollup-plugin-typescript2": "^0.36.0",
 		"typescript": "^5.8.3",
