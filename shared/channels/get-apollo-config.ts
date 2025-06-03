@@ -73,7 +73,7 @@ const handlePqlManifest = async (tabId: number): Promise<ApolloConfigResponse['p
 		const wrapped = (details: Browser.webRequest.OnBeforeSendHeadersDetails) => {
 			listener(details);
 			return undefined;
-		}
+		};
 
 		browser.webRequest.onBeforeSendHeaders.addListener(
 			wrapped,
