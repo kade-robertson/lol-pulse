@@ -1,5 +1,5 @@
 import * as v from 'valibot';
-import type { WebRequest } from 'wxt/browser';
+import type { Browser } from 'wxt/browser';
 import type { Channel } from '../message';
 
 const ApolloConfigResponse = v.object({
@@ -16,7 +16,7 @@ export type GetApolloConfigMessage = v.InferOutput<typeof GetApolloConfigMessage
 
 const handleClientInfo = (tabId: number): Promise<Omit<ApolloConfigResponse, 'pqlManifest'>> => {
 	return new Promise<Omit<ApolloConfigResponse, 'pqlManifest'>>((resolve) => {
-		const listener = (details: WebRequest.OnBeforeSendHeadersDetailsType) => {
+		const listener = (details: Browser.webRequest.OnBeforeSendHeadersDetails) => {
 			const clientNameMatch = details.requestHeaders?.find(
 				(h) => h.name === 'apollographql-client-name',
 			);
@@ -35,6 +35,7 @@ const handleClientInfo = (tabId: number): Promise<Omit<ApolloConfigResponse, 'pq
 					clientVersion: clientVersionMatch.value,
 				});
 			}
+			return undefined;
 		};
 
 		browser.webRequest.onBeforeSendHeaders.addListener(
@@ -52,7 +53,7 @@ const CHUNK_PATTERN = /_next\/static\/chunks\/([^\s]+)\.js/;
 const JSON_PARSE_PATTERN = /JSON.parse\('([^']+)'\)/;
 const handlePqlManifest = async (tabId: number): Promise<ApolloConfigResponse['pqlManifest']> => {
 	return new Promise<ApolloConfigResponse['pqlManifest']>((resolve) => {
-		const listener = async (details: WebRequest.OnBeforeSendHeadersDetailsType) => {
+		const listener = async (details: Browser.webRequest.OnBeforeSendHeadersDetails) => {
 			const chunkMatch = CHUNK_PATTERN.exec(details.url);
 			if (chunkMatch != null) {
 				const chunkResponse = await fetch(
@@ -62,15 +63,20 @@ const handlePqlManifest = async (tabId: number): Promise<ApolloConfigResponse['p
 				if (text.includes('apollo-persisted-query-manifest')) {
 					const pqlMatch = JSON_PARSE_PATTERN.exec(text);
 					if (pqlMatch != null) {
+						browser.webRequest.onBeforeSendHeaders.removeListener(wrapped);
 						resolve(JSON.parse(pqlMatch[1]));
 					}
 				}
 			}
-			return {};
+		};
+
+		const wrapped = (details: Browser.webRequest.OnBeforeSendHeadersDetails) => {
+			listener(details);
+			return undefined;
 		};
 
 		browser.webRequest.onBeforeSendHeaders.addListener(
-			listener,
+			wrapped,
 			{ urls: ['https://lolesports.com/_next/static/chunks/*'], tabId },
 			['requestHeaders'],
 		);
@@ -97,6 +103,7 @@ const getApolloConfig = async (): Promise<ApolloConfigResponse> => {
 		handleClientInfo(tab.id),
 		handlePqlManifest(tab.id),
 	]);
+	console.log('hi', clientInfo, pqlManifest);
 	await browser.tabs.remove(tab.id);
 
 	return {
