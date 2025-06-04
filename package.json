@@ -22,7 +22,7 @@
 		"pnpm": "10.11.1"
 	},
 	"dependencies": {
-		"@ant-design/icons": "^5.6.1",
+		"@ant-design/icons": "^6.0.0",
 		"@apollo/client": "^3.13.8",
 		"@apollo/persisted-query-lists": "^1.0.0",
 		"@nerdwallet/apollo-cache-policies": "^3.3.3",
