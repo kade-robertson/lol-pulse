@@ -8,11 +8,12 @@ import Alert from 'antd/es/alert';
 import type { ColumnType } from 'antd/es/table';
 import Table from 'antd/es/table/Table';
 import Title from 'antd/es/typography/Title';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import AddAlarmButton from './add-alarm-button';
 import HiddenItem from './hidden';
 import TeamWithIcon from './team-with-icon';
 import { useFetch } from './use-fetch';
+import { LeagueSelector } from './league-selector';
 
 const strategyToText = (strategy: Strategy) => {
 	switch (strategy.type) {
@@ -108,14 +109,17 @@ const TABLE_COLUMNS: ColumnType<GetScheduleEvent>[] = [
 	},
 ];
 
-const Schedule = ({ league }: { league: League }) => {
+const Schedule = () => {
 	const { loading, data, error, fetch } = useFetch(GetScheduleChannel);
+	const [league, setLeague] = useState<League | undefined>(undefined);
 	const schedule = data?.data.esports.events ?? [];
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: intentional
 	useEffect(() => {
-		fetch({ leagueId: league.id });
-	}, [league.id]);
+		if (league != null) {
+			fetch({ leagueId: league.id });
+		}
+	}, [league?.id]);
 
 	useEffect(() => {
 		if (error != null) {
@@ -130,9 +134,12 @@ const Schedule = ({ league }: { league: League }) => {
 			rowKey={(r) => r.match.id}
 			loading={loading}
 			title={() => (
-				<Title level={4} style={{ marginBottom: 0 }}>
-					Schedule
-				</Title>
+				<div className="flex justify-between">
+					<Title level={4} style={{ marginBottom: 0 }}>
+						Schedule
+					</Title>
+					<LeagueSelector onLeagueSelected={setLeague} />
+				</div>
 			)}
 		/>
 	) : (

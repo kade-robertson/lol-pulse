@@ -1,20 +1,15 @@
-import { GetLeaguesChannel } from '@/shared/channels/get-leagues';
-import type { League } from '@/shared/channels/shared-types';
 import { LoadingOutlined } from '@ant-design/icons';
-import Alert from 'antd/es/alert';
 import Button from 'antd/es/button';
 import Flex from 'antd/es/flex';
 import Image from 'antd/es/image';
 import Layout from 'antd/es/layout';
 import { Content } from 'antd/es/layout/layout';
-import List from 'antd/es/list';
 import Typography from 'antd/es/typography';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import AlarmsTable from './alarms';
 import LiveGames from './live-games';
 import Schedule from './schedule';
 import { useApolloConfig } from './use-apollo-client';
-import { useFetch } from './use-fetch';
 
 enum State {
 	NoAPIKey = 0,
@@ -24,28 +19,7 @@ enum State {
 }
 
 const App = () => {
-	const { config, fetchApolloConfig } = useApolloConfig();
-	const { loading, data, error, fetch } = useFetch(GetLeaguesChannel);
-	const [selectedLeague, setSelectedLeague] = useState<League | null>(null);
-
-	// biome-ignore lint/correctness/useExhaustiveDependencies: intentional
-	useEffect(() => {
-		fetch();
-	}, [config]);
-
-	const leagues = data?.data.leagues ?? [];
-
-	useEffect(() => {
-		if (selectedLeague == null && leagues.length > 0) {
-			setSelectedLeague(leagues[0]);
-		}
-	}, [leagues, selectedLeague]);
-
-	useEffect(() => {
-		if (error != null) {
-			console.error(error);
-		}
-	}, [error]);
+	const { config, loading, fetchApolloConfig } = useApolloConfig();
 
 	const state: State = useMemo(() => {
 		if (config == null) {
@@ -54,11 +28,8 @@ const App = () => {
 		if (loading) {
 			return State.APIKeyLoading;
 		}
-		if (error != null) {
-			return State.APIKeyError;
-		}
 		return State.APIKeyLoaded;
-	}, [config, loading, error]);
+	}, [config, loading]);
 
 	return (
 		<Layout>
@@ -84,7 +55,6 @@ const App = () => {
 						</Flex>
 					)}
 				</Flex>
-				{state === State.APIKeyError && <Alert message="Could not load data." type="error" />}
 				{state === State.APIKeyLoading && (
 					<Flex gap="middle" justify="center">
 						<div>
@@ -94,23 +64,9 @@ const App = () => {
 				)}
 				{state === State.APIKeyLoaded && (
 					<Flex gap="middle" justify="center">
-						<List
-							size="small"
-							bordered
-							loading={loading}
-							dataSource={leagues}
-							renderItem={(item) => (
-								<List.Item>
-									<Typography.Text>{item.name}</Typography.Text>
-									<Button onClick={() => setSelectedLeague(item)} type="link" size="small">
-										View
-									</Button>
-								</List.Item>
-							)}
-						/>
 						<Flex vertical>
 							<LiveGames />
-							{selectedLeague && <Schedule league={selectedLeague} />}
+							<Schedule />
 							<AlarmsTable />
 						</Flex>
 					</Flex>
