@@ -34,7 +34,7 @@
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.4",
 		"@types/react": "^19.1.6",
-		"@types/react-dom": "^19.1.5",
+		"@types/react-dom": "^19.1.6",
 		"@vitejs/plugin-react": "^4.5.1",
 		"@wxt-dev/webextension-polyfill": "^1.0.0",
 		"env-cmd": "^10.1.0",
