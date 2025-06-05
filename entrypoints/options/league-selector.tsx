@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { CheckIcon, ChevronsUpDownIcon } from 'lucide-react';
-import { cn } from '@/ui/lib/utils';
+import { GetLeaguesChannel } from '@/shared/channels/get-leagues';
+import type { League } from '@/shared/channels/shared-types';
 import { Button } from '@/ui/components/ui/button';
 import {
 	Command,
@@ -11,8 +10,9 @@ import {
 	CommandList,
 } from '@/ui/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/ui/components/ui/popover';
-import { GetLeaguesChannel } from '@/shared/channels/get-leagues';
-import type { League } from '@/shared/channels/shared-types';
+import { cn } from '@/ui/lib/utils';
+import { CheckIcon, ChevronsUpDownIcon } from 'lucide-react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useFetch } from './use-fetch';
 
 export interface LeagueSelectorProps {

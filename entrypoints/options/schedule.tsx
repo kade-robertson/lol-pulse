@@ -11,9 +11,9 @@ import Title from 'antd/es/typography/Title';
 import { useEffect, useState } from 'react';
 import AddAlarmButton from './add-alarm-button';
 import HiddenItem from './hidden';
+import { LeagueSelector } from './league-selector';
 import TeamWithIcon from './team-with-icon';
 import { useFetch } from './use-fetch';
-import { LeagueSelector } from './league-selector';
 
 const strategyToText = (strategy: Strategy) => {
 	switch (strategy.type) {

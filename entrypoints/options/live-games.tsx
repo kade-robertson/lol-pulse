@@ -1,7 +1,6 @@
 import { GetLiveChannel } from '@/shared/channels/get-live';
 import { getLocaleAwareStream } from '@/shared/utils';
-import { useEffect, useState } from 'react';
-import { useFetch } from './use-fetch';
+import { Alert, AlertTitle } from '@/ui/components/ui/alert';
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -11,8 +10,9 @@ import {
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from '@/ui/components/ui/alert-dialog';
-import { Alert, AlertTitle } from '@/ui/components/ui/alert';
 import { AlertCircleIcon } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useFetch } from './use-fetch';
 
 const TWO_MINUTES_MS = 1000 * 60 * 2;
 
