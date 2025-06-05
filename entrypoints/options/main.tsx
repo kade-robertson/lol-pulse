@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './app.tsx';
+import App from './app';
 import './style.css';
-import { ThemeProvider } from '@/ui/theme-provider.tsx';
-import { AlarmContextProvider } from './contexts/alarm-ctx.tsx';
+import { ThemeProvider } from '@/ui/theme-provider';
+import { AlarmContextProvider } from './contexts/alarm-ctx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
 	<React.StrictMode>
