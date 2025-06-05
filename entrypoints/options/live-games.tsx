@@ -158,8 +158,6 @@ const LiveGames = () => {
 						const twitchLivestream = getLocaleAwareStream(g.streams, 'twitch');
 						const youtubeLivestream = getLocaleAwareStream(g.streams, 'youtube');
 
-						console.log(twitchLivestream, youtubeLivestream);
-
 						return (
 							<div className="border rounded-md p-2" key={g.id}>
 								<div className="flex justify-between">

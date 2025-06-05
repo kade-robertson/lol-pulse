@@ -18,7 +18,7 @@ const ArrowIcon = (dir: SortDirection | false) => {
 	return ArrowDown;
 };
 
-const TABLE_COLUMNS: ColumnDef<MatchAlarm, MatchAlarm>[] = [
+const TABLE_COLUMNS: ColumnDef<MatchAlarm>[] = [
 	{
 		header: ({ column }) => {
 			const Icon = ArrowIcon(column.getIsSorted());
@@ -66,6 +66,7 @@ const AlarmsTable = () => {
 
 	return (
 		<div className="flex flex-col gap-2">
+			<h2 className="text-2xl font-semibold tracking-tight">Alarms</h2>
 			<DataTable
 				data={alarms}
 				columns={TABLE_COLUMNS}
@@ -88,24 +89,6 @@ const AlarmsTable = () => {
 			/>
 		</div>
 	);
-
-	/* return (
-		<Table
-			bordered
-			dataSource={alarms}
-			columns={TABLE_COLUMNS}
-			title={() => (
-				<Flex justify="space-between">
-					<Title level={4} style={{ marginBottom: 0 }}>
-						Alarms
-					</Title>
-					<Button danger onClick={() => clearAlarms()}>
-						Clear All
-					</Button>
-				</Flex>
-			)}
-		/>
-	); */
 };
 
 export default AlarmsTable;

@@ -1,10 +1,5 @@
-import { LoadingOutlined } from '@ant-design/icons';
-import Button from 'antd/es/button';
-import Flex from 'antd/es/flex';
-import Image from 'antd/es/image';
-import Layout from 'antd/es/layout';
-import { Content } from 'antd/es/layout/layout';
-import Typography from 'antd/es/typography';
+import { Button } from '@/ui/components/ui/button';
+import { LoaderCircleIcon } from 'lucide-react';
 import { useMemo } from 'react';
 import AlarmsTable from './alarms';
 import LiveGames from './live-games';
@@ -32,47 +27,41 @@ const App = () => {
 	}, [config, loading]);
 
 	return (
-		<Layout>
-			<Content style={{ minHeight: '100vh', padding: '1em' }}>
-				<Flex gap="middle" justify="center" align="center" vertical>
-					<Flex gap="middle" justify="center" align="center" style={{ marginBottom: '1em' }}>
-						<Image width={64} preview={false} src="/icon-128.png" />
-						<Typography.Title style={{ margin: 0, padding: 0 }}>LoL Pulse</Typography.Title>
-					</Flex>
+		<div>
+			<div style={{ minHeight: '100vh', padding: '1em' }}>
+				<div className="flex flex-col justify-center items-center gap-4">
+					<div className="flex justify-center items-center gap-4 mb-2">
+						<img alt="logo" width={64} src="/icon-128.png" />
+						<h1 className="text-5xl font-semibold">LoL Pulse</h1>
+					</div>
 					{state === State.NoAPIKey && (
-						<Flex
-							vertical
-							gap="middle"
-							justify="center"
-							align="center"
-							style={{ marginBottom: '1em', maxWidth: '50%' }}
-						>
-							<Typography.Text italic style={{ textAlign: 'center' }}>
+						<div className="flex flex-col gap-4 justify-center items-center mb-2 max-w-1/2">
+							<p className="text-lg text-center">
 								LoL Pulse requires additional information to load. This may take some time. You will
 								automatically be returned to this tab when possible.
-							</Typography.Text>
-							<Button onClick={fetchApolloConfig}>Load Additional Information</Button>
-						</Flex>
-					)}
-				</Flex>
-				{state === State.APIKeyLoading && (
-					<Flex gap="middle" justify="center">
-						<div>
-							<LoadingOutlined style={{ color: 'white', fontSize: 64 }} />
+							</p>
+							<Button size="lg" className="text-lg" onClick={fetchApolloConfig}>
+								Load Additional Information
+							</Button>
 						</div>
-					</Flex>
+					)}
+				</div>
+				{state === State.APIKeyLoading && (
+					<div className="flex justify-center align-center">
+						<LoaderCircleIcon size={64} className="animate-spin" />
+					</div>
 				)}
 				{state === State.APIKeyLoaded && (
-					<Flex gap="middle" justify="center">
-						<Flex vertical>
+					<div className="flex justify-center align-center">
+						<div className="flex flex-col gap-4">
 							<LiveGames />
 							<Schedule />
 							<AlarmsTable />
-						</Flex>
-					</Flex>
+						</div>
+					</div>
 				)}
-			</Content>
-		</Layout>
+			</div>
+		</div>
 	);
 };
 

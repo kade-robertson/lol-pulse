@@ -103,7 +103,6 @@ const getApolloConfig = async (): Promise<ApolloConfigResponse> => {
 		handleClientInfo(tab.id),
 		handlePqlManifest(tab.id),
 	]);
-	console.log('hi', clientInfo, pqlManifest);
 	await browser.tabs.remove(tab.id);
 
 	return {
