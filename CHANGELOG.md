@@ -1,5 +1,34 @@
 # Changelog
 
+## [1.3.0](https://github.com/kade-robertson/lol-pulse/compare/lol-pulse-v1.2.4...lol-pulse-v1.3.0) (2025-06-05)
+
+
+### Features
+
+* replace antd with shadcn/ui ([#275](https://github.com/kade-robertson/lol-pulse/issues/275)) ([e093c38](https://github.com/kade-robertson/lol-pulse/commit/e093c382845fa49812a9e9b1e13304a9a23d2109))
+
+
+### Bug Fixes
+
+* **deps:** update dependency @apollo/client to ^3.13.5 ([#226](https://github.com/kade-robertson/lol-pulse/issues/226)) ([5616fcf](https://github.com/kade-robertson/lol-pulse/commit/5616fcf9104ca0dd85db394cbee3e320e882379b))
+* **deps:** update dependency @apollo/client to ^3.13.8 ([#235](https://github.com/kade-robertson/lol-pulse/issues/235)) ([84e1f81](https://github.com/kade-robertson/lol-pulse/commit/84e1f81d3e6bc973af27095621bc4b9191936b35))
+* **deps:** update dependency antd to ^5.24.4 ([#219](https://github.com/kade-robertson/lol-pulse/issues/219)) ([f79196b](https://github.com/kade-robertson/lol-pulse/commit/f79196b7ba7f711b688bb354d030cf1fe2ccc99e))
+* **deps:** update dependency antd to ^5.24.5 ([#228](https://github.com/kade-robertson/lol-pulse/issues/228)) ([27447d0](https://github.com/kade-robertson/lol-pulse/commit/27447d078802d6bbd88e9c8663637445a5172406))
+* **deps:** update dependency antd to ^5.24.6 ([#233](https://github.com/kade-robertson/lol-pulse/issues/233)) ([b660854](https://github.com/kade-robertson/lol-pulse/commit/b66085462aaf3495764d86d1079e76116d92835a))
+* **deps:** update dependency antd to ^5.24.7 ([#240](https://github.com/kade-robertson/lol-pulse/issues/240)) ([1a158b4](https://github.com/kade-robertson/lol-pulse/commit/1a158b41b3f70453f8bb81411ede2a9621c5e060))
+* **deps:** update dependency antd to ^5.24.8 ([#244](https://github.com/kade-robertson/lol-pulse/issues/244)) ([7c2c870](https://github.com/kade-robertson/lol-pulse/commit/7c2c870d946505c8e96d38278bcd14cfeae8f569))
+* **deps:** update dependency antd to ^5.24.9 ([#246](https://github.com/kade-robertson/lol-pulse/issues/246)) ([663d005](https://github.com/kade-robertson/lol-pulse/commit/663d0055a4839c549a891db5650ebad5d2eb4cb3))
+* **deps:** update dependency antd to ^5.25.0 ([#250](https://github.com/kade-robertson/lol-pulse/issues/250)) ([26712f6](https://github.com/kade-robertson/lol-pulse/commit/26712f692f3bf3ca503417a03ad5c0f8adb32ff3))
+* **deps:** update dependency antd to ^5.25.1 ([#251](https://github.com/kade-robertson/lol-pulse/issues/251)) ([76035a9](https://github.com/kade-robertson/lol-pulse/commit/76035a9e2d2f4116b97bc36f79cfc36a417692b4))
+* **deps:** update dependency antd to ^5.25.2 ([#257](https://github.com/kade-robertson/lol-pulse/issues/257)) ([6830851](https://github.com/kade-robertson/lol-pulse/commit/6830851d4c9e0283ba4a5dd21296d409e127d399))
+* **deps:** update dependency antd to ^5.25.3 ([#261](https://github.com/kade-robertson/lol-pulse/issues/261)) ([165e8db](https://github.com/kade-robertson/lol-pulse/commit/165e8dba11ee559d8485faf798dce079653d6d97))
+* **deps:** update dependency antd to ^5.25.4 ([#263](https://github.com/kade-robertson/lol-pulse/issues/263)) ([0d7c2ea](https://github.com/kade-robertson/lol-pulse/commit/0d7c2ea101b3ce4e6b791dfcc9eabe7376debc3c))
+* **deps:** update dependency lucide-react to ^0.513.0 ([#277](https://github.com/kade-robertson/lol-pulse/issues/277)) ([96b7c4b](https://github.com/kade-robertson/lol-pulse/commit/96b7c4bd3ab64b60997e1db3def419c746ea195e))
+* **deps:** update dependency tw-animate-css to ^1.3.4 ([#276](https://github.com/kade-robertson/lol-pulse/issues/276)) ([c8ca85e](https://github.com/kade-robertson/lol-pulse/commit/c8ca85eb9dc996e89851ce61492fb46185628240))
+* **deps:** update dependency valibot to v1.0.0 ([#223](https://github.com/kade-robertson/lol-pulse/issues/223)) ([0951824](https://github.com/kade-robertson/lol-pulse/commit/0951824981204ccf2f13a5ab23c47aca7afea891))
+* **deps:** update dependency valibot to v1.1.0 ([#249](https://github.com/kade-robertson/lol-pulse/issues/249)) ([4c4a871](https://github.com/kade-robertson/lol-pulse/commit/4c4a87127f84faaa8c4be98fb0843e92834aeb27))
+* **deps:** update react monorepo to ^19.1.0 ([#231](https://github.com/kade-robertson/lol-pulse/issues/231)) ([6cf12c5](https://github.com/kade-robertson/lol-pulse/commit/6cf12c5890415ef60f26a11478832d946b7ac96c))
+
 ## [1.2.4](https://github.com/kade-robertson/lol-pulse/compare/lol-pulse-v1.2.3...lol-pulse-v1.2.4) (2025-03-10)
 
 
