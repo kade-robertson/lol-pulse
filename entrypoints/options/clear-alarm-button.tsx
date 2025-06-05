@@ -1,5 +1,5 @@
 import type { MatchAlarm } from '@/shared/alarms';
-import Button from 'antd/es/button';
+import { Button } from '@/ui/components/ui/button';
 import { useContext } from 'react';
 import { AlarmContext } from './contexts/alarm-ctx';
 
@@ -8,9 +8,9 @@ const ClearAlarmButton = ({ match }: { match: MatchAlarm }) => {
 
 	return (
 		<Button
-			size="small"
-			type="dashed"
-			danger
+			size="xs"
+			variant="destructive"
+			className="w-full"
 			key={`clear-alarm-${match.matchId}`}
 			onClick={() => removeAlarm(match)}
 		>

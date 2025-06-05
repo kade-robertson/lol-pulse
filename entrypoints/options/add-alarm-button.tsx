@@ -1,5 +1,5 @@
 import type { Event as GetScheduleEvent } from '@/shared/channels/get-schedule';
-import Button from 'antd/es/button';
+import { Button } from '@/ui/components/ui/button';
 import { useContext } from 'react';
 import { AlarmContext } from './contexts/alarm-ctx';
 
@@ -13,8 +13,7 @@ const AddAlarmButton = ({ record }: { record: GetScheduleEvent }) => {
 	return (
 		record.state === 'unstarted' && (
 			<Button
-				size="small"
-				type="primary"
+				size="xs"
 				key={`set-alarm-${record.match.id}`}
 				onClick={() =>
 					addAlarm({

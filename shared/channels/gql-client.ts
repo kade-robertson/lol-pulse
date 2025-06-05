@@ -1,13 +1,4 @@
-import {
-	ApolloClient,
-	type DocumentNode,
-	HttpLink,
-	type NormalizedCacheObject,
-	gql,
-} from '@apollo/client';
-import { createPersistedQueryLink } from '@apollo/client/link/persisted-queries';
-import { generatePersistedQueryIdsFromManifest } from '@apollo/persisted-query-lists';
-import { InvalidationPolicyCache } from '@nerdwallet/apollo-cache-policies';
+import type { ApolloClient, DocumentNode, NormalizedCacheObject } from '@apollo/client';
 import type { ApolloConfigResponse } from './get-apollo-config';
 
 interface Operation {
@@ -21,6 +12,10 @@ let client: ApolloClient<NormalizedCacheObject> | null = null;
 let operations: OperationMap = {};
 
 export const getClient = async (): Promise<typeof client> => {
+	const { gql, HttpLink, ApolloClient } = await import('@apollo/client');
+	const { createPersistedQueryLink } = await import('@apollo/client/link/persisted-queries');
+	const { generatePersistedQueryIdsFromManifest } = await import('@apollo/persisted-query-lists');
+	const { InvalidationPolicyCache } = await import('@nerdwallet/apollo-cache-policies');
 	if (client == null) {
 		const config = await browser.storage.local.get<{ apolloConfig: ApolloConfigResponse }>(
 			'apolloConfig',

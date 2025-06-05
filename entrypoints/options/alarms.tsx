@@ -1,45 +1,62 @@
 import type { MatchAlarm } from '@/shared/alarms';
-import Button from 'antd/es/button';
-import Flex from 'antd/es/flex';
-import Table from 'antd/es/table';
-import type { ColumnType } from 'antd/es/table';
-import Title from 'antd/es/typography/Title';
+import { Button } from '@/ui/components/ui/button';
+import { DataTable } from '@/ui/components/ui/data-table';
+import { TableCell, TableRow } from '@/ui/components/ui/table';
+import type { ColumnDef, SortDirection } from '@tanstack/react-table';
+import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react';
 import { useContext } from 'react';
 import ClearAlarmButton from './clear-alarm-button';
 import { AlarmContext } from './contexts/alarm-ctx';
 
-const TABLE_COLUMNS: ColumnType<MatchAlarm>[] = [
+const ArrowIcon = (dir: SortDirection | false) => {
+	if (dir === false) {
+		return ArrowUpDown;
+	}
+	if (dir === 'asc') {
+		return ArrowUp;
+	}
+	return ArrowDown;
+};
+
+const TABLE_COLUMNS: ColumnDef<MatchAlarm>[] = [
 	{
-		title: 'Time',
-		dataIndex: 'time',
-		key: 'time',
-		render: (time: Date) =>
-			time.toLocaleString(undefined, {
+		header: ({ column }) => {
+			const Icon = ArrowIcon(column.getIsSorted());
+			return (
+				<Button
+					variant="ghost"
+					className="w-full justify-between"
+					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+				>
+					Time
+					{<Icon className="ml-2 h-4 w-4" />}
+				</Button>
+			);
+		},
+		accessorKey: 'time',
+		cell: ({ row }) => {
+			return (row.getValue('time') as MatchAlarm['time']).toLocaleString(undefined, {
 				dateStyle: 'long',
 				timeStyle: 'short',
-			}),
-		sorter: (a, b) => {
-			return a.time.getTime() - b.time.getTime();
+			});
 		},
-		defaultSortOrder: 'ascend',
 	},
 	{
-		title: 'League',
-		dataIndex: 'league',
-		key: 'league',
-		render: (league: string) => <span>{league}</span>,
+		header: 'League',
+		accessorKey: 'league',
+		cell: (c) => c.renderValue(),
 	},
 	{
-		title: 'Name',
-		dataIndex: 'name',
-		key: 'name',
-		render: (name: string) => <span>{name}</span>,
+		header: 'Name',
+		accessorKey: 'name',
+		cell: (c) => c.renderValue(),
 	},
 	{
-		title: 'Clear',
-		key: 'clear',
-		render: (_, record) => {
-			return <ClearAlarmButton match={record} />;
+		header: 'Clear',
+		size: 80,
+		enableResizing: false,
+		cell: ({ row }) => {
+			return <ClearAlarmButton match={row.original} />;
 		},
 	},
 ];
@@ -48,21 +65,29 @@ const AlarmsTable = () => {
 	const { alarms, clearAlarms } = useContext(AlarmContext);
 
 	return (
-		<Table
-			bordered
-			dataSource={alarms}
-			columns={TABLE_COLUMNS}
-			title={() => (
-				<Flex justify="space-between">
-					<Title level={4} style={{ marginBottom: 0 }}>
-						Alarms
-					</Title>
-					<Button danger onClick={() => clearAlarms()}>
-						Clear All
-					</Button>
-				</Flex>
-			)}
-		/>
+		<div className="flex flex-col gap-2">
+			<h2 className="text-2xl font-semibold tracking-tight">Alarms</h2>
+			<DataTable
+				data={alarms}
+				columns={TABLE_COLUMNS}
+				footer={
+					<TableRow>
+						<TableCell colSpan={3} />
+						<TableCell className="text-right">
+							<Button
+								size="xs"
+								variant="destructive"
+								className="w-full"
+								onClick={() => clearAlarms()}
+								disabled={alarms.length === 0}
+							>
+								Clear All
+							</Button>
+						</TableCell>
+					</TableRow>
+				}
+			/>
+		</div>
 	);
 };
 

@@ -1,16 +1,14 @@
-import {
-	GetScheduleChannel,
-	type Event as GetScheduleEvent,
-	type Team as GetScheduleTeam,
-} from '@/shared/channels/get-schedule';
+import { GetScheduleChannel, type Event as GetScheduleEvent } from '@/shared/channels/get-schedule';
 import type { League, Strategy } from '@/shared/channels/shared-types';
-import Alert from 'antd/es/alert';
-import type { ColumnType } from 'antd/es/table';
-import Table from 'antd/es/table/Table';
-import Title from 'antd/es/typography/Title';
-import { useEffect } from 'react';
+import { Alert, AlertTitle } from '@/ui/components/ui/alert';
+import { Button } from '@/ui/components/ui/button';
+import { DataTable } from '@/ui/components/ui/data-table';
+import type { ColumnDef, SortDirection } from '@tanstack/react-table';
+import { AlertCircleIcon, ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
 import AddAlarmButton from './add-alarm-button';
 import HiddenItem from './hidden';
+import { LeagueSelector } from './league-selector';
 import TeamWithIcon from './team-with-icon';
 import { useFetch } from './use-fetch';
 
@@ -25,74 +23,94 @@ const strategyToText = (strategy: Strategy) => {
 	}
 };
 
-const TABLE_COLUMNS: ColumnType<GetScheduleEvent>[] = [
+const ArrowIcon = (dir: SortDirection | false) => {
+	if (dir === false) {
+		return ArrowUpDown;
+	}
+	if (dir === 'asc') {
+		return ArrowUp;
+	}
+	return ArrowDown;
+};
+
+const TABLE_COLUMNS: ColumnDef<GetScheduleEvent>[] = [
 	{
-		title: 'Start Time',
-		dataIndex: 'startTime',
-		key: 'startTime',
-		render: (startTime: string) =>
-			new Date(startTime).toLocaleString(undefined, {
+		header: ({ column }) => {
+			const Icon = ArrowIcon(column.getIsSorted());
+			return (
+				<Button
+					variant="ghost"
+					className="w-full justify-between"
+					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+				>
+					Start Time
+					{<Icon className="ml-2 h-4 w-4" />}
+				</Button>
+			);
+		},
+		minSize: 225,
+		accessorKey: 'startTime',
+		cell: ({ row }) =>
+			new Date(row.getValue('startTime')).toLocaleString(undefined, {
 				dateStyle: 'long',
 				timeStyle: 'short',
 			}),
-		sorter: (a, b) => {
-			return new Date(a.startTime).getTime() - new Date(b.startTime).getTime();
+		invertSorting: false,
+	},
+	{
+		header: 'Team 1',
+		maxSize: 80,
+		accessorFn: (row) => row.match.matchTeams[0],
+		cell: ({ row }) => {
+			return <TeamWithIcon team={row.original.match.matchTeams[0]} />;
 		},
-		defaultSortOrder: 'descend',
 	},
 	{
-		title: 'Team 1',
-		dataIndex: ['match', 'matchTeams', 0],
-		key: 'team1',
-		render: (team: GetScheduleTeam) => <TeamWithIcon team={team} />,
-		width: 1,
+		header: 'vs',
+		size: 40,
+		enableResizing: false,
+		cell: () => <span>vs</span>,
+		meta: {
+			textAlign: 'center',
+		},
 	},
 	{
-		title: 'vs',
-		dataIndex: 'match',
-		key: 'vs',
-		render: () => <span>vs</span>,
-		width: 1,
-		align: 'center',
+		header: 'Team 2',
+		maxSize: 80,
+		accessorFn: (row) => row.match.matchTeams[1],
+		cell: ({ row }) => <TeamWithIcon team={row.original.match.matchTeams[1]} />,
 	},
 	{
-		title: 'Team 2',
-		dataIndex: ['match', 'matchTeams', 1],
-		key: 'team2',
-		render: (team: GetScheduleTeam) => <TeamWithIcon team={team} />,
-		width: 1,
+		header: 'Style',
+		maxSize: 80,
+		accessorFn: (row) => row.match.strategy,
+		cell: ({ row }) => <span>{strategyToText(row.original.match.strategy)}</span>,
+		meta: {
+			textAlign: 'center',
+		},
 	},
 	{
-		title: 'Style',
-		dataIndex: ['match', 'strategy'],
-		key: 'style',
-		render: (strategy: Strategy) => <span>{strategyToText(strategy)}</span>,
-		width: 1,
-		align: 'center',
+		header: 'Status',
+		accessorKey: 'state',
+		maxSize: 100,
 	},
 	{
-		title: 'Status',
-		dataIndex: 'state',
-		key: 'state',
-		render: (state: string) => <span>{state}</span>,
-		width: 1,
-	},
-	{
-		title: 'Winner',
-		key: 'winner',
-		render: (_, record) => {
-			const winner = record.match.matchTeams.find((t) => t.result?.outcome === 'win');
+		header: 'Winner',
+		maxSize: 80,
+		cell: ({ row }) => {
+			const match = row.original.match;
+			const winner = match.matchTeams.find((t) => t.result?.outcome === 'win');
 			if (winner != null) {
 				return (
-					<HiddenItem key={`outcome-${record.match.id}`}>
+					<HiddenItem key={`outcome-${match.id}`}>
 						<TeamWithIcon team={winner} />
 					</HiddenItem>
 				);
 			}
-			const tie = record.match.matchTeams.every((t) => t.result?.outcome === 'tie');
+			const tie = match.matchTeams.every((t) => t.result?.outcome === 'tie');
 			if (tie) {
 				return (
-					<HiddenItem key={`outcome-${record.match.id}`}>
+					<HiddenItem key={`outcome-${match.id}`}>
 						<span>Tie</span>
 					</HiddenItem>
 				);
@@ -100,22 +118,30 @@ const TABLE_COLUMNS: ColumnType<GetScheduleEvent>[] = [
 		},
 	},
 	{
-		title: 'Alarm',
-		key: 'alarm',
-		render(_, record) {
-			return <AddAlarmButton record={record} />;
-		},
+		header: 'Alarm',
+		enableResizing: false,
+		size: 100,
+		cell: ({ row }) => <AddAlarmButton record={row.original} />,
 	},
 ];
 
-const Schedule = ({ league }: { league: League }) => {
+const Schedule = () => {
 	const { loading, data, error, fetch } = useFetch(GetScheduleChannel);
-	const schedule = data?.data.esports.events ?? [];
+	const [league, setLeague] = useState<League | undefined>(undefined);
+	const schedule = useMemo(
+		() =>
+			(data?.data.esports.events ?? []).toSorted(
+				(a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime(),
+			),
+		[data],
+	);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: intentional
 	useEffect(() => {
-		fetch({ leagueId: league.id });
-	}, [league.id]);
+		if (league != null) {
+			fetch({ leagueId: league.id });
+		}
+	}, [league?.id]);
 
 	useEffect(() => {
 		if (error != null) {
@@ -124,24 +150,18 @@ const Schedule = ({ league }: { league: League }) => {
 	}, [error]);
 
 	return error == null ? (
-		<Table
-			dataSource={schedule}
-			columns={TABLE_COLUMNS}
-			rowKey={(r) => r.match.id}
-			loading={loading}
-			title={() => (
-				<Title level={4} style={{ marginBottom: 0 }}>
-					Schedule
-				</Title>
-			)}
-		/>
+		<div>
+			<div className="flex items-center justify-between mb-2">
+				<h2 className="text-2xl font-semibold tracking-tight">Schedule</h2>
+				<LeagueSelector onLeagueSelected={setLeague} />
+			</div>
+			<DataTable data={schedule} loading={loading} columns={TABLE_COLUMNS} />
+		</div>
 	) : (
-		<Alert
-			message="Error loading league schedule."
-			type="error"
-			showIcon
-			style={{ marginBottom: '1em' }}
-		/>
+		<Alert variant="destructive">
+			<AlertCircleIcon />
+			<AlertTitle>Error loading league schedule.</AlertTitle>
+		</Alert>
 	);
 };
 
