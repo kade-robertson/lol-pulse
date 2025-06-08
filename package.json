@@ -22,7 +22,7 @@
 	"license": "MIT",
 	"volta": {
 		"node": "22.16.0",
-		"pnpm": "10.11.1"
+		"pnpm": "10.12.1"
 	},
 	"dependencies": {
 		"@apollo/client": "^3.13.8",
