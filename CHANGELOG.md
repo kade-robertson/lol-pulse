@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.3.1](https://github.com/kade-robertson/lol-pulse/compare/lol-pulse-v1.3.0...lol-pulse-v1.3.1) (2025-10-05)
+
+
+### Bug Fixes
+
+* **deps:** pin dependencies ([#289](https://github.com/kade-robertson/lol-pulse/issues/289)) ([25bf805](https://github.com/kade-robertson/lol-pulse/commit/25bf805beb6140d2bad9196711c19a01161b2a2b))
+* **deps:** pin dependencies ([#290](https://github.com/kade-robertson/lol-pulse/issues/290)) ([9002b3c](https://github.com/kade-robertson/lol-pulse/commit/9002b3cd641c98043151623479bd031dffe6510b))
+* **deps:** update dependency @apollo/client to v3.14.0 ([#303](https://github.com/kade-robertson/lol-pulse/issues/303)) ([6118d24](https://github.com/kade-robertson/lol-pulse/commit/6118d242515cf9040bff936eafb1b550b79f591e))
+* **deps:** update dependency lucide-react to v0.544.0 ([#282](https://github.com/kade-robertson/lol-pulse/issues/282)) ([007bd07](https://github.com/kade-robertson/lol-pulse/commit/007bd077ddf3297d4b16ee36ccb94da6cdb03c08))
+* **deps:** update dependency tailwind-merge to v3.3.1 ([#283](https://github.com/kade-robertson/lol-pulse/issues/283)) ([2e62e85](https://github.com/kade-robertson/lol-pulse/commit/2e62e8549250815c3a71f59360aed049d71a4ecc))
+* **deps:** update dependency tw-animate-css to v1.4.0 ([#287](https://github.com/kade-robertson/lol-pulse/issues/287)) ([7d90b48](https://github.com/kade-robertson/lol-pulse/commit/7d90b489020661fed52017d55520e2262fe50f35))
+* **deps:** update radix-ui-primitives monorepo ([#299](https://github.com/kade-robertson/lol-pulse/issues/299)) ([dcff72c](https://github.com/kade-robertson/lol-pulse/commit/dcff72c9d59b61112ef3c82ee4f592f31ee131e2))
+* **deps:** update react monorepo to v19.2.0 ([#304](https://github.com/kade-robertson/lol-pulse/issues/304)) ([7273569](https://github.com/kade-robertson/lol-pulse/commit/727356972d672351face56b8b3705dba9a3eba64))
+* **deps:** update tailwindcss monorepo to v4.1.14 ([#284](https://github.com/kade-robertson/lol-pulse/issues/284)) ([0f506ed](https://github.com/kade-robertson/lol-pulse/commit/0f506edeb6b014778ff06a59e46f4f27d95f3e04))
+* update event schema shape ([#294](https://github.com/kade-robertson/lol-pulse/issues/294)) ([cc5a1eb](https://github.com/kade-robertson/lol-pulse/commit/cc5a1ebd5d228cd9a429f8d0082a732eff12c7d7))
+
 ## [1.3.0](https://github.com/kade-robertson/lol-pulse/compare/lol-pulse-v1.2.4...lol-pulse-v1.3.0) (2025-06-05)
 
 
