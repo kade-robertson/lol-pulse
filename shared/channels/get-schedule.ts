@@ -35,7 +35,6 @@ export type Team = v.InferOutput<typeof Team>;
 const Match = v.object({
 	id: v.string(),
 	flags: v.array(Flag),
-	matchTeams: v.array(Team),
 	strategy: VStrategy,
 });
 export type Match = v.InferOutput<typeof Match>;
@@ -47,6 +46,7 @@ const Event = v.object({
 	blockName: v.string(),
 	league: League,
 	match: Match,
+	matchTeams: v.array(Team),
 });
 export type Event = v.InferOutput<typeof Event>;
 

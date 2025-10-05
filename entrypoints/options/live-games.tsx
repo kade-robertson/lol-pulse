@@ -152,8 +152,8 @@ const LiveGames = () => {
 				games
 					.filter((g) => g.streams.length > 0)
 					.map((g) => {
-						const teamA = g.match?.matchTeams[0];
-						const teamB = g.match?.matchTeams[1];
+						const teamA = g.matchTeams[0];
+						const teamB = g.matchTeams[1];
 
 						const twitchLivestream = getLocaleAwareStream(g.streams, 'twitch');
 						const youtubeLivestream = getLocaleAwareStream(g.streams, 'youtube');
