@@ -1,11 +1,11 @@
+import type { ColumnDef, SortDirection } from '@tanstack/react-table';
+import { AlertCircleIcon, ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
 import { GetScheduleChannel, type Event as GetScheduleEvent } from '@/shared/channels/get-schedule';
 import type { League, Strategy } from '@/shared/channels/shared-types';
 import { Alert, AlertTitle } from '@/ui/components/ui/alert';
 import { Button } from '@/ui/components/ui/button';
 import { DataTable } from '@/ui/components/ui/data-table';
-import type { ColumnDef, SortDirection } from '@tanstack/react-table';
-import { AlertCircleIcon, ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
 import AddAlarmButton from './add-alarm-button';
 import HiddenItem from './hidden';
 import { LeagueSelector } from './league-selector';

@@ -1,6 +1,6 @@
 import * as v from 'valibot';
 import type { SafeChannel } from '../message';
-import { type ShapeOf, VMaybeLiveEvent, VParticipant, safeVEnum } from './shared-types';
+import { type ShapeOf, safeVEnum, VMaybeLiveEvent, VParticipant } from './shared-types';
 
 const ParticipantMetadata = v.object({
 	participantId: v.number(),

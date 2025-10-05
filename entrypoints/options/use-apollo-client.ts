@@ -1,8 +1,8 @@
+import { useEffect, useState } from 'react';
 import {
 	type ApolloConfigResponse,
 	GetApolloConfigChannel,
 } from '@/shared/channels/get-apollo-config';
-import { useEffect, useState } from 'react';
 
 export const useApolloConfig = () => {
 	const [loading, setLoading] = useState(false);

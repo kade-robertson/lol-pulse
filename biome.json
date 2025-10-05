@@ -1,7 +1,10 @@
 {
-	"$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+	"$schema": "https://biomejs.dev/schemas/2.2.5/schema.json",
 	"vcs": { "enabled": false, "clientKind": "git", "useIgnoreFile": false },
-	"files": { "ignoreUnknown": false, "ignore": [".output", ".wxt"] },
+	"files": {
+		"ignoreUnknown": false,
+		"includes": ["**", "!**/.output", "!**/.wxt"]
+	},
 	"formatter": {
 		"enabled": true,
 		"useEditorconfig": true,
@@ -12,16 +15,17 @@
 		"lineWidth": 100,
 		"attributePosition": "auto",
 		"bracketSpacing": true,
-		"ignore": [
-			"**/.output",
-			"**/.wxt",
-			"**/.github",
-			"**/renovate.json",
-			"**/CHANGELOG.md",
-			"**/pnpm-lock.yaml"
+		"includes": [
+			"**",
+			"!**/.output",
+			"!**/.wxt",
+			"!**/.github",
+			"!**/renovate.json",
+			"!**/CHANGELOG.md",
+			"!**/pnpm-lock.yaml"
 		]
 	},
-	"organizeImports": { "enabled": true },
+	"assist": { "actions": { "source": { "organizeImports": "on" } } },
 	"linter": {
 		"enabled": true,
 		"rules": {
@@ -35,6 +39,7 @@
 				"noReExportAll": "error",
 				"useTopLevelRegex": "error"
 			},
+			"suspicious": { "noUnknownAtRules": "warn" },
 			"style": { "noNonNullAssertion": "warn" }
 		}
 	},

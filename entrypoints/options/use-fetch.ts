@@ -1,6 +1,6 @@
-import type { SafeChannel, SendBase } from '@/shared/message';
 import { useCallback, useState } from 'react';
 import type * as v from 'valibot';
+import type { SafeChannel, SendBase } from '@/shared/message';
 
 export const useFetch = <
 	S extends SendBase,

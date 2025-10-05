@@ -1,6 +1,6 @@
-import { Button } from '@/ui/components/ui/button';
 import { LoaderCircleIcon } from 'lucide-react';
 import { useMemo } from 'react';
+import { Button } from '@/ui/components/ui/button';
 import AlarmsTable from './alarms';
 import LiveGames from './live-games';
 import Schedule from './schedule';

@@ -1,13 +1,13 @@
 import {
 	type ColumnDef,
-	type SortingState,
 	flexRender,
 	getCoreRowModel,
 	getPaginationRowModel,
 	getSortedRowModel,
+	type SortingState,
 	useReactTable,
 } from '@tanstack/react-table';
-
+import { type ReactNode, useState } from 'react';
 import {
 	Table,
 	TableBody,
@@ -17,7 +17,6 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/ui/components/ui/table';
-import { type ReactNode, useState } from 'react';
 import { DataTablePagination } from './data-table-pagination';
 
 interface DataTableProps<TData, TValue> {
