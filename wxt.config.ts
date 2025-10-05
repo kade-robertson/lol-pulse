@@ -10,7 +10,6 @@ export default defineConfig({
 		host_permissions: ['https://*.lolesports.com/*'],
 		permissions: ['webRequest', 'storage', 'alarms', 'https://*.lolesports.com/*'],
 	},
-	// @ts-ignore
 	vite: (env) => ({
 		plugins: [react(), tailwindcss()],
 		define: {

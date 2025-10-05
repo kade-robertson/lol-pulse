@@ -1,7 +1,7 @@
 import * as v from 'valibot';
 import type { SafeChannel } from '../message';
 import { fastQuery, getClient } from './gql-client';
-import { type ShapeOf, VResult, VStrategy, safeVEnum } from './shared-types';
+import { type ShapeOf, safeVEnum, VResult, VStrategy } from './shared-types';
 
 const League = v.object({
 	name: v.string(),

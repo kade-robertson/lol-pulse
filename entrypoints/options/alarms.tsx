@@ -1,10 +1,10 @@
+import type { ColumnDef, SortDirection } from '@tanstack/react-table';
+import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react';
+import { useContext } from 'react';
 import type { MatchAlarm } from '@/shared/alarms';
 import { Button } from '@/ui/components/ui/button';
 import { DataTable } from '@/ui/components/ui/data-table';
 import { TableCell, TableRow } from '@/ui/components/ui/table';
-import type { ColumnDef, SortDirection } from '@tanstack/react-table';
-import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react';
-import { useContext } from 'react';
 import ClearAlarmButton from './clear-alarm-button';
 import { AlarmContext } from './contexts/alarm-ctx';
 

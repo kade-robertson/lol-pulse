@@ -1,6 +1,6 @@
-import { Button } from '@/ui/components/ui/button';
 import { EyeOff } from 'lucide-react';
 import { type ReactNode, useState } from 'react';
+import { Button } from '@/ui/components/ui/button';
 
 const HiddenItem = ({ children }: { children: ReactNode }) => {
 	const [hidden, setHidden] = useState(true);
@@ -10,7 +10,7 @@ const HiddenItem = ({ children }: { children: ReactNode }) => {
 			<EyeOff />
 		</Button>
 	) : (
-		<>{children}</>
+		children
 	);
 };
 

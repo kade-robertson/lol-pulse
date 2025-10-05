@@ -1,6 +1,6 @@
+import { useContext } from 'react';
 import type { Event as GetScheduleEvent } from '@/shared/channels/get-schedule';
 import { Button } from '@/ui/components/ui/button';
-import { useContext } from 'react';
 import { AlarmContext } from './contexts/alarm-ctx';
 
 const AddAlarmButton = ({ record }: { record: GetScheduleEvent }) => {

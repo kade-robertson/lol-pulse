@@ -1,5 +1,5 @@
-import { type MatchAlarm, clearAlarm, getAlarms, setAlarm } from '@/shared/alarms';
-import { type ReactNode, createContext, useEffect, useState } from 'react';
+import { createContext, type ReactNode, useEffect, useState } from 'react';
+import { clearAlarm, getAlarms, type MatchAlarm, setAlarm } from '@/shared/alarms';
 
 interface AlarmContext {
 	alarms: MatchAlarm[];
@@ -20,7 +20,7 @@ export const AlarmContextProvider = ({ children }: { children: ReactNode }) => {
 
 	useEffect(() => {
 		reloadAlarms();
-	}, []);
+	});
 
 	const reloadAlarms = async () => {
 		setAlarms(await getAlarms());

@@ -1,6 +1,6 @@
 import * as v from 'valibot';
 import type { SafeChannel } from '../message';
-import { type ShapeOf, VParticipant, safeVEnum } from './shared-types';
+import { type ShapeOf, safeVEnum, VParticipant } from './shared-types';
 
 const Ability = safeVEnum(['E', 'Q', 'R', 'W', 'unknown'] as const, 'unknown');
 export type Ability = v.InferOutput<typeof Ability>;
