@@ -60,9 +60,9 @@ const TABLE_COLUMNS: ColumnDef<GetScheduleEvent>[] = [
 	{
 		header: 'Team 1',
 		maxSize: 80,
-		accessorFn: (row) => row.match.matchTeams[0],
+		accessorFn: (row) => row.matchTeams[0],
 		cell: ({ row }) => {
-			return <TeamWithIcon team={row.original.match.matchTeams[0]} />;
+			return <TeamWithIcon team={row.original.matchTeams[0]} />;
 		},
 	},
 	{
@@ -77,8 +77,8 @@ const TABLE_COLUMNS: ColumnDef<GetScheduleEvent>[] = [
 	{
 		header: 'Team 2',
 		maxSize: 80,
-		accessorFn: (row) => row.match.matchTeams[1],
-		cell: ({ row }) => <TeamWithIcon team={row.original.match.matchTeams[1]} />,
+		accessorFn: (row) => row.matchTeams[1],
+		cell: ({ row }) => <TeamWithIcon team={row.original.matchTeams[1]} />,
 	},
 	{
 		header: 'Style',
@@ -99,7 +99,7 @@ const TABLE_COLUMNS: ColumnDef<GetScheduleEvent>[] = [
 		maxSize: 80,
 		cell: ({ row }) => {
 			const match = row.original.match;
-			const winner = match.matchTeams.find((t) => t.result?.outcome === 'win');
+			const winner = row.original.matchTeams.find((t) => t.result?.outcome === 'win');
 			if (winner != null) {
 				return (
 					<HiddenItem key={`outcome-${match.id}`}>
@@ -107,7 +107,7 @@ const TABLE_COLUMNS: ColumnDef<GetScheduleEvent>[] = [
 					</HiddenItem>
 				);
 			}
-			const tie = match.matchTeams.every((t) => t.result?.outcome === 'tie');
+			const tie = row.original.matchTeams.every((t) => t.result?.outcome === 'tie');
 			if (tie) {
 				return (
 					<HiddenItem key={`outcome-${match.id}`}>

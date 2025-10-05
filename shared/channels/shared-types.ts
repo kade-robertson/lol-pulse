@@ -135,7 +135,6 @@ export type Game = v.InferOutput<typeof VGame>;
 
 export const VMatch = v.object({
 	id: v.string(),
-	matchTeams: v.array(VMatchTeam),
 	strategy: VStrategy,
 	games: v.array(VGame),
 });
@@ -150,6 +149,7 @@ export const VMaybeLiveEvent = v.object({
 	tournament: VTournament,
 	match: v.optional(VMatch),
 	streams: v.array(VStream),
+	matchTeams: v.array(VMatchTeam),
 });
 export type MaybeLiveEvent = v.InferOutput<typeof VMaybeLiveEvent>;
 
