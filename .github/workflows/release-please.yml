@@ -17,3 +17,34 @@ jobs:
         with:
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
+
+      - uses: actions/checkout@v4
+        if: ${{ steps.release.outputs.pr }}
+        with:
+          ref: ${{ fromJson(steps.release.outputs.pr).headBranchName }}
+
+      - name: Configure Git user
+        if: ${{ steps.release.outputs.pr }}
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git --no-pager show --name-only
+
+      - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version-file: package.json
+          cache: "pnpm"
+          cache-dependency-path: "./pnpm-lock.yaml"
+
+      - name: Install dependencies
+        if: ${{ steps.release.outputs.pr }}
+        run: pnpm install --frozen-lockfile
+
+      - name: Fix formatting
+        if: ${{ steps.release.outputs.pr }}
+        run: |
+          pnpm biome check --write --unsafe package.json CHANGELOG.md
+          git add package.json CHANGELOG.md
+          git diff --staged --quiet || (git commit -m "chore: fix formatting" && git push)

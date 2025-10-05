@@ -14,16 +14,14 @@
 		"submit": "wxt submit",
 		"submit:dry": "wxt submit --dry-run"
 	},
-	"keywords": [
-		"lol",
-		"league of legends"
-	],
+	"keywords": ["lol", "league of legends"],
 	"author": "Kade Robertson <kade@kaderobertson.dev>",
 	"license": "MIT",
 	"volta": {
 		"node": "22.16.0",
 		"pnpm": "10.11.1"
 	},
+	"packageManager": "pnpm@10.11.1",
 	"dependencies": {
 		"@apollo/client": "^3.13.8",
 		"@apollo/persisted-query-lists": "^1.0.0",
@@ -59,9 +57,6 @@
 		"wxt": "^0.20.7"
 	},
 	"pnpm": {
-		"onlyBuiltDependencies": [
-			"@swc/core",
-			"esbuild"
-		]
+		"onlyBuiltDependencies": ["@swc/core", "esbuild"]
 	}
 }
