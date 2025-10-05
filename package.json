@@ -54,7 +54,7 @@
 		"@types/react-dom": "19.2.0",
 		"@vitejs/plugin-react": "5.0.4",
 		"@wxt-dev/webextension-polyfill": "1.0.0",
-		"env-cmd": "10.1.0",
+		"env-cmd": "11.0.0",
 		"rollup-plugin-typescript2": "0.36.0",
 		"typescript": "5.9.3",
 		"wxt": "0.20.11"
