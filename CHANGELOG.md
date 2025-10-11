@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.2](https://github.com/kade-robertson/lol-pulse/compare/lol-pulse-v1.3.1...lol-pulse-v1.3.2) (2025-10-11)
+
+
+### Bug Fixes
+
+* **deps:** update dependency lucide-react to v0.545.0 ([#310](https://github.com/kade-robertson/lol-pulse/issues/310)) ([07ac283](https://github.com/kade-robertson/lol-pulse/commit/07ac283895cfabcfd95ae22072791a4c9156d21c))
+
 ## [1.3.1](https://github.com/kade-robertson/lol-pulse/compare/lol-pulse-v1.3.0...lol-pulse-v1.3.1) (2025-10-05)
 
 
