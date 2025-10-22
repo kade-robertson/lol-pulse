@@ -48,7 +48,7 @@
 		"valibot": "1.1.0"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.2.5",
+		"@biomejs/biome": "2.2.7",
 		"@tailwindcss/vite": "4.1.15",
 		"@types/react": "19.2.2",
 		"@types/react-dom": "19.2.2",
