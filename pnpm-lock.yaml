@@ -12,8 +12,8 @@ importers:
         specifier: 3.14.0
         version: 3.14.0(@types/react@19.2.4)(graphql@16.11.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@apollo/persisted-query-lists':
-        specifier: 1.0.0
-        version: 1.0.0(@apollo/client@3.14.0(@types/react@19.2.4)(graphql@16.11.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(graphql@16.11.0)
+        specifier: 1.1.0
+        version: 1.1.0(@apollo/client@3.14.0(@types/react@19.2.4)(graphql@16.11.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(graphql@16.11.0)
       '@nerdwallet/apollo-cache-policies':
         specifier: 3.3.3
         version: 3.3.3(@apollo/client@3.14.0(@types/react@19.2.4)(graphql@16.11.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react@19.2.0)
@@ -133,11 +133,11 @@ packages:
       subscriptions-transport-ws:
         optional: true
 
-  '@apollo/persisted-query-lists@1.0.0':
-    resolution: {integrity: sha512-PrqOKBrI01tqGwjji97Ux4L3z8bIkUJ9QJ7kGt13CzH6d1cUx+4IehF7p2Tceo1Rwkr5cAR98RYfzMCd0JALTQ==}
+  '@apollo/persisted-query-lists@1.1.0':
+    resolution: {integrity: sha512-LpegTvQfn2MUiaBbdxv/InzLsgDEcOW6h3UyI4cRHUlYpA3ftHazGcZnMAlPSfMgf88yAvGi4nqTwYB3wy+JZg==}
     engines: {node: '>=16'}
     peerDependencies:
-      '@apollo/client': ^3.2.0 || ^3.8.0-alpha
+      '@apollo/client': ^3.2.0 || ^3.8.0-alpha || ^4.0.0
       graphql: 14.x || 15.x || 16.x
 
   '@babel/code-frame@7.27.1':
@@ -2943,7 +2943,7 @@ snapshots:
     transitivePeerDependencies:
       - '@types/react'
 
-  '@apollo/persisted-query-lists@1.0.0(@apollo/client@3.14.0(@types/react@19.2.4)(graphql@16.11.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(graphql@16.11.0)':
+  '@apollo/persisted-query-lists@1.1.0(@apollo/client@3.14.0(@types/react@19.2.4)(graphql@16.11.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(graphql@16.11.0)':
     dependencies:
       '@apollo/client': 3.14.0(@types/react@19.2.4)(graphql@16.11.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       graphql: 16.11.0

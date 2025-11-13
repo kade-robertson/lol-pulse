@@ -27,7 +27,7 @@
 	"packageManager": "pnpm@10.22.0",
 	"dependencies": {
 		"@apollo/client": "3.14.0",
-		"@apollo/persisted-query-lists": "1.0.0",
+		"@apollo/persisted-query-lists": "1.1.0",
 		"@nerdwallet/apollo-cache-policies": "3.3.3",
 		"@radix-ui/react-alert-dialog": "1.1.15",
 		"@radix-ui/react-dialog": "1.1.15",
