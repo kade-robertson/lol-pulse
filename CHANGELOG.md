@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.3.2](https://github.com/kade-robertson/lol-pulse/compare/lol-pulse-v1.3.1...lol-pulse-v1.3.2) (2025-11-15)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @apollo/persisted-query-lists to v1.1.0 ([#346](https://github.com/kade-robertson/lol-pulse/issues/346)) ([c538313](https://github.com/kade-robertson/lol-pulse/commit/c538313e129aff227f9f95f0a080b2cd12424da0))
+* **deps:** update dependency @radix-ui/react-slot to v1.2.4 ([#335](https://github.com/kade-robertson/lol-pulse/issues/335)) ([a1ab23b](https://github.com/kade-robertson/lol-pulse/commit/a1ab23bedc7387083ab65ca462782547e47b3946))
+* **deps:** update dependency lucide-react to v0.545.0 ([#310](https://github.com/kade-robertson/lol-pulse/issues/310)) ([07ac283](https://github.com/kade-robertson/lol-pulse/commit/07ac283895cfabcfd95ae22072791a4c9156d21c))
+* **deps:** update dependency lucide-react to v0.546.0 ([#322](https://github.com/kade-robertson/lol-pulse/issues/322)) ([830a699](https://github.com/kade-robertson/lol-pulse/commit/830a699e704fa1dde82a8f0e02ab0a997c4b3a95))
+* **deps:** update dependency lucide-react to v0.548.0 ([#330](https://github.com/kade-robertson/lol-pulse/issues/330)) ([168d573](https://github.com/kade-robertson/lol-pulse/commit/168d573cdfa6c9d1aba3d617a21670af035feabf))
+* **deps:** update dependency lucide-react to v0.552.0 ([#334](https://github.com/kade-robertson/lol-pulse/issues/334)) ([010d7e1](https://github.com/kade-robertson/lol-pulse/commit/010d7e1d847f0472449a3cb5329530af02190726))
+* **deps:** update dependency lucide-react to v0.553.0 ([#337](https://github.com/kade-robertson/lol-pulse/issues/337)) ([7f09934](https://github.com/kade-robertson/lol-pulse/commit/7f099344a60e03c7a9e1fc20cfb0435bd51aea7a))
+* **deps:** update dependency tailwind-merge to v3.4.0 ([#339](https://github.com/kade-robertson/lol-pulse/issues/339)) ([6902696](https://github.com/kade-robertson/lol-pulse/commit/6902696960d108533d0aaf598292498bae871f15))
+* **deps:** update tailwindcss monorepo to v4.1.15 ([#323](https://github.com/kade-robertson/lol-pulse/issues/323)) ([480e468](https://github.com/kade-robertson/lol-pulse/commit/480e468464ea1f45ccebdb517d2cc4fdb231b74b))
+* **deps:** update tailwindcss monorepo to v4.1.16 ([#326](https://github.com/kade-robertson/lol-pulse/issues/326)) ([ac98c6e](https://github.com/kade-robertson/lol-pulse/commit/ac98c6ec01c2d9c836b94ba9a897fc05f1de4db8))
+* **deps:** update tailwindcss monorepo to v4.1.17 ([#336](https://github.com/kade-robertson/lol-pulse/issues/336)) ([85dec5a](https://github.com/kade-robertson/lol-pulse/commit/85dec5a060c9bb2a4bc4f8a5df0c75b5289b8741))
+
 ## [1.3.1](https://github.com/kade-robertson/lol-pulse/compare/lol-pulse-v1.3.0...lol-pulse-v1.3.1) (2025-10-05)
 
 
