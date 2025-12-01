@@ -8,9 +8,21 @@
   "lockFileMaintenance": {
     "enabled": true
   },
+	"customManagers": [
+		{
+			"customType": "jsonata",
+			"fileFormat": "json",
+			"managerFilePatterns": ["/biome.json$/"],
+			"matchStrings": [
+				"{\"depName\": \"@biomejs\/biome\", \"currentValue\": $match($.`$schema`, \/schemas\\\/(\\d+\\.\\d+\\.\\d+)\\\/schema\\.json\/).groups[0], \"datasource\": \"npm\"}"
+			],
+			"depNameTemplate": "@biomejs/biome",
+			"datasourceTemplate": "npm"
+		}
+	],
   "packageRules": [
     {
-      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest", "lockFileMaintenance"],
       "automerge": true
     }
   ]
