@@ -57,7 +57,7 @@
 		"env-cmd": "11.0.0",
 		"rollup-plugin-typescript2": "0.36.0",
 		"typescript": "5.9.3",
-		"wxt": "0.20.13"
+		"wxt": "0.20.14"
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [
