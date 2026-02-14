@@ -50,7 +50,7 @@
 	"devDependencies": {
 		"@biomejs/biome": "2.3.13",
 		"@tailwindcss/vite": "4.1.18",
-		"@types/react": "19.2.13",
+		"@types/react": "19.2.14",
 		"@types/react-dom": "19.2.3",
 		"@vitejs/plugin-react": "5.1.4",
 		"@wxt-dev/webextension-polyfill": "1.0.0",
