@@ -22,9 +22,9 @@
 	"license": "MIT",
 	"volta": {
 		"node": "24.16.0",
-		"pnpm": "10.34.1"
+		"pnpm": "10.34.2"
 	},
-	"packageManager": "pnpm@10.34.1",
+	"packageManager": "pnpm@10.34.2",
 	"dependencies": {
 		"@apollo/client": "3.14.1",
 		"@apollo/persisted-query-lists": "1.1.0",
