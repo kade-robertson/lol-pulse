@@ -86,7 +86,7 @@ importers:
         version: 5.2.0(vite@8.0.16(@types/node@25.9.3)(esbuild@0.27.7)(jiti@2.7.0))
       '@wxt-dev/webextension-polyfill':
         specifier: 1.0.0
-        version: 1.0.0(webextension-polyfill@0.12.0)(wxt@0.20.26(@types/node@25.9.3)(jiti@2.7.0)(rolldown@1.0.3)(rollup@4.62.0))
+        version: 1.0.0(webextension-polyfill@0.12.0)(wxt@0.20.27(@types/node@25.9.3)(jiti@2.7.0)(rolldown@1.0.3)(rollup@4.62.0))
       env-cmd:
         specifier: 11.0.0
         version: 11.0.0
@@ -97,8 +97,8 @@ importers:
         specifier: 6.0.3
         version: 6.0.3
       wxt:
-        specifier: 0.20.26
-        version: 0.20.26(@types/node@25.9.3)(jiti@2.7.0)(rolldown@1.0.3)(rollup@4.62.0)
+        specifier: 0.20.27
+        version: 0.20.27(@types/node@25.9.3)(jiti@2.7.0)(rolldown@1.0.3)(rollup@4.62.0)
 
 packages:
 
@@ -1294,6 +1294,9 @@ packages:
 
   '@wxt-dev/browser@0.1.43':
     resolution: {integrity: sha512-RMB0zgfe7uuiTp18s9taLeKXoOCLBV418797dnEggiMWmM1JDJekiLtlvrNc6QeZg+amDBy2/KKYuQB2kh/K9A==}
+
+  '@wxt-dev/browser@0.2.2':
+    resolution: {integrity: sha512-QqLOdEE1UQxieRuMbv9rwczD+xUv45fy+i5gw1eo+/vlPtGX+/rBd6tlIfLFCU3xAN/UTH57bxqOeU2IZg7dEg==}
 
   '@wxt-dev/storage@1.2.8':
     resolution: {integrity: sha512-GWCFKgF5+d7eslOxUDFC70ypA9njupmJb1nQM8uZoX0J3sWT2BO5xJLzb1sYahWAfID9p2BMtnUBN1lkWxPsbQ==}
@@ -2845,8 +2848,8 @@ packages:
     resolution: {integrity: sha512-g/eziiSUNBSsdDJtCLB8bdYEUMj4jR7AGeUo96p/3dTafgjHhpF4RiCFPiRILwjQoDXx5MqkBr4fwWtR3Ky4Wg==}
     engines: {node: '>=20'}
 
-  wxt@0.20.26:
-    resolution: {integrity: sha512-PMGz7sAlONJgwBkOriInXOoEU6/jlGKrhSFvZfiBPHZocyYPfnw1lod9rGDra957H83WO+TnGjYwJiGYciSIqA==}
+  wxt@0.20.27:
+    resolution: {integrity: sha512-dm6yixz2awM4YMqpTJnsCa8aOPiTrjiIjbWslgR5hCjgwhuft+hLlla339Dt7gIKwQloee4oOruoK++vaX0APA==}
     engines: {bun: '>=1.2.0', node: '>=20.12.0'}
     hasBin: true
     peerDependencies:
@@ -3896,16 +3899,21 @@ snapshots:
       '@types/filesystem': 0.0.36
       '@types/har-format': 1.2.16
 
+  '@wxt-dev/browser@0.2.2':
+    dependencies:
+      '@types/filesystem': 0.0.36
+      '@types/har-format': 1.2.16
+
   '@wxt-dev/storage@1.2.8':
     dependencies:
       '@wxt-dev/browser': 0.1.43
       async-mutex: 0.5.0
       dequal: 2.0.3
 
-  '@wxt-dev/webextension-polyfill@1.0.0(webextension-polyfill@0.12.0)(wxt@0.20.26(@types/node@25.9.3)(jiti@2.7.0)(rolldown@1.0.3)(rollup@4.62.0))':
+  '@wxt-dev/webextension-polyfill@1.0.0(webextension-polyfill@0.12.0)(wxt@0.20.27(@types/node@25.9.3)(jiti@2.7.0)(rolldown@1.0.3)(rollup@4.62.0))':
     dependencies:
       webextension-polyfill: 0.12.0
-      wxt: 0.20.26(@types/node@25.9.3)(jiti@2.7.0)(rolldown@1.0.3)(rollup@4.62.0)
+      wxt: 0.20.27(@types/node@25.9.3)(jiti@2.7.0)(rolldown@1.0.3)(rollup@4.62.0)
 
   acorn@8.17.0: {}
 
@@ -5384,14 +5392,14 @@ snapshots:
       is-wsl: 3.1.1
       powershell-utils: 0.1.0
 
-  wxt@0.20.26(@types/node@25.9.3)(jiti@2.7.0)(rolldown@1.0.3)(rollup@4.62.0):
+  wxt@0.20.27(@types/node@25.9.3)(jiti@2.7.0)(rolldown@1.0.3)(rollup@4.62.0):
     dependencies:
       '@1natsu/wait-element': 4.2.0
       '@aklinker1/rollup-plugin-visualizer': 5.12.0(rollup@4.62.0)
       '@webext-core/fake-browser': 1.5.2
       '@webext-core/isolated-element': 1.1.5
       '@webext-core/match-patterns': 1.0.3
-      '@wxt-dev/browser': 0.1.43
+      '@wxt-dev/browser': 0.2.2
       '@wxt-dev/storage': 1.2.8
       async-mutex: 0.5.0
       c12: 3.3.4(magicast@0.5.3)
