@@ -12,8 +12,8 @@ importers:
         specifier: 3.14.1
         version: 3.14.1(@types/react@19.3.0)(graphql@16.15.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       '@apollo/persisted-query-lists':
-        specifier: 1.1.0
-        version: 1.1.0(@apollo/client@3.14.1(@types/react@19.3.0)(graphql@16.15.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(graphql@16.15.0)
+        specifier: 1.2.0
+        version: 1.2.0(@apollo/client@3.14.1(@types/react@19.3.0)(graphql@16.15.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(graphql@16.15.0)
       '@nerdwallet/apollo-cache-policies':
         specifier: 3.3.3
         version: 3.3.3(@apollo/client@3.14.1(@types/react@19.3.0)(graphql@16.15.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react@19.3.1)
@@ -133,12 +133,12 @@ packages:
       subscriptions-transport-ws:
         optional: true
 
-  '@apollo/persisted-query-lists@1.1.0':
-    resolution: {integrity: sha512-LpegTvQfn2MUiaBbdxv/InzLsgDEcOW6h3UyI4cRHUlYpA3ftHazGcZnMAlPSfMgf88yAvGi4nqTwYB3wy+JZg==}
+  '@apollo/persisted-query-lists@1.2.0':
+    resolution: {integrity: sha512-xKhrGNSedA3G30xyuU9dpL0Ohbb4ACHaozepbD5cqcXN9nzjlmWnX7Pn+mJ5o1mo+dmHEOoH6xm+BRDtdrct6w==}
     engines: {node: '>=16'}
     peerDependencies:
       '@apollo/client': ^3.2.0 || ^3.8.0-alpha || ^4.0.0
-      graphql: 14.x || 15.x || 16.x
+      graphql: 14.x || 15.x || 16.x || 17.x
 
   '@babel/code-frame@7.29.7':
     resolution: {integrity: sha512-Aup7aUOfpbAUg2ROOJN6Iw5f9DMBlzu0mIkm/malLQFN/YQgO48wCj0Kxa3sEHJvPVFg7siR+qRInwXd2qhQKw==}
@@ -2827,7 +2827,7 @@ snapshots:
     transitivePeerDependencies:
       - '@types/react'
 
-  '@apollo/persisted-query-lists@1.1.0(@apollo/client@3.14.1(@types/react@19.3.0)(graphql@16.15.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(graphql@16.15.0)':
+  '@apollo/persisted-query-lists@1.2.0(@apollo/client@3.14.1(@types/react@19.3.0)(graphql@16.15.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(graphql@16.15.0)':
     dependencies:
       '@apollo/client': 3.14.1(@types/react@19.3.0)(graphql@16.15.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       graphql: 16.15.0
